@@ -1,0 +1,272 @@
+package me.dmk.core;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.LongSerializationPolicy;
+import dev.rollczi.litecommands.LiteCommands;
+import dev.rollczi.litecommands.bukkit.adventure.platform.LiteBukkitAdventurePlatformFactory;
+import dev.rollczi.litecommands.bukkit.tools.BukkitOnlyPlayerContextual;
+import eu.okaeri.configs.ConfigManager;
+import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
+import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
+import lombok.Getter;
+import me.dmk.core.chat.cache.GlobalChatCache;
+import me.dmk.core.chat.notification.NotificationType;
+import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.command.argument.guild.GuildArgument;
+import me.dmk.core.command.argument.guild.member.MemberArgument;
+import me.dmk.core.command.argument.notification.NotificationTypeArgument;
+import me.dmk.core.command.argument.player.*;
+import me.dmk.core.command.argument.profile.ProfileArgument;
+import me.dmk.core.command.handler.InvalidUsageHandler;
+import me.dmk.core.command.handler.MissingPermissionHandler;
+import me.dmk.core.command.implementation.admin.*;
+import me.dmk.core.command.implementation.guild.*;
+import me.dmk.core.command.implementation.guild.alliance.GuildAllianceCommand;
+import me.dmk.core.command.implementation.player.*;
+import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.database.data.MongoDataService;
+import me.dmk.core.database.MongoClientService;
+import me.dmk.core.guild.Guild;
+import me.dmk.core.guild.cache.GuildCache;
+import me.dmk.core.guild.controller.GuildController;
+import me.dmk.core.guild.member.Member;
+import me.dmk.core.listener.*;
+import me.dmk.core.listener.connection.PlayerJoinListener;
+import me.dmk.core.listener.connection.PlayerLoginListener;
+import me.dmk.core.listener.connection.PlayerQuitListener;
+import me.dmk.core.listener.EntityDamageByEntityListener;
+import me.dmk.core.listener.PlayerDeathListener;
+import me.dmk.core.listener.luckperms.LuckPermsListener;
+import me.dmk.core.luckperms.LuckPermsController;
+import me.dmk.core.profile.Profile;
+import me.dmk.core.murder.MurderCache;
+import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
+import me.dmk.core.profile.fight.FightTask;
+import me.dmk.core.profile.settings.board.BoardTask;
+import me.dmk.core.profile.settings.incognito.IncognitoController;
+import me.dmk.core.profile.settings.task.VanishTask;
+import me.dmk.core.profile.task.SaveProfileTask;
+import me.dmk.core.task.executor.TaskExecutor;
+import me.dmk.core.task.executor.TaskExecutorImpl;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.event.EventBus;
+import net.luckperms.api.event.node.NodeAddEvent;
+import net.luckperms.api.event.node.NodeRemoveEvent;
+import net.skinsrestorer.api.SkinsRestorerAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
+/**
+ * Created by DMK on 28.12.2022
+ */
+
+@Getter
+public class CorePlugin extends JavaPlugin {
+
+    @Getter
+    private static CorePlugin corePlugin;
+
+    private PluginConfiguration pluginConfiguration;
+
+    private MiniMessage miniMessage;
+    private BukkitAudiences bukkitAudiences;
+    private SkinsRestorerAPI skinsRestorerAPI;
+
+    private MongoClientService mongoClientService;
+    private MongoDataService mongoDataService;
+
+    private LuckPermsController luckPermsController;
+    private NotificationController notificationController;
+    private ProfileController profileController;
+    private GuildController guildController;
+    private IncognitoController incognitoController;
+
+    private ProfileCache profileCache;
+    private GuildCache guildCache;
+    private GlobalChatCache globalChatCache;
+    private MurderCache murderCache;
+
+    private TaskExecutor taskExecutor;
+
+    private LiteCommands<CommandSender> liteCommands;
+
+    @Override
+    public void onEnable() {
+        corePlugin = this;
+        long start = System.currentTimeMillis();
+
+        this.pluginConfiguration = ConfigManager.create(PluginConfiguration.class, (it) -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
+            it.withBindFile(new File(this.getDataFolder(), "config.yml"));
+            it.saveDefaults();
+            it.load(true);
+        });
+
+        RegisteredServiceProvider<LuckPerms> luckPermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (luckPermsProvider == null) {
+            this.getLogger().severe("LuckPerms not found! Plugin will be disabled.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        LuckPerms luckPerms = luckPermsProvider.getProvider();
+        this.miniMessage = MiniMessage.miniMessage();
+        this.bukkitAudiences = BukkitAudiences.create(this);
+        this.skinsRestorerAPI = SkinsRestorerAPI.getApi();
+
+        /* Gson */
+        Gson gson = new GsonBuilder()
+                .setLongSerializationPolicy(LongSerializationPolicy.STRING)
+                .serializeNulls()
+                .create();
+
+        /* Services */
+        this.mongoClientService = new MongoClientService(this, this.pluginConfiguration.databaseConfiguration);
+        this.mongoClientService.connect();
+
+        this.mongoDataService = new MongoDataService(this.getLogger(), this.mongoClientService, gson);
+
+        /* Controllers */
+        this.luckPermsController = new LuckPermsController(luckPerms);
+        this.notificationController = new NotificationController(this.bukkitAudiences, this.miniMessage);
+        this.profileController = new ProfileController(this.mongoDataService);
+        this.guildController = new GuildController(this.mongoDataService);
+        this.incognitoController = new IncognitoController(this.mongoDataService, this.skinsRestorerAPI);
+
+        /* Cache */
+        this.profileCache = new ProfileCache(this.profileController);
+        this.guildCache = new GuildCache(this.guildController);
+        this.globalChatCache = new GlobalChatCache();
+        this.murderCache = new MurderCache();
+
+        /* Tasks */
+        this.taskExecutor = new TaskExecutorImpl();
+
+        this.taskExecutor.runTimerAsync(new BoardTask(this.profileCache), 5L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new FightTask(this.pluginConfiguration, this.notificationController, this.profileCache, this.taskExecutor), 1L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 10L, TimeUnit.MINUTES);
+        this.taskExecutor.runTimerAsync(new VanishTask(this.notificationController, this.profileCache), 2L, TimeUnit.SECONDS);
+
+        /* Commands */
+        this.liteCommands = this.registerLiteCommands();
+
+        /* Listeners */
+        Stream.of(
+                new PlayerJoinListener(this.pluginConfiguration, this.luckPermsController, this.notificationController, this.profileCache, this.guildCache, this.taskExecutor),
+                new PlayerLoginListener(this.profileCache),
+                new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
+
+                new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache),
+
+                new PlayerDeathListener(this.notificationController, this.profileCache, this.murderCache),
+
+                new AsyncPlayerChatListener(this.luckPermsController, this.notificationController, this.profileCache, this.globalChatCache),
+                new EntityResurrectListener(this.notificationController, this.profileCache),
+                new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),
+                new PlayerInteractListener(this.profileCache),
+                new PlayerItemConsumeListener(this.profileCache),
+                new PlayerLevelChangeListener(this.notificationController, this.profileCache),
+                new PrivateMessageListener(this.notificationController)
+        ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
+
+        EventBus eventBus = luckPerms.getEventBus();
+        eventBus.subscribe(this, NodeAddEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeAdd);
+        eventBus.subscribe(this, NodeRemoveEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeRemove);
+
+        this.getLogger().info("Loaded plugin in " + (System.currentTimeMillis() - start) + " ms.");
+    }
+
+    @Override
+    public void onDisable() {
+        this.pluginConfiguration.save();
+
+        Bukkit.getScheduler().cancelTasks(this);
+        Bukkit.getOnlinePlayers().forEach(player -> this.profileCache.get(player.getUniqueId())
+                .ifPresent(profile -> this.profileController.save(profile))
+        );
+
+        this.mongoClientService.close();
+        this.taskExecutor.shutdownNow();
+
+        this.getLogger().info("Goodbye!");
+    }
+
+    private LiteCommands<CommandSender> registerLiteCommands() {
+        return LiteBukkitAdventurePlatformFactory.builder(this.getServer(), this.getName(), this.bukkitAudiences)
+                .contextualBind(Player.class, new BukkitOnlyPlayerContextual<>("&cNie możesz użyć tej komendy."))
+
+                .invalidUsageHandler(new InvalidUsageHandler(this.notificationController))
+                .permissionHandler(new MissingPermissionHandler(this.notificationController))
+
+                .argument(Member.class, new MemberArgument(this.profileCache, this.miniMessage))
+                .argument(Guild.class, new GuildArgument(this.guildCache, this.miniMessage))
+
+                .argument(NotificationType.class, new NotificationTypeArgument(this.miniMessage))
+
+                .argument(GameMode.class, new GameModeArgument(this.miniMessage))
+                .argument(Instant.class, new InstantArgument(this.miniMessage))
+                .argument(Integer.class, new IntegerArgument(this.miniMessage))
+                .argumentMultilevel(Location.class, new LocationArgument(this.miniMessage))
+                .argument(Player.class, new PlayerArgument(this.miniMessage))
+
+                .argument(Profile.class, new ProfileArgument(this.profileCache, this.miniMessage))
+
+                .commandInstance(
+                        new BanCommand(this.notificationController, this.profileController),
+                        new BroadCastCommand(this.notificationController),
+                        new ChatCommand(this.notificationController, this.globalChatCache),
+                        new ClearCommand(this.notificationController),
+                        new FlyCommand(this.notificationController),
+                        new GameModeCommand(this.notificationController),
+                        new HealCommand(this.notificationController),
+                        new InvseeCommand(),
+                        new KickCommand(this.notificationController),
+                        new MuteCommand(this.notificationController, this.profileController),
+                        new SpeedCommand(this.notificationController),
+                        new TeleportCommand(this.notificationController),
+                        new TempBanCommand(this.notificationController, this.profileController),
+                        new TempMuteCommand(this.notificationController, this.profileController),
+                        new UnBanCommand(this.notificationController, this.profileController),
+                        new UnMuteCommand(this.notificationController, this.profileController),
+                        new VanishCommand(this.notificationController, this.profileCache),
+
+                        new GuildAllianceCommand(this.notificationController, this.guildController, this.profileCache),
+
+                        new GuildCreateCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.profileCache, this.guildCache),
+                        new GuildDeleteCommand(this.notificationController, this.guildController, this.profileCache, this.guildCache, this.taskExecutor),
+                        new GuildDepositCommand(this.notificationController, this.profileController,this.guildController, this.profileCache),
+                        new GuildExtendCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.profileCache, this.taskExecutor),
+                        new GuildForceDeleteCommand(this.notificationController, this.guildController, this.guildCache, this.taskExecutor),
+                        new GuildInformationCommand(this.pluginConfiguration, this.luckPermsController, this.notificationController,  this.profileController, this.profileCache, this.guildCache),
+                        new GuildInviteCommand(this.notificationController, this.profileCache),
+                        new GuildJoinCommand(this.notificationController, this.profileController,this.guildController, this.profileCache),
+                        new GuildKickCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
+                        new GuildLeaveCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
+
+                        new IgnoreCommand(this.notificationController, this.profileCache),
+                        new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController, this.profileCache),
+                        new MessageCommand(this.notificationController, this.profileCache),
+                        new PingCommand(this, this.notificationController),
+                        new ProfileCommand(this.pluginConfiguration, this.luckPermsController, this.notificationController, this.profileController, this.profileCache, this.guildCache),
+                        new ReplyCommand(this.notificationController, this.profileCache),
+                        new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.profileCache, this.taskExecutor),
+                        new SidebarCommand(this.notificationController, this.profileCache),
+                        new TopsCommand(this.profileController, this.guildController)
+                )
+                .register();
+    }
+}

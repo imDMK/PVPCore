@@ -1,0 +1,8 @@
+main: me.dmk.core.CorePlugin
+name: PVPCore
+version: 1.0.0
+api-version: 1.19
+author: DMK
+depend:
+  - LuckPerms
+  - SkinsRestorer

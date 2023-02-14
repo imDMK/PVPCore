@@ -1,0 +1,77 @@
+package me.dmk.core.gui.tops.implementation;
+
+import com.mongodb.client.model.Sorts;
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
+import lombok.AllArgsConstructor;
+import me.dmk.core.gui.item.storage.ItemStorage;
+import me.dmk.core.gui.tops.TopsGui;
+import me.dmk.core.guild.Guild;
+import me.dmk.core.guild.controller.GuildController;
+import me.dmk.core.guild.statistics.GuildStatistics;
+import me.dmk.core.profile.controller.ProfileController;
+import me.dmk.core.util.ComponentUtil;
+import me.dmk.core.util.StyleUtil;
+import org.bson.conversions.Bson;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+
+/**
+ * Created by DMK on 13.02.2023
+ */
+
+@AllArgsConstructor
+public class GuildsTopsGui {
+
+    private final ProfileController profileController;
+    private final GuildController guildController;
+
+    public void open(Player player) {
+        String circle = StyleUtil.getCircle();
+
+        Gui gui = Gui.gui()
+                .title(ComponentUtil.text(circle + " <light_purple>Topki serwerowe " + circle))
+                .rows(5)
+                .disableAllInteractions()
+                .create();
+
+        GuiItem backButton = ItemStorage.createBackButton(event ->
+                        new TopsGui(this.profileController, this.guildController).open(player),
+                "",
+                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
+                ""
+        );
+
+        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        gui.setItem(31, backButton);
+
+        Bson sort = Sorts.descending("guildStatistics.rank");
+        List<Guild> guildList = this.guildController.getTops(sort, 14);
+
+        for (int i = 0; i < guildList.size(); i++) {
+            Guild guild = guildList.get(i);
+            GuildStatistics statistics = guild.getGuildStatistics();
+
+            GuiItem item = ItemBuilder.from(Material.BEACON)
+                    .name(ComponentUtil.text((i + 1) + ". " + guild.getTag()))
+                    .lore(ComponentUtil.asList(
+                            "",
+                            StyleUtil.getWarning() + " <gray>Statystyki gildii<dark_gray>:",
+                            circle + " <gray>Ranking<dark_gray>: <light_purple>" + statistics.getRank(),
+                            circle + " <gray>Zabójstwa<dark_gray>: <light_purple>" + statistics.getKills(),
+                            circle + " <gray>Seria zabójstw<dark_gray>: <light_purple>" + statistics.getKillStreak(),
+                            circle + " <gray>Największa seria zabójstw<dark_gray>: <light_purple>" + statistics.getHighestKillStreak(),
+                            circle + " <gray>Śmierci<dark_gray>: <light_purple>" + statistics.getDeaths(),
+                            ""
+                    ))
+                    .asGuiItem();
+
+            gui.addItem(item);
+        }
+
+        gui.open(player);
+    }
+}

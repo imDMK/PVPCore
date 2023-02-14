@@ -1,0 +1,6 @@
+# Project exclude paths
+/target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+.idea

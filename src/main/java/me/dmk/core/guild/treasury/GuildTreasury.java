@@ -1,0 +1,30 @@
+package me.dmk.core.guild.treasury;
+
+import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
+import me.dmk.core.guild.treasury.payment.GuildPayment;
+
+import java.util.List;
+
+/**
+ * Created by DMK on 01.02.2023
+ */
+
+@Getter
+@Setter
+public class GuildTreasury {
+
+    private int coins = 0;
+
+    private final List<GuildPayment> guildPayments = Lists.newCopyOnWriteArrayList();
+
+    public void removeCoins(int coins) {
+        this.coins -= coins;
+    }
+
+    public void addPayment(GuildPayment guildPayment) {
+        this.coins += guildPayment.getAmountCoins();
+        this.guildPayments.add(guildPayment);
+    }
+}
