@@ -69,6 +69,7 @@ public class LuckPermsController {
         if (group.getDisplayName() == null || group.getDisplayName().isEmpty()) {
             return group.getName().describeConstable();
         }
+
         return group.getDisplayName().describeConstable();
     }
 
