@@ -1,7 +1,7 @@
 package me.dmk.core.listener;
 
 import lombok.AllArgsConstructor;
-import me.dmk.core.chat.cache.GlobalChatCache;
+import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.luckperms.LuckPermsController;

@@ -72,7 +72,7 @@ public class GuildExtendCommand {
         new ConfirmationGui(player)
                 .create(StyleUtil.getCircle() + " <light_purple>Potwierdź przedłużenie gildii " + StyleUtil.getCircle())
                 .afterConfirm(event -> {
-                    if (coinsToExtendGuild != 0) {
+                    if (coinsToExtendGuild > 0) {
                         if (!canExtend) {
                             Bukkit.dispatchCommand(player, "guild deposit " + coinsDifference);
                         }

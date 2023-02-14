@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.StyleUtil;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 /**
  * Created by DMK on 29.12.2022
@@ -24,14 +25,16 @@ public class ClearCommand {
 
     @Execute(required = 0)
     void execute(Player player) {
-        if (player.getInventory().isEmpty()) {
+        Inventory inventory = player.getInventory();
+
+        if (inventory.isEmpty()) {
             this.notificationController.sendMessage(player,
                     StyleUtil.getError() + " <red>Posiadasz pusty ekwipunek<dark_gray>."
             );
             return;
         }
 
-        player.getInventory().clear();
+        inventory.clear();
         this.notificationController.sendMessage(player,
                 StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>twój ekwipunek<dark_gray>."
         );
@@ -40,14 +43,16 @@ public class ClearCommand {
     @Execute(required = 1)
     @Permission("core.command.clear.other")
     void execute(Player player, @Arg @Name("player") Player other) {
-        if (other.getInventory().isEmpty()) {
+        Inventory inventory = other.getInventory();
+
+        if (inventory.isEmpty()) {
             this.notificationController.sendMessage(player,
                     StyleUtil.getError() + " <red>Gracz posiada pusty ekwipunekdark_gray>."
             );
             return;
         }
 
-        other.getInventory().clear();
+        inventory.clear();
         this.notificationController.sendMessage(player,
                 StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>ekwipunek gracza <light_purple>" + other.getName() + "<dark_gray>."
         );

@@ -10,7 +10,7 @@ import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import lombok.Getter;
-import me.dmk.core.chat.cache.GlobalChatCache;
+import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationType;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.command.argument.guild.GuildArgument;

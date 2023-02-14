@@ -13,6 +13,7 @@ import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.StyleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,6 +39,7 @@ public class GuildCreateCommand {
     @Execute(required = 2)
     void execute(Player player, @Arg @Name("tag") String tag, @Arg @Name("name") String name) {
         Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        ProfileStatistics statistics = profile.getProfileStatistics();
 
         if (profile.getGuild().isPresent()) {
             this.notificationController.sendMessage(player,
@@ -49,13 +51,15 @@ public class GuildCreateCommand {
         int requiredCoins = this.pluginConfiguration.getCoinsToCreateGuild();
         int requiredLevel = this.pluginConfiguration.getLevelToCreateGuild();
 
-        if (profile.getProfileStatistics().getCoins() < requiredCoins || player.getLevel() < requiredLevel) {
-            this.notificationController.sendMessage(player, List.of(
-                    StyleUtil.getError() + " <red>Wymagania, aby szałożyć gildię<dark_gray>:",
-                    "<dark_gray>- <gold>" + requiredCoins + " <red>monet<dark_gray>,",
-                    "<dark_gray>- <gold>" + requiredLevel + " <red>poziom doświadczenia<dark_gray>."
-            ));
-            return;
+        if (requiredCoins > 0 || requiredLevel > 0) {
+            if (statistics.getCoins() < requiredCoins || player.getLevel() < requiredLevel) {
+                this.notificationController.sendMessage(player, List.of(
+                        StyleUtil.getError() + " <red>Wymagania, aby założyć gildię<dark_gray>:",
+                        "<dark_gray>- <gold>" + requiredCoins + " <red>monet<dark_gray>,",
+                        "<dark_gray>- <gold>" + requiredLevel + " <red>poziom doświadczenia<dark_gray>."
+                ));
+                return;
+            }
         }
 
         if (name.length() < 4 || name.length() > 20) {
@@ -80,7 +84,7 @@ public class GuildCreateCommand {
         }
 
         if (requiredCoins > 0) {
-            profile.getProfileStatistics().setCoins(profile.getProfileStatistics().getCoins() - requiredCoins);
+            statistics.removeCoins(requiredCoins);
         }
 
         Guild guild = new Guild(tag, name, player.getUniqueId());

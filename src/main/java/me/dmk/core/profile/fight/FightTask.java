@@ -31,13 +31,13 @@ public class FightTask implements Runnable {
                 Fight fight = profile.getFight();
 
                 if (profile.hasFight()) {
-                    Component bossBarName = this.notificationController.getMiniMessage().deserialize(this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.expireToSeconds())));
+                    Component bossBarName = this.notificationController.getMiniMessage().deserialize(this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.getSecondsLeft())));
 
                     BossBar bossBar = fight.getBossBar();
                     bossBar.name(bossBarName);
                     bossBar.progress(fight.expireToBossBarFloat());
 
-                    if (fight.expireToSeconds() > 10) {
+                    if (fight.getSecondsLeft() > 10) {
                         bossBar.color(BossBar.Color.RED);
                     } else {
                         bossBar.color(BossBar.Color.YELLOW);
@@ -52,7 +52,7 @@ public class FightTask implements Runnable {
                     fight.clear();
 
                     this.taskExecutor.runLaterAsync(
-                            () -> this.notificationController.hideBossBar(player, bossBar), 1L, TimeUnit.SECONDS
+                            () -> this.notificationController.hideBossBar(player, bossBar), 2L, TimeUnit.SECONDS
                     );
                 }
             });

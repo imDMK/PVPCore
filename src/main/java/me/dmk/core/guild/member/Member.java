@@ -14,6 +14,7 @@ public class Member {
 
     private final UUID uuid;
     private final Date joinDate = new Date();
+    
     private int addedCoinsToTreasury = 0;
 
     public void addCoinsToTreasury(int coins) {

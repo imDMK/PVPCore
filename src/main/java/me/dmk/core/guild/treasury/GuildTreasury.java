@@ -1,19 +1,18 @@
 package me.dmk.core.guild.treasury;
 
 import com.google.common.collect.Lists;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import me.dmk.core.guild.treasury.payment.GuildPayment;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by DMK on 01.02.2023
  */
 
-@Getter
-@Setter
-public class GuildTreasury {
+@Data
+public class GuildTreasury implements Serializable {
 
     private int coins = 0;
 

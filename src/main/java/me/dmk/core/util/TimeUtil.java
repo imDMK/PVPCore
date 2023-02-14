@@ -19,7 +19,7 @@ public class TimeUtil {
     private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy 'o' HH:mm:ss");
     private static final SimpleDateFormat timeForamt = new SimpleDateFormat("HH:mm");
 
-    public static String durationToString(Duration duration, boolean milliseconds) {
+    public static String durationToString(Duration duration) {
         if (duration.isNegative()) {
             return "<1s";
         }
@@ -56,7 +56,7 @@ public class TimeUtil {
                     .append(" ");
         }
 
-        if (stringBuilder.isEmpty() && milliseconds) {
+        if (stringBuilder.isEmpty()) {
             stringBuilder.append(millis)
                     .append("ms");
         }
@@ -74,7 +74,7 @@ public class TimeUtil {
             duration = Duration.between(instant, now);
         }
 
-        return durationToString(duration, true);
+        return durationToString(duration);
     }
 
     public static long toDays(Instant instant, boolean future) {

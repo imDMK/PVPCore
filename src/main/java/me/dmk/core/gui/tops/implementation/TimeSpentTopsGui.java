@@ -64,7 +64,7 @@ public class TimeSpentTopsGui {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            circle + " <gray>Gracz spędził <light_purple>" + TimeUtil.durationToString(timeSpent, false) + " <gray>na naszym serwerze<dark_gray>.",
+                            circle + " <gray>Gracz spędził <light_purple>" + TimeUtil.durationToString(timeSpent) + " <gray>na naszym serwerze<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

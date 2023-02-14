@@ -14,15 +14,14 @@ import org.bukkit.Bukkit;
  * Created by DMK on 28.12.2022
  */
 
+@Getter
 @RequiredArgsConstructor
 public class MongoClientService {
 
     private final CorePlugin corePlugin;
     private final DatabaseConfiguration databaseConfiguration;
 
-    @Getter
     private MongoClient mongoClient;
-    @Getter
     private MongoDatabase mongoDatabase;
 
     public void connect() {

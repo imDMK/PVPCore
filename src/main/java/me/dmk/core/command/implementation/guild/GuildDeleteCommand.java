@@ -59,13 +59,13 @@ public class GuildDeleteCommand {
                     this.taskExecutor.runAsync(() -> {
                         this.guildController.delete(guild);
                         this.guildCache.remove(guild);
-
-                        Bukkit.getOnlinePlayers().forEach(online ->
-                                this.notificationController.sendMessage(online,
-                                        StyleUtil.getWarning() + " <gray>Gildia " + StyleUtil.formatGuildTagAndName(guild) + " <gray>została <red>usunięta <gray>przez <light_purple>" + player.getName() + "<dark_gray>."
-                                )
-                        );
                     });
+
+                    Bukkit.getOnlinePlayers().forEach(online ->
+                            this.notificationController.sendMessage(online,
+                                    StyleUtil.getWarning() + " <gray>Gildia " + StyleUtil.formatGuildTagAndName(guild) + " <gray>została <red>usunięta <gray>przez <light_purple>" + player.getName() + "<dark_gray>."
+                            )
+                    );
 
                     profile.setGuildTag(null);
                     player.closeInventory();

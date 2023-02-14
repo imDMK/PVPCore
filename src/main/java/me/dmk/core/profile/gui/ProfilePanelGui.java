@@ -69,7 +69,7 @@ public class ProfilePanelGui {
         int timeSpent = statistics.getTimeSpent();
 
         String lastSeen = lastSeenDays == 0L ? "dzisiaj o " + TimeUtil.formatTime(profile.getLastJoin().toInstant()) : lastSeenDays + " dni temu";
-        String timePlayed = TimeUtil.durationToString(Duration.ofSeconds(timeSpent), false);
+        String timePlayed = TimeUtil.durationToString(Duration.ofSeconds(timeSpent));
 
         GuiItem headItem = SkullStorage
                 .createPlayerHead(profile.getUuid())

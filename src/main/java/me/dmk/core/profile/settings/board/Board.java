@@ -46,6 +46,7 @@ public class Board implements Serializable {
         String kills = String.valueOf(statistics.getKills());
         String deaths = String.valueOf(statistics.getDeaths());
         String killStreak = String.valueOf(statistics.getKills());
+        String kdr = String.valueOf(PlayerUtil.getKDR(statistics.getKills(), statistics.getDeaths()));
 
         List<String> boardList = new ArrayList<>();
 
@@ -60,7 +61,7 @@ public class Board implements Serializable {
                                 .replace("<kills>", kills)
                                 .replace("<deaths>", deaths)
                                 .replace("<killstreak>", killStreak)
-                                .replace("<kdr>", String.valueOf(PlayerUtil.getKDR(statistics.getKills(), statistics.getDeaths())))
+                                .replace("<kdr>", kdr)
                         )
                 )
         );

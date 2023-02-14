@@ -40,15 +40,11 @@ public class Fight {
         return Optional.ofNullable(this.lastAttacker);
     }
 
-    public Duration getDurationBetween() {
-        return Duration.between(Instant.now(), this.expire);
-    }
-
-    public long expireToSeconds() {
-        return this.getDurationBetween().toSeconds();
+    public long getSecondsLeft() {
+        return Duration.between(Instant.now(), this.expire).toSeconds();
     }
 
     public float expireToBossBarFloat() {
-        return (float) this.expireToSeconds() / this.fightTime;
+        return (float) this.getSecondsLeft() / this.fightTime;
     }
 }

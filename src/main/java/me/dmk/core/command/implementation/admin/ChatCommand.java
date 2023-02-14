@@ -6,7 +6,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
-import me.dmk.core.chat.cache.GlobalChatCache;
+import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.StyleUtil;
 import org.bukkit.Bukkit;

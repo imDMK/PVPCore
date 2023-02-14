@@ -43,9 +43,8 @@ public class VanishCommand {
             player.addPotionEffect(potionEffect);
         }
 
-        Bukkit.getOnlinePlayers().forEach(online ->
-                this.profileCache.get(online.getUniqueId())
-                        .ifPresent(onlineProfile -> profile.refreshVanish(online, onlineProfile))
+        Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
+                .ifPresent(onlineProfile -> profile.refreshVanish(online, onlineProfile))
         );
 
         this.notificationController.sendMessage(player,

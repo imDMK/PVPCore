@@ -1,10 +1,9 @@
-package me.dmk.core.chat.cache;
+package me.dmk.core.chat;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.dmk.core.chat.GlobalChatSettings;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -14,10 +13,10 @@ import java.util.concurrent.TimeUnit;
  * Created by DMK on 29.12.2022
  */
 
+@Getter
 @NoArgsConstructor
 public class GlobalChatCache {
 
-    @Getter
     private final GlobalChatSettings globalChatSettings = new GlobalChatSettings(this);
 
     private Cache<UUID, Instant> instantCache = Caffeine.newBuilder()

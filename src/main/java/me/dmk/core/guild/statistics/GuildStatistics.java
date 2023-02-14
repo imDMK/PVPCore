@@ -1,15 +1,15 @@
 package me.dmk.core.guild.statistics;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * Created by DMK on 07.01.2023
  */
 
-@Getter
-@Setter
-public class GuildStatistics {
+@Data
+public class GuildStatistics implements Serializable {
 
     private int rank = 0;
     private int kills = 0;

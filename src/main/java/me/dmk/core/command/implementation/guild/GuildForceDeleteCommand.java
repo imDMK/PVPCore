@@ -42,19 +42,19 @@ public class GuildForceDeleteCommand {
                     this.taskExecutor.runAsync(() -> {
                         this.guildCache.remove(guild);
                         this.guildController.delete(guild);
-
-                        Optional.ofNullable(Bukkit.getPlayer(guild.getLeader()))
-                                .ifPresent(leader ->
-                                        this.notificationController.sendMessage(leader,
-                                                StyleUtil.getWarning() +  " <red>Twoja gildia " + StyleUtil.formatGuildTag(guild) + " <red>została usunięta z powodu " + reason + "<dark_gray>."
-                                        )
-                                );
-
-                        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
-                                StyleUtil.getSilent() + " " + StyleUtil.getWarning() + " <gray>Administrator <red>" + player.getName() + " <red>usunął <gray>gildię <red>" + StyleUtil.formatGuildTag(guild) + " <gray>za <red>" + reason + "<dark_gray>.",
-                                "core.command.guild.forcedelete"
-                        );
                     });
+
+                    Optional.ofNullable(Bukkit.getPlayer(guild.getLeader()))
+                            .ifPresent(leader ->
+                                    this.notificationController.sendMessage(leader,
+                                            StyleUtil.getWarning() +  " <red>Twoja gildia " + StyleUtil.formatGuildTag(guild) + " <red>została usunięta z powodu " + reason + "<dark_gray>."
+                                    )
+                            );
+
+                    this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+                            StyleUtil.getSilent() + " " + StyleUtil.getWarning() + " <gray>Administrator <red>" + player.getName() + " <red>usunął <gray>gildię <red>" + StyleUtil.formatGuildTag(guild) + " <gray>za <red>" + reason + "<dark_gray>.",
+                            "core.command.guild.forcedelete"
+                    );
 
                     player.closeInventory();
                 })
