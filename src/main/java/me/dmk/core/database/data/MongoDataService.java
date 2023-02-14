@@ -126,8 +126,4 @@ public class MongoDataService {
                 .map(document -> this.gson.fromJson(document.toJson(), vClass))
                 .collect(Collectors.toList());
     }
-
-    public <V> long count(Class<V> vClass, Bson filters) {
-        return this.getCollection(vClass).countDocuments(filters);
-    }
 }
