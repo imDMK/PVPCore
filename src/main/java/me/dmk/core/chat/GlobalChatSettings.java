@@ -10,12 +10,12 @@ import me.dmk.core.chat.cache.GlobalChatCache;
  */
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class GlobalChatSettings {
 
     private final GlobalChatCache globalChatCache;
 
-    @Setter
     private boolean enabled = true;
     private long delay = 3;
 
