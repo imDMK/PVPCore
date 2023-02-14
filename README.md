@@ -6,7 +6,7 @@ Contains:
 - All useful commands (player, administrator),
 - Player guilds (stats, treasury),
 - Player fights,
-- configuration files,
+- Configuration files,
 - Bukkit Adventure (gradients etc.),
 - LuckPerms Hook with listeners.
 
