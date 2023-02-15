@@ -187,7 +187,7 @@ public class CorePlugin extends JavaPlugin {
         ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
 
         new LuckPermsListener(this.notificationController, this.taskExecutor);
-        new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager);
+        new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager, this.miniMessage);
 
         EventBus eventBus = luckPerms.getEventBus();
         eventBus.subscribe(this, NodeAddEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeAdd);

@@ -6,11 +6,14 @@ import com.comphenix.protocol.events.ListenerOptions;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.AdventureComponentConverter;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedServerPing;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.configuration.MotdConfiguration;
 import me.dmk.core.util.StyleUtil;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,11 +25,13 @@ public class MotdPacketListener {
     private final CorePlugin corePlugin;
     private final MotdConfiguration motdConfiguration;
     private final ProtocolManager protocolManager;
+    private final MiniMessage miniMessage;
 
-    public MotdPacketListener(CorePlugin corePlugin, MotdConfiguration motdConfiguration, ProtocolManager protocolManager) {
+    public MotdPacketListener(CorePlugin corePlugin, MotdConfiguration motdConfiguration, ProtocolManager protocolManager, MiniMessage miniMessage) {
         this.corePlugin = corePlugin;
         this.motdConfiguration = motdConfiguration;
         this.protocolManager = protocolManager;
+        this.miniMessage = miniMessage;
 
         this.addListener();
     }
@@ -67,7 +72,8 @@ public class MotdPacketListener {
         }
 
         if (!motdLine.isEmpty()) {
-            ping.setMotD(StyleUtil.colored(motdLine));
+            WrappedChatComponent motd = AdventureComponentConverter.fromComponent(this.miniMessage.deserialize(motdLine));
+            ping.setMotD(motd);
         }
 
         if (activePlayers > 0) {

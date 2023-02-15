@@ -15,8 +15,8 @@ import java.util.List;
 @Header("#")
 public class MotdConfiguration extends OkaeriConfig {
 
-    @Comment("# Motd line, use {NL} to create a new line (legacy formatting, no support for HEX).")
-    public String motdLine = "&b&lPVP&f&lCORE.PL &8-> &fSerwer PVP 1.19.2{NL}&aJoin us :)";
+    @Comment("# Motd line, use {NL} to create a new line.")
+    public String motdLine = "<rainbow:!2>PVPCORE -> Twój server PVP</rainbow><red>!";
 
     @Comment("# Fake players visible after hovering over the number of players. Leave blank to display player list (legacy formatting, no support for HEX).")
     public List<String> fakePlayers = Arrays.asList("&b", "&aThank you for being on your server list &c<3", "&a");
