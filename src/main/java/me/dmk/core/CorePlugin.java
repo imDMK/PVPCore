@@ -1,5 +1,7 @@
 package me.dmk.core;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
@@ -39,6 +41,7 @@ import me.dmk.core.listener.EntityDamageByEntityListener;
 import me.dmk.core.listener.PlayerDeathListener;
 import me.dmk.core.listener.luckperms.LuckPermsListener;
 import me.dmk.core.luckperms.LuckPermsController;
+import me.dmk.core.listener.motd.MotdPacketListener;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.murder.MurderCache;
 import me.dmk.core.profile.cache.ProfileCache;
@@ -111,7 +114,7 @@ public class CorePlugin extends JavaPlugin {
 
         this.pluginConfiguration = ConfigManager.create(PluginConfiguration.class, (it) -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
-            it.withBindFile(new File(this.getDataFolder(), "config.yml"));
+            it.withBindFile(new File(this.getDataFolder(), "configuration.yml"));
             it.saveDefaults();
             it.load(true);
         });
@@ -124,6 +127,8 @@ public class CorePlugin extends JavaPlugin {
         }
 
         LuckPerms luckPerms = luckPermsProvider.getProvider();
+        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+
         this.miniMessage = MiniMessage.miniMessage();
         this.bukkitAudiences = BukkitAudiences.create(this);
         this.skinsRestorerAPI = SkinsRestorerAPI.getApi();
@@ -135,7 +140,7 @@ public class CorePlugin extends JavaPlugin {
                 .create();
 
         /* Services */
-        this.mongoClientService = new MongoClientService(this, this.pluginConfiguration.databaseConfiguration);
+        this.mongoClientService = new MongoClientService(this, this.pluginConfiguration.getDatabaseConfiguration());
         this.mongoClientService.connect();
 
         this.mongoDataService = new MongoDataService(this.getLogger(), this.mongoClientService, gson);
@@ -170,18 +175,19 @@ public class CorePlugin extends JavaPlugin {
                 new PlayerLoginListener(this.profileCache),
                 new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
 
-                new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache),
-
-                new PlayerDeathListener(this.notificationController, this.profileCache, this.murderCache),
-
                 new AsyncPlayerChatListener(this.luckPermsController, this.notificationController, this.profileCache, this.globalChatCache),
+                new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache),
                 new EntityResurrectListener(this.notificationController, this.profileCache),
                 new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),
+                new PlayerDeathListener(this.notificationController, this.profileCache, this.murderCache),
                 new PlayerInteractListener(this.profileCache),
                 new PlayerItemConsumeListener(this.profileCache),
                 new PlayerLevelChangeListener(this.notificationController, this.profileCache),
                 new PrivateMessageListener(this.notificationController)
         ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
+
+        new LuckPermsListener(this.notificationController, this.taskExecutor);
+        new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager);
 
         EventBus eventBus = luckPerms.getEventBus();
         eventBus.subscribe(this, NodeAddEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeAdd);

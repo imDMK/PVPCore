@@ -34,30 +34,40 @@ public class TimeUtil {
 
         if (days > 0) {
             stringBuilder.append(days)
-                    .append("dni")
+                    .append(" ")
+                    .append((days == 1) ? "dzień" : "dni")
                     .append(" ");
         }
 
         if (hours > 0) {
+            long hoursDivided = hours % 10L;
+
             stringBuilder.append(hours)
-                    .append("godz")
+                    .append(" ")
+                    .append((hours == 1) ? "godzinę" : (hours < 5 || hours > 20 && hoursDivided < 5 && hoursDivided != 1) ? "godziny" : "godzin")
                     .append(" ");
         }
 
         if (minutes > 0) {
+            long minutesDivided = minutes % 10L;
+
             stringBuilder.append(minutes)
-                    .append("min")
+                    .append(" ")
+                    .append((minutes == 1) ? "minutę" : (minutes < 5 || minutes > 20 && minutesDivided < 5 && minutesDivided != 1) ? "minuty" : "minut")
                     .append(" ");
         }
 
         if (seconds > 0) {
+            long secondsDivided = seconds % 10L;
+
             stringBuilder.append(seconds)
-                    .append("sec")
-                    .append(" ");
+                    .append(" ")
+                    .append((seconds == 1) ? "sekundę" : (seconds < 5 || seconds > 20 && secondsDivided < 5 && secondsDivided != 1) ? "sekundy" : "sekund");
         }
 
         if (stringBuilder.isEmpty()) {
             stringBuilder.append(millis)
+                    .append(" ")
                     .append("ms");
         }
 

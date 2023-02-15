@@ -6,3 +6,4 @@ author: DMK
 depend:
   - LuckPerms
   - SkinsRestorer
+  - ProtocolLib
