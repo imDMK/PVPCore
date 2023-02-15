@@ -198,6 +198,7 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.pluginConfiguration.load(true);
         this.pluginConfiguration.save();
 
         Bukkit.getScheduler().cancelTasks(this);
