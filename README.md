@@ -12,6 +12,7 @@ Contains:
 
 Requires:
 - LuckPerms,
+- ProtocolLib
 - SkinsRestorer,
 - And the MongoDB database.
 
