@@ -46,7 +46,7 @@ public class PluginConfiguration extends OkaeriConfig {
     @Comment("# Time in seconds at which the player can change the incognito ID")
     public long timeToResetIdentifier = 20;
 
-    @Comment("# Sidebar (Legacy formatting &)")
+    @Comment("# Sidebar (no support for HEX colors)")
     public String sidebarName = "&d&lPVP&f&lCORE.PL";
 
     @Comment("# Sidebar lines (Legacy formatting &)")
