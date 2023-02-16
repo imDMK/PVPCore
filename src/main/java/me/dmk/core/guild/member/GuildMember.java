@@ -2,6 +2,7 @@ package me.dmk.core.guild.member;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
  */
 
 @Data
-public class GuildMember {
+public class GuildMember implements Serializable {
 
     private final UUID uuid;
     private final Date joinDate = new Date();
