@@ -24,7 +24,7 @@ import java.util.Optional;
 @Data
 public class Board implements Serializable {
 
-    private boolean enabled;
+    private boolean enabled = true;
     private transient FastBoard fastBoard;
 
     public void create(Player player, Profile profile) {
