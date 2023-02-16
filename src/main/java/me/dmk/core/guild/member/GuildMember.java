@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 
 @Data
-public class Member {
+public class GuildMember {
 
     private final UUID uuid;
     private final Date joinDate = new Date();

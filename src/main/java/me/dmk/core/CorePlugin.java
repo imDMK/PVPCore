@@ -16,7 +16,7 @@ import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationType;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.command.argument.guild.GuildArgument;
-import me.dmk.core.command.argument.guild.member.MemberArgument;
+import me.dmk.core.command.argument.guild.member.GuildMemberArgument;
 import me.dmk.core.command.argument.notification.NotificationTypeArgument;
 import me.dmk.core.command.argument.player.*;
 import me.dmk.core.command.argument.profile.ProfileArgument;
@@ -32,7 +32,7 @@ import me.dmk.core.database.MongoClientService;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
-import me.dmk.core.guild.member.Member;
+import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.listener.*;
 import me.dmk.core.listener.connection.PlayerJoinListener;
 import me.dmk.core.listener.connection.PlayerLoginListener;
@@ -219,7 +219,7 @@ public class CorePlugin extends JavaPlugin {
                 .invalidUsageHandler(new InvalidUsageHandler(this.notificationController))
                 .permissionHandler(new MissingPermissionHandler(this.notificationController))
 
-                .argument(Member.class, new MemberArgument(this.profileCache, this.miniMessage))
+                .argument(GuildMember.class, new GuildMemberArgument(this.profileCache, this.miniMessage))
                 .argument(Guild.class, new GuildArgument(this.guildCache, this.miniMessage))
 
                 .argument(NotificationType.class, new NotificationTypeArgument(this.miniMessage))

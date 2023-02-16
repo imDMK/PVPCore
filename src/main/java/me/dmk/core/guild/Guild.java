@@ -5,7 +5,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.dmk.core.database.data.entity.DataEntity;
-import me.dmk.core.guild.member.Member;
+import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import org.bukkit.Bukkit;
@@ -38,7 +38,7 @@ public class Guild {
     private UUID leader;
     private UUID coLeader = null;
 
-    private Map<UUID, Member> members = new ConcurrentHashMap<>();
+    private Map<UUID, GuildMember> members = new ConcurrentHashMap<>();
     private Set<String> alliances = new HashSet<>();
 
     private GuildStatistics guildStatistics = new GuildStatistics();
@@ -58,7 +58,7 @@ public class Guild {
 
         this.leader = creator;
 
-        this.members.put(creator, new Member(creator));
+        this.members.put(creator, new GuildMember(creator));
     }
 
     public boolean isCreator(UUID uuid) {
@@ -84,7 +84,7 @@ public class Guild {
     }
 
     public void join(UUID uuid) {
-        this.members.put(uuid, new Member(uuid));
+        this.members.put(uuid, new GuildMember(uuid));
     }
 
     public boolean isMember(UUID uuid) {

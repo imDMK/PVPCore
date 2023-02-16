@@ -4,7 +4,7 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.member.Member;
+import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.util.StyleUtil;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * Created by DMK on 01.02.2023
  */
 
-public class MemberArgument implements OneArgument<Member> {
+public class GuildMemberArgument implements OneArgument<GuildMember> {
 
     private final ProfileCache profileCache;
 
@@ -33,7 +33,7 @@ public class MemberArgument implements OneArgument<Member> {
     private final Component profileNoPresent;
     private final Component noMemberPresent;
 
-    public MemberArgument(ProfileCache profileCache, MiniMessage miniMessage) {
+    public GuildMemberArgument(ProfileCache profileCache, MiniMessage miniMessage) {
         this.profileCache = profileCache;
 
         this.noGuildError = miniMessage.deserialize(StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>.");
@@ -42,7 +42,7 @@ public class MemberArgument implements OneArgument<Member> {
     }
 
     @Override
-    public Result<Member, ?> parse(LiteInvocation liteInvocation, String argument) {
+    public Result<GuildMember, ?> parse(LiteInvocation liteInvocation, String argument) {
         if (!(liteInvocation.sender().getHandle() instanceof Player player)) {
             return Result.error("&cNie możesz użyć tej komendy&8.");
         }
@@ -84,9 +84,9 @@ public class MemberArgument implements OneArgument<Member> {
         }
 
         Guild guild = guildOptional.get();
-        Collection<Member> members = guild.getMembers().values();
+        Collection<GuildMember> guildMembers = guild.getMembers().values();
 
-        return members.stream()
+        return guildMembers.stream()
                 .map(m -> Bukkit.getOfflinePlayer(m.getUuid()))
                 .map(OfflinePlayer::getName)
                 .map(Suggestion::of)

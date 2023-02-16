@@ -51,9 +51,9 @@ public class GuildMembersGui {
                 .disableAllInteractions()
                 .create();
 
-        Collection<Member> memberList = guild.getMembers().values()
+        Collection<GuildMember> guildMemberList = guild.getMembers().values()
                 .stream()
-                .sorted(Comparator.comparing(Member::getJoinDate).reversed())
+                .sorted(Comparator.comparing(GuildMember::getJoinDate).reversed())
                 .toList();
 
         boolean isLeaderOrCoLeader = guild.isLeaderOrCoLeader(player.getUniqueId());
@@ -73,21 +73,21 @@ public class GuildMembersGui {
         gui.setItem(49, backButton);
         gui.setItem(51, nextButton);
 
-        for (Member member : memberList) {
-            boolean memberIsCreator = guild.isCreator(member.getUuid());
-            boolean memberIsLeader = guild.isLeader(member.getUuid());
-            boolean memberIsCoLeader = guild.isCoLeader(member.getUuid());
+        for (GuildMember guildMember : guildMemberList) {
+            boolean memberIsCreator = guild.isCreator(guildMember.getUuid());
+            boolean memberIsLeader = guild.isLeader(guildMember.getUuid());
+            boolean memberIsCoLeader = guild.isCoLeader(guildMember.getUuid());
 
-            boolean isSelf = player.getUniqueId().equals(member.getUuid());
+            boolean isSelf = player.getUniqueId().equals(guildMember.getUuid());
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(member.getUuid());
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(guildMember.getUuid());
 
             GuiItem memberItem = SkullStorage.createPlayerHead(offlinePlayer)
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
                             circle + " <gray>Ranga gildyjna<dark_gray>: <light_purple>" + (memberIsCreator ? "Założyciel" : memberIsLeader ? "Lider" : memberIsCoLeader ? "Zastępca lidera" : "Członek"),
-                            circle + " <gray>Data dołączenia<dark_gray>: <light_purple>" + TimeUtil.format(member.getJoinDate().toInstant()),
+                            circle + " <gray>Data dołączenia<dark_gray>: <light_purple>" + TimeUtil.format(guildMember.getJoinDate().toInstant()),
                             "",
                             StyleUtil.getWarning() + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby otworzyć profil tego gracza<dark_gray>.",
                             (isLeaderOrCoLeader ? "<!italic>" + StyleUtil.getWarning() + " <light_purple>Kilknij SHIFT + PPM<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>." : null),
@@ -95,7 +95,7 @@ public class GuildMembersGui {
                     ))
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {
-                            this.profileCache.getOrElseLoad(member.getUuid())
+                            this.profileCache.getOrElseLoad(guildMember.getUuid())
                                     .ifPresent(memberProfile ->
                                             new ProfilePanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache)
                                                     .open(player, memberProfile)
@@ -114,7 +114,7 @@ public class GuildMembersGui {
                                 return;
                             }
 
-                            if (guild.isLeader(member.getUuid())) {
+                            if (guild.isLeader(guildMember.getUuid())) {
                                 new BarrierBuilder()
                                         .name("<red>Gracz pełni funkcję lidera gildii<dark_gray>.")
                                         .updateGui(gui, event.getSlot());
