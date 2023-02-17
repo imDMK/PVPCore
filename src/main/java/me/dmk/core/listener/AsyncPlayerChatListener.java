@@ -84,7 +84,7 @@ public class AsyncPlayerChatListener implements Listener {
         }
 
         boolean isAdmin = player.hasPermission("core.chat.message.redcolor");
-        boolean useColors = player.hasPermission("core.chat.color");
+        boolean useColors = player.hasPermission("core.chat.message.color");
 
         String group = this.luckPermsController.getHighestGroupPrefix(uuid)
                 .map(g -> g + " ")
