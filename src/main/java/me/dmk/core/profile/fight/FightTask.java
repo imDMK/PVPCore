@@ -31,7 +31,9 @@ public class FightTask implements Runnable {
                 Fight fight = profile.getFight();
 
                 if (profile.hasFight()) {
-                    Component bossBarName = this.notificationController.getMiniMessage().deserialize(this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.getSecondsLeft())));
+                    Component bossBarName = this.notificationController.getMiniMessage().deserialize(
+                            this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.getSecondsLeft()))
+                    );
 
                     BossBar bossBar = fight.getBossBar();
                     bossBar.name(bossBarName);
