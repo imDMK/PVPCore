@@ -9,7 +9,8 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class GuildInviteCommand {
 
         if (guildOptional.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
             );
             return;
         }
@@ -45,14 +46,14 @@ public class GuildInviteCommand {
 
         if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
             );
             return;
         }
 
         if (guild.isMember(other.getUuid())) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Gracz jest już członkiem w twojej gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Gracz jest już członkiem w twojej gildii<dark_gray>."
             );
             return;
         }
@@ -61,20 +62,20 @@ public class GuildInviteCommand {
             guild.cancelInvite(other.getUuid());
 
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Anulowano <gray>zaproszenie do gildii gracza <light_purple>" + other.getName() + "<dark_gray>."
+                    StringFormatter.formatError() + " <red>Anulowano <gray>zaproszenie do gildii gracza <light_purple>" + other.getName() + "<dark_gray>."
             );
             return;
         }
 
         other.getPlayer().ifPresent(otherPlayer ->
                 this.notificationController.sendMessage(otherPlayer, List.of(
-                        StyleUtil.getWarning() + " <gray>Otrzymano zaproszenie do gildii " + StyleUtil.formatGuildTag(guild) + ", <light_purple>" + guild.getName() + "<dark_gray>.",
-                        "<dark_gray>- <click:run_command:/guild join " + guild.getTag() + ">" + StyleUtil.getSuccess() + " <dark_gray><- <gray>Kliknij, aby <green>zaakceptować<dark_gray>."
+                        StringFormatter.formatWarning() + " <gray>Otrzymano zaproszenie do gildii " + guild.getTag() + ", <light_purple>" + guild.getName() + "<dark_gray>.",
+                        "<dark_gray>- <click:run_command:/guild join " + guild.getTag() + ">" + StringFormatter.formatSuccess() + " <dark_gray><- <gray>Kliknij, aby <green>zaakceptować<dark_gray>."
                 ))
         );
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii<dark_gray>."
         );
 
         guild.invite(other.getUuid());

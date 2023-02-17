@@ -4,8 +4,8 @@ import dev.rollczi.litecommands.argument.ArgumentName;
 import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
-import me.dmk.core.util.StyleUtil;
 import me.dmk.core.util.TimeUtil;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import panda.std.Result;
@@ -24,7 +24,7 @@ public class InstantArgument implements OneArgument<Instant> {
     private final Component unknownTimeFormat;
 
     public InstantArgument(MiniMessage miniMessage) {
-        this.unknownTimeFormat = miniMessage.deserialize(StyleUtil.getError() + " <red>Podano nieprawidłowe formatowanie czasu<dark_gray>.");
+        this.unknownTimeFormat = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłowe formatowanie czasu<dark_gray>.");
     }
 
     @Override

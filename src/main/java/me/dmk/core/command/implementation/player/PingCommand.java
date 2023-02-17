@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.task.BukkitTask;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class PingCommand {
         String message = this.colorPing(ping);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getWarning() + " <gray>Twój ping jest " + message
+                StringFormatter.formatWarning() + " <gray>Twój ping jest " + message
         );
     }
 
@@ -42,14 +42,14 @@ public class PingCommand {
         String message = this.colorPing(ping);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getWarning() + " <gray>Ping gracza <light_purple>" + other.getName() + " <gray>jest " + message
+                StringFormatter.formatWarning() + " <gray>Ping gracza <light_purple>" + other.getName() + " <gray>jest " + message
         );
     }
 
     @Execute(route = "test", required = 0)
     void executeTest(Player player) {
         this.notificationController.sendMessage(player,
-                StyleUtil.getWarning() + " <green>Rozpoczynanie ping testu... "
+                StringFormatter.formatWarning() + " <green>Rozpoczynanie ping testu... "
         );
 
         AtomicInteger integer = new AtomicInteger(0);
@@ -67,7 +67,7 @@ public class PingCommand {
                 String message = colorPing(ping);
 
                 notificationController.sendMessage(player,
-                        StyleUtil.getWarning() + " <gray>Twój ping jest " + message
+                        StringFormatter.formatWarning() + " <gray>Twój ping jest " + message
                 );
 
                 pings.add(ping);
@@ -79,7 +79,7 @@ public class PingCommand {
                     int average = sum / pings.size();
 
                     notificationController.sendMessage(player,
-                            StyleUtil.getWarning() + " <green>Zakończono test pingu<dark_gray>, <green>średni ping " + colorPing(average)
+                            StringFormatter.formatWarning() + " <green>Zakończono test pingu<dark_gray>, <green>średni ping " + colorPing(average)
                     );
                 }
             }

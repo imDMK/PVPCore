@@ -7,7 +7,8 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -29,14 +30,14 @@ public class ClearCommand {
 
         if (inventory.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Posiadasz pusty ekwipunek<dark_gray>."
+                    StringFormatter.formatError() + " <red>Posiadasz pusty ekwipunek<dark_gray>."
             );
             return;
         }
 
         inventory.clear();
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>twój ekwipunek<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>twój ekwipunek<dark_gray>."
         );
     }
 
@@ -47,14 +48,14 @@ public class ClearCommand {
 
         if (inventory.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Gracz posiada pusty ekwipunekdark_gray>."
+                    StringFormatter.formatError() + " <red>Gracz posiada pusty ekwipunekdark_gray>."
             );
             return;
         }
 
         inventory.clear();
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>ekwipunek gracza <light_purple>" + other.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>ekwipunek gracza <light_purple>" + other.getName() + "<dark_gray>."
         );
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class ProfileCache {
         if (profile.isEmpty()) {
             Optional.ofNullable(Bukkit.getServer().getPlayer(uuid))
                     .ifPresent(
-                            p -> p.kickPlayer(StyleUtil.colored("&cWystąpił błąd podczas ładowania twojego proflu&8."))
+                            p -> p.kickPlayer(StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego proflu&8."))
                     );
         }
 

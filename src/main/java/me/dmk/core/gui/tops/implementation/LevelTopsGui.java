@@ -13,7 +13,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.SymbolUtil;
 import org.bson.conversions.Bson;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -25,24 +25,22 @@ import java.util.List;
  */
 
 @AllArgsConstructor
-public class LevelTopsGui {
+public class LevelTopsGui extends ItemStorage {
 
     private final ProfileController profileController;
     private final GuildController guildController;
 
     public void open(Player player) {
-        String circle = StyleUtil.getCircle();
-
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Topka doświadczenia " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Topka doświadczenia " + this.circle))
                 .rows(5)
                 .disableAllInteractions()
                 .create();
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new TopsGui(this.profileController, this.guildController).open(player),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""
         );
 
@@ -60,7 +58,7 @@ public class LevelTopsGui {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            circle + " <gray>Gracz posiada <light_purple>" + statistics.getLevel() + " <gray>poziom doświadczenia<dark_gray>.",
+                            "<yellow>" + SymbolUtil.getStar() + " <gray>Gracz posiada <yellow>" + statistics.getLevel() + " <gray>poziom doświadczenia<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

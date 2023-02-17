@@ -10,7 +10,7 @@ import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -38,7 +38,7 @@ public class GuildLeaveCommand {
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
             );
             return;
         }
@@ -47,7 +47,7 @@ public class GuildLeaveCommand {
 
         if (guild.isLeader(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Jesteś liderem tej gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Jesteś liderem tej gildii<dark_gray>."
             );
             return;
         }
@@ -59,7 +59,7 @@ public class GuildLeaveCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
-                StyleUtil.getWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <red>opuścił <gray>gildię <light_purple>" + StyleUtil.formatGuildTag(guild) + "<dark_gray>."
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <red>opuścił <gray>gildię <light_purple>" + guild.getTag() + "<dark_gray>."
         );
     }
 }

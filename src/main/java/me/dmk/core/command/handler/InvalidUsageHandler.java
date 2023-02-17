@@ -4,7 +4,7 @@ import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.schematic.Schematic;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,13 +26,13 @@ public class InvalidUsageHandler implements dev.rollczi.litecommands.handle.Inva
         if (sender instanceof Player) {
             if (schematics.size() == 1) {
                 this.notificationController.sendMessage(sender,
-                        StyleUtil.getError() + " <red>Poprawne użycie<dark_gray>: <gold>" + schematics.get(0)
+                        StringFormatter.formatError() + " <red>Poprawne użycie<dark_gray>: <gold>" + schematics.get(0)
                 );
                 return;
             }
 
             this.notificationController.sendMessage(sender, List.of(
-                    StyleUtil.getError() + " <red>Poprawne użycie<dark_gray>:",
+                    StringFormatter.formatError() + " <red>Poprawne użycie<dark_gray>:",
                     "<dark_gray>- <gold>" + String.join("\n<dark_gray>- <gold>", schematics)
             ));
         } else {

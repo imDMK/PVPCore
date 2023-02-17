@@ -5,8 +5,8 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import lombok.AllArgsConstructor;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
+import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
@@ -15,7 +15,6 @@ import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -24,7 +23,7 @@ import org.bukkit.entity.Player;
  */
 
 @AllArgsConstructor
-public class CustomSuffixGui {
+public class CustomSuffixGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -33,8 +32,6 @@ public class CustomSuffixGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile) {
-        String circle = StyleUtil.getCircle();
-
         ProfileSettings profileSettings = profile.getProfileSettings();
         String colorNameFormat = profileSettings.getColorName().getFormat();
 
@@ -48,7 +45,7 @@ public class CustomSuffixGui {
         CustomSuffixType cloud = CustomSuffixType.CLOUD;
 
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Zmiana suffixu " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Zmiana suffixu " + this.circle))
                 .rows(5)
                 .disableAllInteractions()
                 .create();
@@ -57,8 +54,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text("<gray>Brak"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), CustomSuffixType.NONE));
@@ -67,8 +64,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(heart.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + heart.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + heart.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), heart));
@@ -77,8 +74,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(flower.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + flower.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + flower.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), flower));
@@ -87,8 +84,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(smile.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + smile.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + smile.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), smile));
@@ -97,8 +94,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(unbrella.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + unbrella.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + unbrella.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), unbrella));
@@ -107,8 +104,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(crucifix.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + crucifix.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + crucifix.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), crucifix));
@@ -117,8 +114,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(death.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + death.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + death.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), death));
@@ -127,8 +124,8 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(star.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + star.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + star.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), star));
@@ -137,16 +134,16 @@ public class CustomSuffixGui {
                 .name(ComponentUtil.text(cloud.getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        circle + " " + colorNameFormat + profile.getName() + " " + cloud.getFormat(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + colorNameFormat + profile.getName() + " " + cloud.getFormat(),
                         ""
                 ))
                 .asGuiItem(event -> this.updateSuffix(player, profile, gui, event.getSlot(), cloud));
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new NameTagSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
                 ""
         );
 

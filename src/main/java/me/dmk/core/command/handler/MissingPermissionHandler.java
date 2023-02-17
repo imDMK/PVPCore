@@ -5,7 +5,7 @@ import dev.rollczi.litecommands.command.permission.RequiredPermissions;
 import dev.rollczi.litecommands.handle.PermissionHandler;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -20,7 +20,7 @@ public class MissingPermissionHandler implements PermissionHandler<CommandSender
     @Override
     public void handle(CommandSender sender, LiteInvocation liteInvocation, RequiredPermissions requiredPermissions) {
         this.notificationController.sendMessage(sender,
-                StyleUtil.getError() + " <red>Nie posiadasz uprawnień <dark_gray>(<gold>" + requiredPermissions.getPermissions().get(0) + "<dark_gray>)."
+                StringFormatter.formatError() + " <red>Nie posiadasz uprawnień <dark_gray>(<gold>" + requiredPermissions.getPermissions().get(0) + "<dark_gray>)."
         );
     }
 }

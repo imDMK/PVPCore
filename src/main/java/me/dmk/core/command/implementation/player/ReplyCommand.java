@@ -10,7 +10,7 @@ import me.dmk.core.event.PrivateMessageEvent;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -36,7 +36,7 @@ public class ReplyCommand {
         UUID lastPrivateMessage = profileSettings.getLastPrivateMessage();
         if (lastPrivateMessage == null) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz ostatniego rozmówcy<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz ostatniego rozmówcy<dark_gray>."
             );
             return;
         }
@@ -44,7 +44,7 @@ public class ReplyCommand {
         Player other = Bukkit.getServer().getPlayer(lastPrivateMessage);
         if (other == null) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Gracz jest offline<dark_gray>."
+                    StringFormatter.formatError() + " <red>Gracz jest offline<dark_gray>."
             );
             return;
         }
@@ -56,7 +56,7 @@ public class ReplyCommand {
 
         if (privateMessageEvent.isCancelled()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " " + privateMessageEvent.getCancelMessage()
+                    StringFormatter.formatError() + " " + privateMessageEvent.getCancelMessage()
             );
         }
     }

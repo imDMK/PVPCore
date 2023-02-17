@@ -5,8 +5,8 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import lombok.AllArgsConstructor;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
+import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
@@ -17,7 +17,7 @@ import me.dmk.core.profile.settings.gui.ProfileSettingsGui;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -26,7 +26,7 @@ import org.bukkit.entity.Player;
  */
 
 @AllArgsConstructor
-public class NameTagSettingsGui {
+public class NameTagSettingsGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -35,28 +35,25 @@ public class NameTagSettingsGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile) {
-        String circle = StyleUtil.getCircle();
-        String purpleGradient = StyleUtil.getPurpleGradient();
-
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         ColorNameType colorNameType = profileSettings.getColorName();
         CustomSuffixType customSuffixType = profileSettings.getCustomSuffix();
 
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Zmiana nametagu " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Zmiana nametagu " + this.circle))
                 .rows(3)
                 .disableAllInteractions()
                 .create();
 
         GuiItem colorNameItem = ItemBuilder.from(Material.RED_DYE)
-                .name(ComponentUtil.text(purpleGradient + "Zmiana koloru nicku"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zmiana koloru nicku"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny kolor nicku<dark_gray>:",
-                        circle + " " + colorNameType.getFormat() + profile.getName(),
+                        this.circle + " <gray>Aktualny kolor nicku<dark_gray>:",
+                        this.circle + " " + colorNameType.getFormat() + profile.getName(),
                         "",
-                        StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić kolor nicku",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić kolor nicku",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -65,7 +62,7 @@ public class NameTagSettingsGui {
                                 .name("<red>Nie posiadasz dostępu do tej funkcji")
                                 .lore(
                                         "",
-                                        circle + " <gray>Uprawnienie<dark_gray>: <red>core.nametag.colorname",
+                                        this.circle + " <gray>Uprawnienie<dark_gray>: <red>core.nametag.colorname",
                                         ""
                                 )
                                 .updateGui(gui, event.getSlot());
@@ -77,13 +74,13 @@ public class NameTagSettingsGui {
                 });
 
         GuiItem customSuffixItem = ItemBuilder.from(Material.RED_DYE)
-                .name(ComponentUtil.text(purpleGradient + "Zmiana suffixu"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zmiana suffixu"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny suffix<dark_gray>:",
-                        circle + " " + profileSettings.getColorName().getFormat() + profile.getName() + " " + customSuffixType.getFormat(),
+                        this.circle + " <gray>Aktualny suffix<dark_gray>:",
+                        this.circle + " " + profileSettings.getColorName().getFormat() + profile.getName() + " " + customSuffixType.getFormat(),
                         "",
-                        StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić suffix",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić suffix",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -92,7 +89,7 @@ public class NameTagSettingsGui {
                                 .name("<red>Nie posiadasz dostępu do tej funkcji")
                                 .lore(
                                         "",
-                                        circle + " <gray>Uprawnienie<dark_gray>: <red>core.nametag.suffix",
+                                        this.circle + " <gray>Uprawnienie<dark_gray>: <red>core.nametag.suffix",
                                         ""
                                 )
                                 .updateGui(gui, event.getSlot());
@@ -103,10 +100,10 @@ public class NameTagSettingsGui {
                             .open(player, profile);
                 });
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new ProfileSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
                 "",
-                circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu ustawień<dark_gray>.",
+                this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu ustawień<dark_gray>.",
                 ""
         );
 

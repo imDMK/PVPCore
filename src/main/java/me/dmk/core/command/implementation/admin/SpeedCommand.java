@@ -7,7 +7,8 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 /**
@@ -26,7 +27,7 @@ public class SpeedCommand {
     void execute(Player player, @Arg @Name("speed") Integer speed) {
         if (speed < 1 || speed > 10) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Szybkość nie może być niższa niż 1 oraz większa niż 10<dark_gray>."
+                    StringFormatter.formatError() + " <red>Szybkość nie może być niższa niż 1 oraz większa niż 10<dark_gray>."
             );
             return;
         }
@@ -38,7 +39,7 @@ public class SpeedCommand {
         }
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zmieniono</gradient> <gray>twoją prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>na <light_purple>" + speed + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>twoją prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>na <light_purple>" + speed + "<dark_gray>."
         );
     }
 
@@ -47,7 +48,7 @@ public class SpeedCommand {
     void execute(Player player, @Arg @Name("speed") Integer speed, @Arg @Name("player") Player other) {
         if (speed < 1 || speed > 10) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Szybkość nie może być niższa niż 1 oraz większa niż 10<dark_gray>."
+                    StringFormatter.formatError() + " <red>Szybkość nie może być niższa niż 1 oraz większa niż 10<dark_gray>."
             );
             return;
         }
@@ -59,7 +60,7 @@ public class SpeedCommand {
         }
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zmieniono</gradient> <gray>prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + speed + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + speed + "<dark_gray>."
         );
     }
 }

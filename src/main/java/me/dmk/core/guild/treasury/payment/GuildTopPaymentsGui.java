@@ -16,7 +16,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -30,7 +29,7 @@ import java.util.List;
  */
 
 @AllArgsConstructor
-public class GuildTopPaymentsGui {
+public class GuildTopPaymentsGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -39,18 +38,16 @@ public class GuildTopPaymentsGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile, Guild guild) {
-        String circle = StyleUtil.getCircle();
-
         Gui gui = Gui.gui()
                 .title(ComponentUtil.text("<light_purple>Topka wpłaconych monet"))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new GuildTreasuryGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildii<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildii<dark_gray>.",
                 ""
         );
 
@@ -71,7 +68,7 @@ public class GuildTopPaymentsGui {
                     .name(ComponentUtil.text((i + 1) + "<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            circle + " <gray>Członek <light_purple>" + offlinePlayer.getName() + " <gray>wpłacił <light_purple>" + guildMember.getAddedCoinsToTreasury() + " <gray>monet<dark_gray>.",
+                            this.circle + " <gray>Członek <light_purple>" + offlinePlayer.getName() + " <gray>wpłacił <light_purple>" + guildMember.getAddedCoinsToTreasury() + " <gray>monet<dark_gray>.",
                             ""
                     ))
                     .glow(i == 0)

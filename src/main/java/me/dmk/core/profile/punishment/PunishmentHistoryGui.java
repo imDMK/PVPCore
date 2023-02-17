@@ -14,7 +14,6 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
 import me.dmk.core.util.TimeUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 
 @RequiredArgsConstructor
-public class PunishmentHistoryGui {
+public class PunishmentHistoryGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -37,22 +36,20 @@ public class PunishmentHistoryGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile) {
-        String circle = StyleUtil.getCircle();
-
         PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(circle + " <light_purple>Historia kar " + profile.getName() + " " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Historia kar " + profile.getName() + " " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
 
-        GuiItem previousButton = ItemStorage.createPreviousPageButton(gui);
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem previousButton = this.createPreviousPageButton(gui);
+        GuiItem backButton = this.createBackButton(event ->
                         new ProfilePanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
                 "",
-                circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
+                this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = ItemStorage.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(gui);
 
         gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
 
@@ -81,19 +78,19 @@ public class PunishmentHistoryGui {
             Component name = ComponentUtil.text("<light_purple>Kara #" + i);
             List<Component> lore = ComponentUtil.asList(
                     "",
-                    circle + " <gray>Informacje o <light_purple>" + (punishment.isRemoved() ? "wycofanym" : active ? "aktywnym" : "wygaśniętym") + " " + (isBan ? "banie" : "wyciszeniu") + "<dark_gray>:",
+                    this.circle + " <gray>Informacje o <light_purple>" + (punishment.isRemoved() ? "wycofanym" : active ? "aktywnym" : "wygaśniętym") + " " + (isBan ? "banie" : "wyciszeniu") + "<dark_gray>:",
                     "",
-                    circle + " <gray>Administrator<dark_gray>: <light_purple>" + punishment.getAddedBy(),
-                    circle + " <gray>Powód<dark_gray>: <light_purple>" + punishment.getReason(),
-                    circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : active ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
-                    circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getCreatedAt().toInstant()),
+                    this.circle + " <gray>Administrator<dark_gray>: <light_purple>" + punishment.getAddedBy(),
+                    this.circle + " <gray>Powód<dark_gray>: <light_purple>" + punishment.getReason(),
+                    this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : active ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
+                    this.circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getCreatedAt().toInstant()),
                     ""
             );
 
             if (punishment.isRemoved()) {
                 lore.addAll(ComponentUtil.asList(
-                        circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
-                        circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getRemovedAt().toInstant()),
+                        this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
+                        this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getRemovedAt().toInstant()),
                         ""
                 ));
             }

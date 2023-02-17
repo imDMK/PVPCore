@@ -4,8 +4,8 @@ import dev.rollczi.litecommands.argument.ArgumentName;
 import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
-import me.dmk.core.util.StringUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.GameMode;
@@ -33,7 +33,7 @@ public class GameModeArgument implements OneArgument<GameMode> {
     private final Component unknownGameModeType;
 
     public GameModeArgument(MiniMessage miniMessage) {
-        this.unknownGameModeType = miniMessage.deserialize(StyleUtil.getError() + " <red>Podano nieprawidłowy typ gry<dark_gray>.");
+        this.unknownGameModeType = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłowy typ gry<dark_gray>.");
     }
 
     @Override

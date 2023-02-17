@@ -14,7 +14,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -42,7 +42,7 @@ public class GuildDepositCommand {
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
             );
             return;
         }
@@ -52,7 +52,7 @@ public class GuildDepositCommand {
 
         if (coins > statistics.getCoins()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz tyle monet<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz tyle monet<dark_gray>."
             );
             return;
         }
@@ -68,7 +68,7 @@ public class GuildDepositCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(guild,
-                StyleUtil.getGuild() + " <gray>Członek <light_purple>" + player.getName() + " <gray>wpłacił <light_purple>" + coins + " <gray>monet do skarbca gildyjnego<dark_gray>."
+                StringFormatter.formatWarning() + player.getName() + " <gray>wpłacił <light_purple>" + coins + " <gray>monet do skarbca gildyjnego<dark_gray>."
         );
     }
 }

@@ -2,7 +2,7 @@ package me.dmk.core.profile.settings.incognito;
 
 import lombok.Data;
 import me.dmk.core.CorePlugin;
-import me.dmk.core.util.StringUtil;
+import me.dmk.core.util.string.StringUtil;
 
 import java.io.Serializable;
 import java.time.Instant;

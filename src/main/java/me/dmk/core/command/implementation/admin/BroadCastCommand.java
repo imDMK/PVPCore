@@ -10,7 +10,8 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.NotificationType;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public class BroadCastCommand {
         }
 
         this.notificationController.sendMessage(sender,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Wysłano</gradient> <gray>globalną wiadomość <light_purple>" + notificationType.name().toUpperCase() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Wysłano</gradient> <gray>globalną wiadomość <light_purple>" + notificationType.name().toUpperCase() + "<dark_gray>."
         );
     }
 }

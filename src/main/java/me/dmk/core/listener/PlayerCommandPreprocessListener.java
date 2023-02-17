@@ -5,7 +5,7 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,7 +37,7 @@ public class PlayerCommandPreprocessListener implements Listener {
 
             if (anyMatch) {
                 this.notificationController.sendMessage(player,
-                        StyleUtil.getError() + " <red>Nie możesz użyć tej komendy podczas walki<dark_gray>."
+                        StringFormatter.formatError() + " <red>Nie możesz użyć tej komendy podczas walki<dark_gray>."
                 );
                 event.setCancelled(true);
             }

@@ -8,7 +8,8 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -32,7 +33,7 @@ public class IgnoreCommand {
         profileSettings.setPrivateMessages(!profileSettings.isPrivateMessages());
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Prywatne wiadomości zostały " + StyleUtil.formatBoolean(profileSettings.isPrivateMessages(), 'e') + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Prywatne wiadomości zostały " + StringFormatter.formatBoolean(profileSettings.isPrivateMessages(), 'e') + "<dark_gray>."
         );
     }
 
@@ -50,13 +51,13 @@ public class IgnoreCommand {
             profileSettings.getIgnoredPlayers().remove(otherProfile.getUuid());
 
             this.notificationController.sendMessage(player,
-                    StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Odblokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
+                    StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Odblokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
             );
         } else {
             profileSettings.getIgnoredPlayers().add(otherProfile.getUuid());
 
             this.notificationController.sendMessage(player,
-                    StyleUtil.getSuccess() + StyleUtil.getRedGradient() + " Zablokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
+                    StringFormatter.formatSuccess() + StringUtil.getRedGradient() + " Zablokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
             );
         }
     }

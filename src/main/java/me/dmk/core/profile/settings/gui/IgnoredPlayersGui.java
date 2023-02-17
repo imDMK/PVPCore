@@ -15,7 +15,7 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 
 @AllArgsConstructor
-public class IgnoredPlayersGui {
+public class IgnoredPlayersGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -38,24 +38,22 @@ public class IgnoredPlayersGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile) {
-        String circle = StyleUtil.getCircle();
-
         PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(circle + " <light_purple>Lista ignorowanych graczy " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Lista ignorowanych graczy " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
 
         ProfileSettings profileSettings = profile.getProfileSettings();
 
-        GuiItem previousButton = ItemStorage.createPreviousPageButton(gui);
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem previousButton = this.createPreviousPageButton(gui);
+        GuiItem backButton = this.createBackButton(event ->
                         new ProfileSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = ItemStorage.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(gui);
 
         gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
 
@@ -70,7 +68,7 @@ public class IgnoredPlayersGui {
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby <green>odblokować <gray>tego gracza<dark_gray>.",
+                            this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <green>odblokować <gray>tego gracza<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event -> {
@@ -79,7 +77,7 @@ public class IgnoredPlayersGui {
                         gui.updateItem(event.getSlot(), ItemBuilder.from(Objects.requireNonNull(event.getCurrentItem()))
                                 .lore(ComponentUtil.asList(
                                         "",
-                                        StyleUtil.getSuccess() + " <green>Odblokowano<dark_gray>.",
+                                        StringFormatter.formatSuccess() + " <green>Odblokowano<dark_gray>.",
                                         ""
                                 ))
                                 .asGuiItem()

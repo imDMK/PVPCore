@@ -11,7 +11,9 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.task.executor.TaskExecutor;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
@@ -39,13 +41,13 @@ public class ResetStatisticsCommand {
 
         if (statistics.getCoins() < coinsToResetStatistics) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Aby zresetować statystyki potrzebujesz <gold>" + coinsToResetStatistics + " <red>monet<dark_gray>."
+                    StringFormatter.formatError() + " <red>Aby zresetować statystyki potrzebujesz <gold>" + coinsToResetStatistics + " <red>monet<dark_gray>."
             );
             return;
         }
 
         new ConfirmationGui(player)
-                .create(StyleUtil.getCircle() + " <light_purple>Resetowanie statystyk " + StyleUtil.getCircle())
+                .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Resetowanie statystyk " + SymbolUtil.getCircle("<dark_gray>"))
                 .afterConfirm(confirmEvent -> {
                     statistics.setEntrances(0);
                     statistics.setTimeSpent(0);
@@ -65,7 +67,7 @@ public class ResetStatisticsCommand {
                     );
 
                     this.notificationController.sendMessage(player,
-                            StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zresetowano <gray>twoje statystyki<dark_gray>."
+                            StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zresetowano <gray>twoje statystyki<dark_gray>."
                     );
                     player.closeInventory();
                 })

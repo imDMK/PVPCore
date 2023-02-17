@@ -3,7 +3,7 @@ package me.dmk.core.profile.settings.task;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,7 +22,7 @@ public class VanishTask implements Runnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             this.profileCache.get(player.getUniqueId()).ifPresent(profile -> {
                 if (profile.getProfileSettings().isVanish()) {
-                    this.notificationController.sendActionBar(player, StyleUtil.getPurpleGradient() + "Jesteś niewidzialny");
+                    this.notificationController.sendActionBar(player, StringUtil.getPurpleGradient() + "Jesteś niewidzialny");
                 }
             });
         }

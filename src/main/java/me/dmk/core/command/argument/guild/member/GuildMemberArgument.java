@@ -7,7 +7,7 @@ import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -36,9 +36,9 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
     public GuildMemberArgument(ProfileCache profileCache, MiniMessage miniMessage) {
         this.profileCache = profileCache;
 
-        this.noGuildError = miniMessage.deserialize(StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>.");
-        this.profileNoPresent = miniMessage.deserialize(StyleUtil.getError() + " <red>Nie znaleziono profilu o podanej nazwie<dark_gray>.");
-        this.noMemberPresent = miniMessage.deserialize(StyleUtil.getError() + " <red>Gracz nie jest członkiem w twojej gildii<dark_gray>.");
+        this.noGuildError = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>.");
+        this.profileNoPresent = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie znaleziono profilu o podanej nazwie<dark_gray>.");
+        this.noMemberPresent = miniMessage.deserialize(StringFormatter.formatError() + " <red>Gracz nie jest członkiem w twojej gildii<dark_gray>.");
     }
 
     @Override

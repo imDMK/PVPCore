@@ -5,8 +5,8 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import lombok.AllArgsConstructor;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
+import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
@@ -14,7 +14,6 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -23,7 +22,7 @@ import org.bukkit.entity.Player;
  */
 
 @AllArgsConstructor
-public class ColorNameGui {
+public class ColorNameGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -32,8 +31,6 @@ public class ColorNameGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile) {
-        String cirle = StyleUtil.getCircle();
-
         ColorNameType gray = ColorNameType.DEAFULT;
         ColorNameType white = ColorNameType.WHITE;
         ColorNameType purple = ColorNameType.PURPLE;
@@ -50,7 +47,7 @@ public class ColorNameGui {
         ColorNameType grayGradient = ColorNameType.GRAY_GRADIENT;
 
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(cirle + " <light_purple>Edytowanie koloru nicku " + cirle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Edytowanie koloru nicku " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
@@ -59,8 +56,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(gray.getFormat() + "Szary"))
                 .lore(ComponentUtil.asList(
                     "",
-                    cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                    cirle + " " + gray.getFormat() + profile.getName(),
+                    this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                    this.circle + " " + gray.getFormat() + profile.getName(),
                     ""
                 ))
                 .asGuiItem(event ->
@@ -71,8 +68,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(white.getFormat() + "Biały"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + white.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + white.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -83,8 +80,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(purple.getFormat() + "Różowy"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + purple.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + purple.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -95,8 +92,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(aqua.getFormat() + "Jasny niebieski"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + aqua.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + aqua.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -107,8 +104,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(yellow.getFormat() + "Żółty"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + yellow.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + yellow.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -119,8 +116,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(gold.getFormat() + "Złoty"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + gold.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + gold.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -131,8 +128,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(green.getFormat() + "Zielony"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + green.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + green.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -143,8 +140,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(rainbow.getFormat() + "Kolorowy"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + rainbow.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + rainbow.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -155,8 +152,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(goldYellowGradient.getFormat() + "Złoty-żółty gradient"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + goldYellowGradient.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + goldYellowGradient.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -167,8 +164,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(greenGradient.getFormat() + "Zielony-ciemny zielony gradient"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + greenGradient.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + greenGradient.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -179,8 +176,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(purpleGradient.getFormat() + "Różowy-ciemny różowy gradient"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + purpleGradient.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + purpleGradient.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -191,8 +188,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(aquaGradient.getFormat() + "Jasny-niebieski gradient"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + aquaGradient.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + aquaGradient.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -203,8 +200,8 @@ public class ColorNameGui {
                 .name(ComponentUtil.text(blueGradient.getFormat() + "Jasny niebieski-ciemny niebieski gradient"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + blueGradient.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + blueGradient.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
@@ -215,18 +212,18 @@ public class ColorNameGui {
                 .name(ComponentUtil.text("Szary-ciemny szary gradient"))
                 .lore(ComponentUtil.asList(
                         "",
-                        cirle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        cirle + " " + grayGradient.getFormat() + profile.getName(),
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + grayGradient.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
                         this.updateColor(player, profile, gui, event.getSlot(), grayGradient)
                 );
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new NameTagSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
                 ""
         );
 
@@ -244,7 +241,7 @@ public class ColorNameGui {
         gui.setItem(30, goldYellowGradientItem);
         gui.setItem(31, greenGradientItem);
 
-        gui.setItem(32, purpleGradientItem);
+        gui.setItem(32, purpleColorItem);
         gui.setItem(33, aquaGradientItem);
         gui.setItem(38, blueGradientItem);
         gui.setItem(42, grayGradientItem);

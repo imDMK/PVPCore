@@ -13,7 +13,8 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -22,7 +23,7 @@ import org.bukkit.entity.Player;
  */
 
 @AllArgsConstructor
-public class MessagesSettingsGui {
+public class MessagesSettingsGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -31,12 +32,8 @@ public class MessagesSettingsGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile) {
-        String circle = StyleUtil.getCircle();
-        String warning = StyleUtil.getWarning();
-        String purpleGradient = StyleUtil.getPurpleGradient();
-
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Ustawienia wiadomości " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Ustawienia wiadomości " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
@@ -44,11 +41,11 @@ public class MessagesSettingsGui {
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         GuiItem privateMessagesItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(purpleGradient + "Prywatne wiadomości"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Prywatne wiadomości"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny status<dark_gray>: " + StyleUtil.formatBoolean(profileSettings.isPrivateMessages()),
-                        warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isPrivateMessages()),
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isPrivateMessages())
@@ -58,11 +55,11 @@ public class MessagesSettingsGui {
                 });
 
         GuiItem achievementsItem = ItemBuilder.from(Material.BOOK)
-                .name(ComponentUtil.text(purpleGradient + "Wiadomości osiągnięć"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości osiągnięć"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny status<dark_gray>: " + StyleUtil.formatBoolean(profileSettings.isAchievementsMessages()),
-                        warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isAchievementsMessages()),
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isAchievementsMessages())
@@ -72,11 +69,11 @@ public class MessagesSettingsGui {
                 });
 
         GuiItem deathMessagesItem = ItemBuilder.from(Material.DIAMOND_SWORD)
-                .name(ComponentUtil.text(purpleGradient + "Wiadomości o zabójstwach"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości o zabójstwach"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny status<dark_gray>: " + StyleUtil.formatBoolean(profileSettings.isDeathMessages()),
-                        warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isDeathMessages()),
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isDeathMessages())
@@ -86,11 +83,11 @@ public class MessagesSettingsGui {
                 });
 
         GuiItem systemMessagesItem = ItemBuilder.from(Material.COMMAND_BLOCK)
-                .name(ComponentUtil.text(purpleGradient + "Automatyczne wiadomości"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Automatyczne wiadomości"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny status<dark_gray>: " + StyleUtil.formatBoolean(profileSettings.isSystemMessages()),
-                        warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isSystemMessages()),
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isSystemMessages())
@@ -100,11 +97,11 @@ public class MessagesSettingsGui {
                 });
 
         GuiItem guildMessagesItem = ItemBuilder.from(Material.BEACON)
-                .name(ComponentUtil.text(purpleGradient + "Wiadomości o gildiach"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości o gildiach"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny status<dark_gray>: " + StyleUtil.formatBoolean(profileSettings.isGuildMessages()),
-                        warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isGuildMessages()),
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isGuildMessages())
@@ -114,11 +111,11 @@ public class MessagesSettingsGui {
                 });
 
         GuiItem globalMessagesItem = ItemBuilder.from(Material.PLAYER_HEAD)
-                .name(ComponentUtil.text(purpleGradient + "Globalne wiadomości graczy"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Globalne wiadomości graczy"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualny status<dark_gray>: " + StyleUtil.formatBoolean(profileSettings.isGlobalMessages()),
-                        warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isGlobalMessages()),
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isGlobalMessages())
@@ -127,10 +124,10 @@ public class MessagesSettingsGui {
                     this.open(player, profile);
                 });
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new ProfileSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień profilu<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień profilu<dark_gray>.",
                 ""
         );
 

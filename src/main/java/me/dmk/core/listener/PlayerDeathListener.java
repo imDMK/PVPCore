@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.statistics.GuildStatistics;
-import me.dmk.core.murder.MurderType;
-import me.dmk.core.profile.settings.incognito.IncognitoSettings;
-import me.dmk.core.profile.Profile;
 import me.dmk.core.murder.MurderCache;
+import me.dmk.core.murder.MurderType;
+import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.fight.Fight;
 import me.dmk.core.profile.settings.ProfileSettings;
+import me.dmk.core.profile.settings.incognito.IncognitoSettings;
 import me.dmk.core.profile.statistics.ProfileStatistics;
-import me.dmk.core.util.PlayerUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.MurderUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -51,7 +51,7 @@ public class PlayerDeathListener implements Listener {
         Fight victimFight = victimProfile.getFight();
         IncognitoSettings victimIncognitoSettings = victimSettings.getIncognitoSettings();
 
-        String victimName = victimIncognitoSettings.isEnabled() ? StyleUtil.formatIncognito(victimIncognitoSettings.getIdentifier()) : victim.getName();
+        String victimName = victimIncognitoSettings.isEnabled() ? StringFormatter.formatIncognito(victimIncognitoSettings.getIdentifier()) : victim.getName();
 
         Optional<UUID> lastAttacker = victimFight.getLastAttacker();
         Player killer = lastAttacker.isPresent() ? Bukkit.getServer().getPlayer(lastAttacker.get()) : victim.getKiller();
@@ -67,14 +67,14 @@ public class PlayerDeathListener implements Listener {
         ProfileSettings killerSettings = killerProfile.getProfileSettings();
         IncognitoSettings killerIncognitoSettings = killerSettings.getIncognitoSettings();
 
-        String killerName = killerIncognitoSettings.isEnabled() ? StyleUtil.formatIncognito(killerIncognitoSettings.getIdentifier()): killer.getName();
+        String killerName = killerIncognitoSettings.isEnabled() ? StringFormatter.formatIncognito(killerIncognitoSettings.getIdentifier()): killer.getName();
 
         if (this.murderCache.hasKilled(killer, victim)) {
             this.notificationController.sendMessage(victim,
-                    StyleUtil.getWarning() + " <red>Gracz ostatnio zabił cię<dark_gray>, <red>nie straciłeś/aś żadnych statystyk<dark_gray>."
+                    StringFormatter.formatWarning() + " <red>Gracz ostatnio zabił cię<dark_gray>, <red>nie straciłeś/aś żadnych statystyk<dark_gray>."
             );
             this.notificationController.sendMessage(killer,
-                    StyleUtil.getWarning() + " <red>Ten gracz ostatnio został przez ciebie zabity/a <dark_gray>- <red>nie zyskałeś/aś żadnych statystyk<dark_gray>."
+                    StringFormatter.formatWarning() + " <red>Ten gracz ostatnio został przez ciebie zabity/a <dark_gray>- <red>nie zyskałeś/aś żadnych statystyk<dark_gray>."
             );
 
             this.hideBossBarAndRespawn(victim, victimProfile, victimFight);
@@ -89,10 +89,10 @@ public class PlayerDeathListener implements Listener {
         }
 
         boolean revenge = this.murderCache.hasKilled(victim, killer);
-        MurderType murderType = PlayerUtil.getMurderType(victim, victimStatistics, killer, revenge);
+        MurderType murderType = MurderUtil.getMurderType(victim, victimStatistics, killer, revenge);
 
-        int addPoints = PlayerUtil.getRankChange(victimStatistics.getPoints(), killerStatistics.getPoints());
-        int removePoints = PlayerUtil.getRankChange(killerStatistics.getPoints(), victimStatistics.getPoints());
+        int addPoints = MurderUtil.getRankChange(victimStatistics.getPoints(), killerStatistics.getPoints());
+        int removePoints = MurderUtil.getRankChange(killerStatistics.getPoints(), victimStatistics.getPoints());
 
         victimStatistics.removePoints(removePoints);
         victimStatistics.increaseDeaths();
@@ -109,14 +109,14 @@ public class PlayerDeathListener implements Listener {
         }
 
         if (victimSettings.isDeathMessages()) {
-            this.notificationController.sendTitle(victim, "", "<red>" + StyleUtil.formatDeathType(murderType));
+            this.notificationController.sendTitle(victim, "", "<red>" + MurderUtil.formatMurderNotification(murderType));
         }
 
         for (Player online : Bukkit.getOnlinePlayers()) {
             this.profileCache.get(online.getUniqueId()).ifPresent(onlineProfile -> {
                 if (onlineProfile.getProfileSettings().isDeathMessages()) {
                     this.notificationController.sendMessage(online,
-                            StyleUtil.formatDeathMessage(victimName, removePoints, murderType, killerName, addPoints)
+                            MurderUtil.formatDeathMessage(victimName, removePoints, murderType, killerName, addPoints)
                     );
                 }
             });

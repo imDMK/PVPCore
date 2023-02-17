@@ -12,7 +12,7 @@ import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedServerPing;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.configuration.MotdConfiguration;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class MotdPacketListener {
             List<WrappedGameProfile> players = new ArrayList<>();
 
             fakePlayers.stream()
-                    .map(StyleUtil::colored)
+                    .map(StringUtil::colorLegacy)
                     .map(string -> new WrappedGameProfile(UUID.randomUUID(), string))
                     .forEachOrdered(players::add);
 
@@ -72,7 +72,10 @@ public class MotdPacketListener {
         }
 
         if (!motdLine.isEmpty()) {
-            WrappedChatComponent motd = AdventureComponentConverter.fromComponent(this.miniMessage.deserialize(motdLine));
+            WrappedChatComponent motd = AdventureComponentConverter.fromComponent(
+                    this.miniMessage.deserialize(motdLine)
+            );
+
             ping.setMotD(motd);
         }
 

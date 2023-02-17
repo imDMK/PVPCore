@@ -7,7 +7,7 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 /**
@@ -27,7 +27,7 @@ public class FlyCommand {
         player.setAllowFlight(!player.getAllowFlight());
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Twój tryb latania został " + StyleUtil.formatBoolean(player.getAllowFlight()) + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Twój tryb latania został " + StringFormatter.formatBoolean(player.getAllowFlight()) + "<dark_gray>."
         );
     }
 
@@ -37,7 +37,7 @@ public class FlyCommand {
         other.setAllowFlight(!other.getAllowFlight());
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Tryb latania gracza <light_purple>" + other.getName() + " <gray>został " + StyleUtil.formatBoolean(other.getAllowFlight()) + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Tryb latania gracza <light_purple>" + other.getName() + " <gray>został " + StringFormatter.formatBoolean(other.getAllowFlight()) + "<dark_gray>."
         );
     }
 }

@@ -65,7 +65,7 @@ public class TimeUtil {
                     .append((seconds == 1) ? "sekundę" : (seconds < 5 || seconds > 20 && secondsDivided < 5 && secondsDivided != 1) ? "sekundy" : "sekund");
         }
 
-        if (stringBuilder.isEmpty()) {
+        if (stringBuilder.isEmpty() && millis != 0) {
             stringBuilder.append(millis)
                     .append(" ")
                     .append("ms");

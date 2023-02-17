@@ -11,8 +11,11 @@ import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.statistics.ProfileStatistics;
-import me.dmk.core.util.StyleUtil;
 import me.dmk.core.util.TimeUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.SymbolUtil;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,12 +33,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AsyncPlayerChatListener implements Listener {
 
+    private final MiniMessage miniMessage;
     private final LuckPermsController luckPermsController;
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
     private final GlobalChatCache globalChatCache;
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
 
@@ -49,29 +53,29 @@ public class AsyncPlayerChatListener implements Listener {
         Optional<Punishment> punishment = profile.getActivePunishment(PunishmentType.MUTE);
         if (punishment.isPresent()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Wyciszono cię <dark_gray>- <red>wygasa <gold>" + (punishment.get().isPermanent() ? "nigdy" : "za " + TimeUtil.instantToString(punishment.get().getExpireAt().toInstant(), true)) + "<dark_gray>."
+                    StringFormatter.formatError() + " <red>Wyciszono cię <dark_gray>- <red>wygasa <gold>" + (punishment.get().isPermanent() ? "nigdy" : "za " + TimeUtil.instantToString(punishment.get().getExpireAt().toInstant(), true)) + "<dark_gray>."
             );
             return;
         }
 
         if (!profileSettings.isGlobalMessages()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Posiadasz wyłączone globalne wiadomości<dark_gray>."
+                    StringFormatter.formatError() + " <red>Posiadasz wyłączone globalne wiadomości<dark_gray>."
             );
             return;
         }
 
-        if (!player.hasPermission("core.chat.bypass")) {
+        if (!player.hasPermission("core.chat.cooldown.bypass")) {
             if (!this.globalChatCache.getGlobalChatSettings().isEnabled()) {
                 this.notificationController.sendMessage(player,
-                        StyleUtil.getError() + " <red>Globalny czat jest aktualnie " + StyleUtil.getRedGradient() + "wyłączony</gradient><dark_gray>."
+                        StringFormatter.formatError() + " <red>Globalny czat jest aktualnie " + StringUtil.getRedGradient() + "wyłączony</gradient><dark_gray>."
                 );
                 return;
             }
 
             if (!this.globalChatCache.canUseChat(uuid)) {
                 this.notificationController.sendMessage(player,
-                        StyleUtil.getError() + " <red>Zwolnij... Następną wiadomość możesz wysłać za <gold>" + TimeUtil.instantToString(this.globalChatCache.get(uuid), true) + "<dark_gray>."
+                        StringFormatter.formatError() + " <red>Zwolnij... Następną wiadomość możesz wysłać za <gold>" + TimeUtil.instantToString(this.globalChatCache.get(uuid), true) + "<dark_gray>."
                 );
                 return;
             }
@@ -79,52 +83,47 @@ public class AsyncPlayerChatListener implements Listener {
             this.globalChatCache.put(uuid);
         }
 
-        boolean isAdmin = player.hasPermission("core.chat.admin");
+        boolean isAdmin = player.hasPermission("core.chat.message.redcolor");
+        boolean useColors = player.hasPermission("core.chat.color");
 
         String group = this.luckPermsController.getHighestGroupPrefix(uuid)
                 .map(g -> g + " ")
                 .orElse("");
 
-        String brackedStart = StyleUtil.getSquareBracketStart();
-        String brackedEnd = StyleUtil.getSquareBracketEnd();
+        String openingSquareBracket = StringUtil.getOpeningSquareBracket();
+        String closingSquareBracket = StringUtil.getClosingSquareBracket();
 
-        String level = brackedStart + "<gray>" + player.getLevel() + brackedEnd;
-        String points = brackedStart + "<gray>" + profileStatistics.getPoints() + brackedEnd;
-        String nameAndMessage = profileSettings.getColorName().getFormat() + player.getName() + "<dark_gray>: " + (isAdmin ? "<red>" : "<white>") + event.getMessage();
+        String message = (useColors ? event.getMessage() : this.miniMessage.escapeTags(event.getMessage()))
+                .replace("<3", "<red>" + SymbolUtil.getHeart());
+
+        String level = openingSquareBracket + "<gray>" + player.getLevel() + closingSquareBracket;
+        String points = openingSquareBracket + "<gray>" + profileStatistics.getPoints() + closingSquareBracket;
+        String nameAndMessage = profileSettings.getColorName().getFormat() + player.getName() + "<dark_gray>: " + (isAdmin ? "<red>" : "<white>") + message;
+
+        String format = (isAdmin ? group + nameAndMessage : level + " " + points + " " + "<guild>" + group + nameAndMessage);
 
         Optional<Guild> guildOptional = profile.getGuild();
 
-        String format;
-        if (isAdmin) {
-            format = group + nameAndMessage;
-        } else {
-            format = level + " " + points + " " + "<guild>" + group + nameAndMessage;
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            this.profileCache.get(online.getUniqueId()).ifPresent(onlineProfile -> {
+                ProfileSettings onlineSettings = onlineProfile.getProfileSettings();
+
+                if (!onlineSettings.isGlobalMessages()) {
+                    return;
+                }
+
+                if (onlineSettings.getIgnoredPlayers().contains(player.getUniqueId())) {
+                    return;
+                }
+
+                String formatGuildTag = StringFormatter.formatGuildTag(online, guildOptional.orElse(null), onlineProfile.getGuild().orElse(null))
+                        .map(g -> g + " ")
+                        .orElse("");
+
+                this.notificationController.sendMessage(online,
+                        format.replace("<guild>", formatGuildTag)
+                );
+            });
         }
-
-        Bukkit.getOnlinePlayers()
-                .stream()
-                .map(online -> this.profileCache.get(online.getUniqueId()))
-
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-
-                .filter(onlineProfile -> onlineProfile.getProfileSettings().isGlobalMessages())
-                .filter(onlineProfile -> !onlineProfile.getProfileSettings().getIgnoredPlayers().contains(uuid))
-
-                .forEachOrdered(online -> {
-                    if (online.getPlayer().isEmpty()) {
-                        return;
-                    }
-
-                    Player onlinePlayer = online.getPlayer().get();
-
-                    String formatGuildTag = StyleUtil.formatGuildTag(onlinePlayer, guildOptional.orElse(null), online.getGuild().orElse(null))
-                            .map(g -> g + " ")
-                            .orElse("");
-
-                    this.notificationController.sendMessage(onlinePlayer,
-                            format.replace("<guild>", formatGuildTag)
-                    );
-                });
     }
 }

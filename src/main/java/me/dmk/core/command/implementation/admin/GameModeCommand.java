@@ -7,7 +7,8 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -27,14 +28,14 @@ public class GameModeCommand {
     void execute(Player player, @Arg GameMode gameMode) {
         if (player.getGameMode() == gameMode) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Posiadasz już ten tryb gry<dark_gray>."
+                    StringFormatter.formatError() + " <red>Posiadasz już ten tryb gry<dark_gray>."
             );
             return;
         }
 
         player.setGameMode(gameMode);
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zmieniono</gradient> <gray>twój tryb gry na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>twój tryb gry na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
         );
     }
 
@@ -43,14 +44,14 @@ public class GameModeCommand {
     void execute(Player player, @Arg GameMode gameMode, @Arg @Name("player") Player other) {
         if (other.getGameMode() == gameMode) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Gracz posiada już ten tryb gry<dark_gray>."
+                    StringFormatter.formatError() + " <red>Gracz posiada już ten tryb gry<dark_gray>."
             );
             return;
         }
 
         other.setGameMode(gameMode);
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zmieniono</gradient> <gray>tryb gry gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>tryb gry gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
         );
     }
 }

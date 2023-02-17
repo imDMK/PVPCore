@@ -19,7 +19,6 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
 import me.dmk.core.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,7 +33,7 @@ import java.util.Comparator;
  */
 
 @AllArgsConstructor
-public class GuildMembersGui {
+public class GuildMembersGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -43,10 +42,8 @@ public class GuildMembersGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile, Guild guild) {
-        String circle = StyleUtil.getCircle();
-
         PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(circle + "<light_purple>Lista członków " + circle))
+                .title(ComponentUtil.text(this.circle + "<light_purple>Lista członków " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
@@ -58,14 +55,14 @@ public class GuildMembersGui {
 
         boolean isLeaderOrCoLeader = guild.isLeaderOrCoLeader(player.getUniqueId());
 
-        GuiItem previousButton = ItemStorage.createPreviousPageButton(gui);
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem previousButton = this.createPreviousPageButton(gui);
+        GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = ItemStorage.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(gui);
 
         gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
 
@@ -86,11 +83,11 @@ public class GuildMembersGui {
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            circle + " <gray>Ranga gildyjna<dark_gray>: <light_purple>" + (memberIsCreator ? "Założyciel" : memberIsLeader ? "Lider" : memberIsCoLeader ? "Zastępca lidera" : "Członek"),
-                            circle + " <gray>Data dołączenia<dark_gray>: <light_purple>" + TimeUtil.format(guildMember.getJoinDate().toInstant()),
+                            this.circle + " <gray>Ranga gildyjna<dark_gray>: <light_purple>" + (memberIsCreator ? "Założyciel" : memberIsLeader ? "Lider" : memberIsCoLeader ? "Zastępca lidera" : "Członek"),
+                            this.circle + " <gray>Data dołączenia<dark_gray>: <light_purple>" + TimeUtil.format(guildMember.getJoinDate().toInstant()),
                             "",
-                            StyleUtil.getWarning() + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby otworzyć profil tego gracza<dark_gray>.",
-                            (isLeaderOrCoLeader ? "<!italic>" + StyleUtil.getWarning() + " <light_purple>Kilknij SHIFT + PPM<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>." : null),
+                            this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby otworzyć profil tego gracza<dark_gray>.",
+                            (isLeaderOrCoLeader ? "<!italic>" + this.warning + " <light_purple>Kilknij SHIFT + PPM<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>." : null),
                             ""
                     ))
                     .asGuiItem(event -> {
@@ -108,7 +105,7 @@ public class GuildMembersGui {
                                 new BarrierBuilder()
                                         .name("<red>Zwariowałeś? Nie możesz wyrzucić samego siebie<dark_gray>...")
                                         .lore(
-                                                StyleUtil.getWarning() + " <green>Aby opuścić gildię, użyj komendy /guild leave"
+                                                this.warning + " <green>Aby opuścić gildię, użyj komendy /guild leave"
                                         )
                                         .updateGui(gui, event.getSlot());
                                 return;
@@ -122,7 +119,7 @@ public class GuildMembersGui {
                             }
 
                             new ConfirmationGui(player)
-                                    .create(circle + " <light_purple>Wrzucenie " + offlinePlayer.getName() + " " + circle)
+                                    .create(this.circle + " <light_purple>Wrzucenie " + offlinePlayer.getName() + " " + this.circle)
                                     .afterConfirm(e -> {
                                         Bukkit.dispatchCommand(player, "guild kick " + offlinePlayer.getName());
                                         this.open(player, profile, guild);

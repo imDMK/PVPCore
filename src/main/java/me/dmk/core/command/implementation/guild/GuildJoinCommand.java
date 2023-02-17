@@ -11,7 +11,7 @@ import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -36,14 +36,14 @@ public class GuildJoinCommand {
 
         if (!guild.isInvited(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie otrzymałeś/aś zaproszenia do tej gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie otrzymałeś/aś zaproszenia do tej gildii<dark_gray>."
             );
             return;
         }
 
         if (profile.getGuild().isPresent()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Posiadasz już gildię<dark_gray>... oszust?"
+                    StringFormatter.formatError() + " <red>Posiadasz już gildię<dark_gray>... oszust?"
             );
             return;
         }
@@ -55,7 +55,7 @@ public class GuildJoinCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
-                StyleUtil.getWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <green>dołączył <gray>do gildii " + StyleUtil.formatGuildTag(guild) + "<dark_gray>."
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <green>dołączył <gray>do gildii <light_purple>" + guild.getTag() + "<dark_gray>."
         );
     }
 }

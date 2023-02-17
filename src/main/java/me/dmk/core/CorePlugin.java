@@ -13,8 +13,8 @@ import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import lombok.Getter;
 import me.dmk.core.chat.GlobalChatCache;
-import me.dmk.core.chat.notification.NotificationType;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.NotificationType;
 import me.dmk.core.command.argument.guild.GuildArgument;
 import me.dmk.core.command.argument.guild.member.GuildMemberArgument;
 import me.dmk.core.command.argument.notification.NotificationTypeArgument;
@@ -27,8 +27,8 @@ import me.dmk.core.command.implementation.guild.*;
 import me.dmk.core.command.implementation.guild.alliance.GuildAllianceCommand;
 import me.dmk.core.command.implementation.player.*;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.database.data.MongoDataService;
 import me.dmk.core.database.MongoClientService;
+import me.dmk.core.database.data.MongoDataService;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
@@ -37,13 +37,11 @@ import me.dmk.core.listener.*;
 import me.dmk.core.listener.connection.PlayerJoinListener;
 import me.dmk.core.listener.connection.PlayerLoginListener;
 import me.dmk.core.listener.connection.PlayerQuitListener;
-import me.dmk.core.listener.EntityDamageByEntityListener;
-import me.dmk.core.listener.PlayerDeathListener;
 import me.dmk.core.listener.luckperms.LuckPermsListener;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.listener.motd.MotdPacketListener;
-import me.dmk.core.profile.Profile;
+import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.murder.MurderCache;
+import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.fight.FightTask;
@@ -163,7 +161,7 @@ public class CorePlugin extends JavaPlugin {
 
         this.taskExecutor.runTimerAsync(new BoardTask(this.profileCache), 5L, TimeUnit.SECONDS);
         this.taskExecutor.runTimerAsync(new FightTask(this.pluginConfiguration, this.notificationController, this.profileCache, this.taskExecutor), 1L, TimeUnit.SECONDS);
-        this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 10L, TimeUnit.MINUTES);
+        this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new VanishTask(this.notificationController, this.profileCache), 2L, TimeUnit.SECONDS);
 
         /* Commands */
@@ -175,7 +173,7 @@ public class CorePlugin extends JavaPlugin {
                 new PlayerLoginListener(this.profileCache),
                 new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
 
-                new AsyncPlayerChatListener(this.luckPermsController, this.notificationController, this.profileCache, this.globalChatCache),
+                new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileCache, this.globalChatCache),
                 new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache),
                 new EntityResurrectListener(this.notificationController, this.profileCache),
                 new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),

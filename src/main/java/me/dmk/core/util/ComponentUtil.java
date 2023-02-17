@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class ComponentUtil {
 
-    private static final MiniMessage miniMessage = CorePlugin.getCorePlugin().getNotificationController().getMiniMessage();
+    private static final MiniMessage miniMessage = CorePlugin.getCorePlugin().getMiniMessage();
 
     public static Component text(String text) {
         return miniMessage.deserialize("<!italic>" + text);

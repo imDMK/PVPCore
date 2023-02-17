@@ -8,7 +8,7 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -48,7 +48,7 @@ public class VanishCommand {
         );
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Twój tryb niewidzialności został " + StyleUtil.formatBoolean(profileSettings.isVanish()) + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Twój tryb niewidzialności został " + StringFormatter.formatBoolean(profileSettings.isVanish()) + "<dark_gray>."
         );
     }
 }

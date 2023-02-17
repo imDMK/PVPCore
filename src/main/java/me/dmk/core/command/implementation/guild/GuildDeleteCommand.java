@@ -4,14 +4,15 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.gui.ConfirmationGui;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.task.executor.TaskExecutor;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -39,7 +40,7 @@ public class GuildDeleteCommand {
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
             );
             return;
         }
@@ -48,13 +49,13 @@ public class GuildDeleteCommand {
 
         if (!guild.isLeader(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
             );
             return;
         }
 
         new ConfirmationGui(player)
-                .create(StyleUtil.getCircle() + " <light_purple>Potwierdź usunięcie gildii " + StyleUtil.getCircle())
+                .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Potwierdź usunięcie gildii " + SymbolUtil.getCircle("<dark_gray>"))
                 .afterConfirm(event -> {
                     this.taskExecutor.runAsync(() -> {
                         this.guildController.delete(guild);
@@ -63,7 +64,7 @@ public class GuildDeleteCommand {
 
                     Bukkit.getOnlinePlayers().forEach(online ->
                             this.notificationController.sendMessage(online,
-                                    StyleUtil.getWarning() + " <gray>Gildia " + StyleUtil.formatGuildTagAndName(guild) + " <gray>została <red>usunięta <gray>przez <light_purple>" + player.getName() + "<dark_gray>."
+                                    StringFormatter.formatWarning() + " <gray>Gildia <light_purple>" + guild.getTag() + " <gray>została <red>usunięta <gray>przez <light_purple>" + player.getName() + "<dark_gray>."
                             )
                     );
 

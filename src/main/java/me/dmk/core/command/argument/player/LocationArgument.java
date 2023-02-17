@@ -4,7 +4,7 @@ import dev.rollczi.litecommands.argument.ArgumentName;
 import dev.rollczi.litecommands.argument.simple.MultilevelArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ public class LocationArgument implements MultilevelArgument<Location> {
     private final Component unknownLocation;
 
     public LocationArgument(MiniMessage miniMessage) {
-        this.unknownLocation = miniMessage.deserialize(StyleUtil.getError() + " <red>Podano nieprawidłową lokalizację<dark_gray>.");
+        this.unknownLocation = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłową lokalizację<dark_gray>.");
     }
 
     @Override

@@ -8,13 +8,14 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.profile.settings.incognito.IncognitoController;
-import me.dmk.core.profile.settings.incognito.IncognitoSettings;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.profile.settings.incognito.IncognitoController;
+import me.dmk.core.profile.settings.incognito.IncognitoSettings;
 import me.dmk.core.util.TimeUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -44,9 +45,9 @@ public class IncognitoCommand {
 
         String message;
         if (changed) {
-            message = StyleUtil.getSuccess() + " <gray>Tryb anonimowy został " + StyleUtil.formatBoolean(incognitoSettings.isEnabled()) + "<dark_gray>.";
+            message = StringFormatter.formatSuccess() + " <gray>Tryb anonimowy został " + StringFormatter.formatBoolean(incognitoSettings.isEnabled()) + "<dark_gray>.";
         } else {
-            message = StyleUtil.getError() + " <red>Wystąpił błąd z API, spróbuj ponownie później.";
+            message = StringFormatter.formatError() + " <red>Wystąpił błąd z API, spróbuj ponownie później.";
         }
 
         this.notificationController.sendMessage(player,
@@ -63,7 +64,7 @@ public class IncognitoCommand {
 
         if (!incognitoSettings.canChangeIdentifier()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Ponownie identyfikator będziesz mógł/a zmienić za <gold>" + TimeUtil.instantToString(incognitoSettings.getWhenCanChange(), true) + "<dark_gray>."
+                    StringFormatter.formatError() + " <red>Ponownie identyfikator będziesz mógł/a zmienić za <gold>" + TimeUtil.instantToString(incognitoSettings.getWhenCanChange(), true) + "<dark_gray>."
             );
             return;
         }
@@ -73,7 +74,7 @@ public class IncognitoCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Zmieniono </gradient><gray>twój identyfikator anonimowego na <light_purple>" + newIdentifier + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono </gradient><gray>twój identyfikator anonimowego na <light_purple>" + newIdentifier + "<dark_gray>."
         );
     }
 
@@ -83,7 +84,7 @@ public class IncognitoCommand {
     void execute(Player player, @Arg @Name("identifier") String identifier) {
         if (identifier.length() != 8) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Identyfikator trybu anonimowego musi mieć długość 8 znaków<dark_gray>."
+                    StringFormatter.formatError() + " <red>Identyfikator trybu anonimowego musi mieć długość 8 znaków<dark_gray>."
             );
             return;
         }
@@ -91,13 +92,13 @@ public class IncognitoCommand {
         Optional<Profile> profile = this.incognitoController.findProfileByIdentifier(identifier);
         if (profile.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie znaleziono profilu<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie znaleziono profilu<dark_gray>."
             );
             return;
         }
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Gracz o numerze identyfikacyjnym animowego <light_purple>" + identifier + " <gray>to <light_purple>" + profile.get().getName() + " <dark_gray>(<light_purple>" + profile.get().getUuid() + "<dark_gray>)."
+                StringFormatter.formatSuccess() + " <gray>Gracz o numerze identyfikacyjnym animowego <light_purple>" + identifier + " <gray>to <light_purple>" + profile.get().getName() + " <dark_gray>(<light_purple>" + profile.get().getUuid() + "<dark_gray>)."
         );
     }
 }

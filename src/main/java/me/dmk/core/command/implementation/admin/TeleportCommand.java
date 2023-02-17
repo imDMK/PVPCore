@@ -7,7 +7,8 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,7 @@ public class TeleportCommand {
     void execute(Player player, @Arg @Name("to") Player other) {
         player.teleport(other);
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>do gracza <light_purple>" + other.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>do gracza <light_purple>" + other.getName() + "<dark_gray>."
         );
     }
 
@@ -37,7 +38,7 @@ public class TeleportCommand {
 
         player.teleport(loc);
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>cię na koordynaty <light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>cię na koordynaty <light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z<dark_gray>."
         );
     }
 
@@ -46,7 +47,7 @@ public class TeleportCommand {
     void execute(Player player, @Arg @Name("player") Player other, @Arg @Name("to") Player other2) {
         other.teleport(other2);
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>do gracza <light_purple>" + other2.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>do gracza <light_purple>" + other2.getName() + "<dark_gray>."
         );
     }
 
@@ -57,7 +58,7 @@ public class TeleportCommand {
 
         other.teleport(loc);
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + StyleUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na kordynaty <light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na kordynaty <light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z<dark_gray>."
         );
     }
 }

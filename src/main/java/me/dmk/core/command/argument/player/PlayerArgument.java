@@ -4,7 +4,7 @@ import dev.rollczi.litecommands.argument.ArgumentName;
 import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ public class PlayerArgument implements OneArgument<Player> {
     private final Component playerNotFound;
 
     public PlayerArgument(MiniMessage miniMessage) {
-        this.playerNotFound = miniMessage.deserialize(StyleUtil.getError() + " <red>Podany gracz nie istnieje<dark_gray>.");
+        this.playerNotFound = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podany gracz nie istnieje<dark_gray>.");
     }
 
     @Override

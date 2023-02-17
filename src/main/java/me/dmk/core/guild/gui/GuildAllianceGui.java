@@ -15,20 +15,21 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by DMK on 01.02.2023
  */
 
 @AllArgsConstructor
-public class GuildAllianceGui {
+public class GuildAllianceGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -37,24 +38,22 @@ public class GuildAllianceGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile, Guild guild) {
-        String circle = StyleUtil.getCircle();
-
         PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(circle + "<light_purple>Lista członków " + circle))
+                .title(ComponentUtil.text(this.circle + "<light_purple>Lista członków " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
 
         boolean isLeaderOrCoLeader = guild.isLeaderOrCoLeader(player.getUniqueId());
 
-        GuiItem previousButton = ItemStorage.createPreviousPageButton(gui);
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem previousButton = this.createPreviousPageButton(gui);
+        GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = ItemStorage.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(gui);
 
         gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
 
@@ -73,26 +72,26 @@ public class GuildAllianceGui {
 
             List<Component> lore = ComponentUtil.asList(
                     "",
-                    circle + " <gray>Nazwa<dark_gray>: <light_purple>" + allianceGuild.getName(),
+                    this.circle + " <gray>Nazwa<dark_gray>: <light_purple>" + allianceGuild.getName(),
                     ""
             );
 
             if (isLeaderOrCoLeader) {
                 lore.addAll(List.of(
-                    ComponentUtil.text(StyleUtil.getWarning() + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>."),
-                    ComponentUtil.text(StyleUtil.getWarning() + " <light_purple>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>.")
+                    ComponentUtil.text(this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>."),
+                    ComponentUtil.text(this.warning + " <light_purple>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>.")
                 ));
             }
 
             GuiItem allianceGuildItem = ItemBuilder.from(Material.BEACON)
-                    .name(ComponentUtil.text(StyleUtil.getPurpleGradient() + allianceGuild.getTag()))
+                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + allianceGuild.getTag()))
                     .lore(lore)
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {
                             new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, allianceGuild);
                         } else if (event.isRightClick() && event.isShiftClick()) {
                             new ConfirmationGui(player)
-                                    .create(circle + " <light_purple>Zerwanie sojuszu z " + allianceGuild.getTag() + " " + circle)
+                                    .create(this.circle + " <light_purple>Zerwanie sojuszu z " + allianceGuild.getTag() + " " + this.circle)
                                     .afterConfirm(e -> {
                                         Bukkit.dispatchCommand(player, "guild alliance break " + allianceGuild.getTag());
                                         this.open(player, profile, guild);

@@ -12,8 +12,9 @@ import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.task.executor.TaskExecutor;
-import me.dmk.core.util.StyleUtil;
 import me.dmk.core.util.TimeUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -72,7 +73,7 @@ public class PlayerJoinListener implements Listener {
 
             this.luckPermsController.getTemponaryGroups(uuid).forEach(node ->
                     this.notificationController.sendMessage(player,
-                            StyleUtil.getWarning() + " <gray>Grupa <light_purple>" + node.getGroupName().toUpperCase() + " <gray>wygasa za " + StyleUtil.getRedGradient() + TimeUtil.instantToString(node.getExpiry(), true) + "</gradient><dark_gray>."
+                            StringFormatter.formatWarning() + " <gray>Grupa <light_purple>" + node.getGroupName().toUpperCase() + " <gray>wygasa za " + StringUtil.getRedGradient() + TimeUtil.instantToString(node.getExpiry(), true) + "</gradient><dark_gray>."
                     )
             );
         });

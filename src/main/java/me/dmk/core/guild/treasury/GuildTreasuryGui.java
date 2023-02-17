@@ -17,7 +17,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
  */
 
 @AllArgsConstructor
-public class GuildTreasuryGui {
+public class GuildTreasuryGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -36,11 +36,8 @@ public class GuildTreasuryGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile, Guild guild) {
-        String circle = StyleUtil.getCircle();
-        String purpleGradient = StyleUtil.getPurpleGradient();
-
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Skarbiec gildyjny " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Skarbiec gildyjny " + this.circle))
                 .rows(3)
                 .disableAllInteractions()
                 .create();
@@ -53,10 +50,10 @@ public class GuildTreasuryGui {
         boolean guildCanExtend = guildTreasury.getCoins() > coinsToExtendGuild;
         boolean canExtend = profile.getProfileStatistics().getCoins() > coinsToExtendGuild;
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
 
@@ -64,10 +61,10 @@ public class GuildTreasuryGui {
         gui.setItem(22, backButton);
 
         GuiItem topsItem = ItemBuilder.from(Material.GLOW_ITEM_FRAME)
-                .name(ComponentUtil.text(purpleGradient + "Topka wpłaconych monet"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Topka wpłaconych monet"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -82,11 +79,11 @@ public class GuildTreasuryGui {
                 });
 
         GuiItem coinsItem = ItemBuilder.from(Material.SUNFLOWER)
-                .name(ComponentUtil.text(purpleGradient + "Monety"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Monety"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Aktualnie w skarbcu gildyjnym znajduje się <light_purple>" + guildTreasury.getCoins() + " <gray>monet<dark_gray>.",
-                        circle + " <gray>Możliwość przedłużenia gildii<dark_gray>: " + (guildCanExtend || canExtend ? (isLeaderOrCoLeader ? "<green>Tak - Kliknij, aby przedłużyć" : "<green>Tak") : "<red>Nie"),
+                        this.circle + " <gray>Aktualnie w skarbcu gildyjnym znajduje się <light_purple>" + guildTreasury.getCoins() + " <gray>monet<dark_gray>.",
+                        this.circle + " <gray>Możliwość przedłużenia gildii<dark_gray>: " + (guildCanExtend || canExtend ? (isLeaderOrCoLeader ? "<green>Tak - Kliknij, aby przedłużyć" : "<green>Tak") : "<red>Nie"),
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -96,10 +93,10 @@ public class GuildTreasuryGui {
                 });
 
         GuiItem guildPaymentsHistoryItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(purpleGradient + "Historia wpłaconych monet"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Historia wpłaconych monet"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {

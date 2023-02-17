@@ -9,7 +9,7 @@ import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.PlayerUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
@@ -52,7 +52,7 @@ public class Board implements Serializable {
 
         pluginConfiguration.getSidebarList().forEach(string ->
                 boardList.add(
-                        StyleUtil.colored(string
+                        StringUtil.colorLegacy(string
                                 .replace("<rank>", group.orElse("Brak"))
                                 .replace("<coins>", coins)
                                 .replace("<ping>", ping)
@@ -67,11 +67,11 @@ public class Board implements Serializable {
         );
 
         this.fastBoard.updateLines(boardList);
-        this.fastBoard.updateTitle(StyleUtil.colored(pluginConfiguration.getSidebarName()));
+        this.fastBoard.updateTitle(StringUtil.colorLegacy(pluginConfiguration.getSidebarName()));
     }
 
     public void remove() {
-        if (!this.fastBoard.isDeleted()) {
+        if (this.fastBoard != null && !this.fastBoard.isDeleted()) {
             this.fastBoard.delete();
         }
     }

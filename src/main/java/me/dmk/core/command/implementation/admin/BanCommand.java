@@ -10,10 +10,10 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
-import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -38,7 +38,7 @@ public class BanCommand {
         Optional<Punishment> activeBanPunishment = profile.getActivePunishment(PunishmentType.BAN);
         if (activeBanPunishment.isPresent()) {
             this.notificationController.sendMessage(sender,
-                    StyleUtil.getError() + " <red>Podany gracz jest już zbanowany<dark_gray>."
+                    StringFormatter.formatError() + " <red>Podany gracz jest już zbanowany<dark_gray>."
             );
             return;
         }
@@ -50,12 +50,12 @@ public class BanCommand {
         this.profileController.save(profile);
         
         profile.getPlayer().ifPresent(p -> 
-                p.kickPlayer(StyleUtil.formatBanMessage(punishment))
+                p.kickPlayer(StringFormatter.formatBanMessage(punishment))
         );
 
         this.notificationController.sendMessage(
                 Bukkit.getOnlinePlayers(),
-                StyleUtil.getSilent() + " " + StyleUtil.formatPunishmentMessage(PunishmentType.BAN) + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
                 "core.command.ban"
         );
     }
@@ -66,7 +66,7 @@ public class BanCommand {
         Optional<Punishment> activeBanPunishment = profile.getActivePunishment(PunishmentType.BAN);
         if (activeBanPunishment.isPresent()) {
             this.notificationController.sendMessage(sender,
-                    StyleUtil.getError() + " <red>Podany gracz jest już zbanowany<dark_gray>."
+                    StringFormatter.formatError() + " <red>Podany gracz jest już zbanowany<dark_gray>."
             );
             return;
         }
@@ -77,12 +77,12 @@ public class BanCommand {
         this.profileController.save(profile);
 
         profile.getPlayer().ifPresent(p ->
-                p.kickPlayer(StyleUtil.formatBanMessage(punishment))
+                p.kickPlayer(StringFormatter.formatBanMessage(punishment))
         );
 
         this.notificationController.sendMessage(
                 Bukkit.getOnlinePlayers(),
-                StyleUtil.getSilent() + " " + StyleUtil.formatPunishmentMessage(PunishmentType.BAN) + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + " <gray>za <red>" + reason + "<dark_gray>.",
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + " <gray>za <red>" + reason + "<dark_gray>.",
                 "core.command.ban"
         );
     }

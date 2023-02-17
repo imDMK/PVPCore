@@ -6,7 +6,7 @@ import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import panda.std.Result;
@@ -26,7 +26,7 @@ public class ProfileArgument implements OneArgument<Profile> {
 
     public ProfileArgument(ProfileCache profileCache, MiniMessage miniMessage) {
         this.profileCache = profileCache;
-        this.profileNotFound = miniMessage.deserialize(StyleUtil.getError() + " <red>Nie znaleziono profilu o podanej nazwie<dark_gray>.");
+        this.profileNotFound = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie znaleziono profilu o podanej nazwie<dark_gray>.");
     }
 
     @Override

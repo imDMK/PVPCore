@@ -8,10 +8,10 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
-import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -37,7 +37,7 @@ public class UnBanCommand {
         Optional<Punishment> punishment = profile.getActivePunishment(PunishmentType.BAN);
         if (punishment.isEmpty()) {
             this.notificationController.sendMessage(sender,
-                    StyleUtil.getError() + " <red>Gracz nie jest zbanowany<dark_gray>."
+                    StringFormatter.formatError() + " <red>Gracz nie jest zbanowany<dark_gray>."
             );
             return;
         }
@@ -50,7 +50,7 @@ public class UnBanCommand {
 
         this.notificationController.sendMessage(
                 Bukkit.getOnlinePlayers(),
-                StyleUtil.getSilent() + " " + StyleUtil.getWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <green>odbanowany <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <green>odbanowany <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
                 "core.command.unban"
         );
     }

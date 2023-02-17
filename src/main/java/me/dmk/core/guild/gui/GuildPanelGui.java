@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import lombok.AllArgsConstructor;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
+import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.member.GuildMembersGui;
@@ -18,8 +19,8 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.PlayerUtil;
-import me.dmk.core.util.StyleUtil;
 import me.dmk.core.util.TimeUtil;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ import java.util.Optional;
  */
 
 @AllArgsConstructor
-public class GuildPanelGui {
+public class GuildPanelGui extends ItemStorage {
 
     private final PluginConfiguration pluginConfiguration;
     private final LuckPermsController luckPermsController;
@@ -40,11 +41,8 @@ public class GuildPanelGui {
     private final GuildCache guildCache;
 
     public void open(Player player, Profile profile, Guild guild) {
-        String circle = StyleUtil.getCircle();
-        String purpleGradient = StyleUtil.getPurpleGradient();
-
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Panel gildyjny " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Panel gildyjny " + this.circle))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
@@ -68,47 +66,47 @@ public class GuildPanelGui {
                 .orElse("Brak");
 
         GuiItem beaconItem = ItemBuilder.from(Material.BEACON)
-                .name(ComponentUtil.text(purpleGradient + guild.getTag()))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + guild.getTag()))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Nazwa<dark_gray><dark_gray>: <light_purple>" + guild.getName(),
-                        circle + " <gray>Założyciel<dark_gray>: <light_purple>" + creatorName,
-                        circle + " <gray>Data założenia<dark_gray>: <light_purple>" + TimeUtil.format(guild.getCreatedAt().toInstant()),
+                        this.circle + " <gray>Nazwa<dark_gray><dark_gray>: <light_purple>" + guild.getName(),
+                        this.circle + " <gray>Założyciel<dark_gray>: <light_purple>" + creatorName,
+                        this.circle + " <gray>Data założenia<dark_gray>: <light_purple>" + TimeUtil.format(guild.getCreatedAt().toInstant()),
                         "",
-                        circle + " <gray>Lider<dark_gray>: <light_purple>" + leader,
-                        circle + " <gray>Zastępca lidera<dark_gray>: <light_purple>" + coLeader,
+                        this.circle + " <gray>Lider<dark_gray>: <light_purple>" + leader,
+                        this.circle + " <gray>Zastępca lidera<dark_gray>: <light_purple>" + coLeader,
                         ""
                 ))
                 .asGuiItem();
 
         GuiItem statisticsItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(purpleGradient + "Statystyki"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Statystyki"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Ranking<dark_gray>: <light_purple>" + guildStatistics.getRank(),
-                        circle + " <gray>Zabójstwa<dark_gray>: <light_purple>" + guildStatistics.getKills(),
-                        circle + " <gray>Seria zabójstw<dark_gray>: <light_purple>" + guildStatistics.getKillStreak(),
-                        circle + " <gray>Największa seria zabójstw<dark_gray>: <light_purple>" + guildStatistics.getHighestKillStreak(),
-                        circle + " <gray>Śmierci<dark_gray>: <light_purple>" + guildStatistics.getDeaths(),
-                        circle + " <gray>KDR<dark_gray>: <light_purple>" + PlayerUtil.getKDR(guildStatistics.getKills(), guildStatistics.getDeaths()),
+                        this.circle + " <gray>Ranking<dark_gray>: <light_purple>" + guildStatistics.getRank(),
+                        this.circle + " <gray>Zabójstwa<dark_gray>: <light_purple>" + guildStatistics.getKills(),
+                        this.circle + " <gray>Seria zabójstw<dark_gray>: <light_purple>" + guildStatistics.getKillStreak(),
+                        this.circle + " <gray>Największa seria zabójstw<dark_gray>: <light_purple>" + guildStatistics.getHighestKillStreak(),
+                        this.circle + " <gray>Śmierci<dark_gray>: <light_purple>" + guildStatistics.getDeaths(),
+                        this.circle + " <gray>KDR<dark_gray>: <light_purple>" + PlayerUtil.getKDR(guildStatistics.getKills(), guildStatistics.getDeaths()),
                         ""
                 ))
                 .asGuiItem();
 
         GuiItem expireItem = ItemBuilder.from(Material.REDSTONE_TORCH)
-                .name(ComponentUtil.text(purpleGradient + "Wygasa"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wygasa"))
                 .lore(ComponentUtil.asList(
                         "",
-                        circle + " <gray>Gildia wygasa za<dark_gray>: <red>" + TimeUtil.instantToString(guild.getExpireAt().toInstant(), true),
+                        this.circle + " <gray>Gildia wygasa za<dark_gray>: <red>" + TimeUtil.instantToString(guild.getExpireAt().toInstant(), true),
                         ""
                 ))
                 .asGuiItem();
 
         GuiItem membersItem = ItemBuilder.from(Material.PLAYER_HEAD)
-                .name(ComponentUtil.text(purpleGradient + "Członkowie"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Członkowie"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy członków gildii<dark_gray>.",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy członków gildii<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event ->
@@ -116,10 +114,10 @@ public class GuildPanelGui {
                 );
 
         GuiItem coinsTrasureItem = ItemBuilder.from(Material.SUNFLOWER)
-                .name(ComponentUtil.text(purpleGradient + "Skarbiec gildijny"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Skarbiec gildijny"))
                 .lore(ComponentUtil.asList(
                         "",
-                        isMember ? StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu skarbca gildyjnego<dark_gray>." : circle + " <gray>Gildia posiada <light_purple>" + guildTreasury.getCoins() + " <gray>monet w skarbcu<dark_gray>.",
+                        isMember ? this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu skarbca gildyjnego<dark_gray>." : this.circle + " <gray>Gildia posiada <light_purple>" + guildTreasury.getCoins() + " <gray>monet w skarbcu<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -131,10 +129,10 @@ public class GuildPanelGui {
                 });
 
         GuiItem alliancesItem = ItemBuilder.from(Material.SHIELD)
-                .name(ComponentUtil.text(purpleGradient + "Sojusznicy"))
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Sojusznicy"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy sojuszów gildii<dark_gray>.",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy sojuszów gildii<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -151,19 +149,19 @@ public class GuildPanelGui {
         GuiItem leaveOrDeleteGuildItem;
         if (isLeader) {
             leaveOrDeleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
-                    .name(ComponentUtil.text(purpleGradient + "Usuń gildię"))
+                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Usuń gildię"))
                     .lore(ComponentUtil.asList(
                             "",
-                            StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>usunąć gildię<dark_gray>.",
+                            this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>usunąć gildię<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event -> Bukkit.dispatchCommand(player, "guild delete"));
         } else {
             leaveOrDeleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
-                    .name(ComponentUtil.text(purpleGradient + "Opuść gildię"))
+                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Opuść gildię"))
                     .lore(ComponentUtil.asList(
                             "",
-                            StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>opuścić gildię<dark_gray>.",
+                            this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>opuścić gildię<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event -> Bukkit.dispatchCommand(player, "guild leave"));

@@ -9,7 +9,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.board.Board;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 /**
@@ -41,7 +41,7 @@ public class SidebarCommand {
         }
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Boczny panel został " + StyleUtil.formatBoolean(board.isEnabled()) + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Boczny panel został " + StringFormatter.formatBoolean(board.isEnabled()) + "<dark_gray>."
         );
     }
 }

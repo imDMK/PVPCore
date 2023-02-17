@@ -13,7 +13,7 @@ import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class GuildInformationCommand {
 
         if (guild.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
             );
             return;
         }

@@ -14,7 +14,8 @@ import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.statistics.ProfileStatistics;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -43,7 +44,7 @@ public class GuildCreateCommand {
 
         if (profile.getGuild().isPresent()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Posiadasz już gildię<dark_gray>."
+                    StringFormatter.formatError() + " <red>Posiadasz już gildię<dark_gray>."
             );
             return;
         }
@@ -54,7 +55,7 @@ public class GuildCreateCommand {
         if (requiredCoins > 0 || requiredLevel > 0) {
             if (statistics.getCoins() < requiredCoins || player.getLevel() < requiredLevel) {
                 this.notificationController.sendMessage(player, List.of(
-                        StyleUtil.getError() + " <red>Wymagania, aby założyć gildię<dark_gray>:",
+                        StringFormatter.formatError() + " <red>Wymagania, aby założyć gildię<dark_gray>:",
                         "<dark_gray>- <gold>" + requiredCoins + " <red>monet<dark_gray>,",
                         "<dark_gray>- <gold>" + requiredLevel + " <red>poziom doświadczenia<dark_gray>."
                 ));
@@ -64,21 +65,21 @@ public class GuildCreateCommand {
 
         if (name.length() < 4 || name.length() > 20) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Długość nazwy gildii musi być od 4 do 20 znaków<dark_gray>."
+                    StringFormatter.formatError() + " <red>Długość nazwy gildii musi być od 4 do 20 znaków<dark_gray>."
             );
             return;
         }
 
         if (tag.length() > 4 || tag.length() < 3) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Długość tagu gildii musi wynosić od 3 do 4 znaków<dark_gray>."
+                    StringFormatter.formatError() + " <red>Długość tagu gildii musi wynosić od 3 do 4 znaków<dark_gray>."
             );
             return;
         }
 
         if (this.guildCache.getOrElseLoad(tag).isPresent()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Gildia o podanym tagu już istnieje<dark_gray>, <red>wymyśl coś innego<dark_gray>..."
+                    StringFormatter.formatError() + " <red>Gildia o podanym tagu już istnieje<dark_gray>, <red>wymyśl coś innego<dark_gray>..."
             );
             return;
         }
@@ -95,7 +96,7 @@ public class GuildCreateCommand {
         this.guildCache.add(guild);
 
         this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
-                StyleUtil.getWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <gray>założył gildię o nazwie <light_purple>" + name + " <gray>oraz tagu <light_purple>" + tag.toUpperCase() + "<dark_gray>," + StyleUtil.getGreenGradient() + " Gratulacje!"
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <gray>założył gildię o nazwie <light_purple>" + name + " <gray>oraz tagu <light_purple>" + tag.toUpperCase() + "<dark_gray>," + StringUtil.getGreenGradient() + " Gratulacje!"
         );
     }
 }

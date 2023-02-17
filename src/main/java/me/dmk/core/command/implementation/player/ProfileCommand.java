@@ -14,7 +14,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.gui.ProfilePanelGui;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 /**
@@ -55,7 +55,7 @@ public class ProfileCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Dodano <light_purple>" + coins + " <gray>monet do konta gracza <light_purple>" + profile.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Dodano <light_purple>" + coins + " <gray>monet do konta gracza <light_purple>" + profile.getName() + "<dark_gray>."
         );
     }
 
@@ -67,7 +67,7 @@ public class ProfileCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Usunięto <light_purple>" + coins + " <gray>monet z konta gracza <light_purple>" + profile.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Usunięto <light_purple>" + coins + " <gray>monet z konta gracza <light_purple>" + profile.getName() + "<dark_gray>."
         );
     }
 
@@ -79,7 +79,7 @@ public class ProfileCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getSuccess() + " <gray>Zmieniono monety konta gracza <light_purple>" + profile.getName() + " <gray>na <light_purple>" + coins + "<dark_gray>."
+                StringFormatter.formatSuccess() + " <gray>Zmieniono monety konta gracza <light_purple>" + profile.getName() + " <gray>na <light_purple>" + coins + "<dark_gray>."
         );
     }
 }

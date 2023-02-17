@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,7 +33,7 @@ public class PlayerLevelChangeListener implements Listener {
         profile.getProfileStatistics().setLevel(newLevel);
 
         this.notificationController.sendMessage(player,
-                StyleUtil.getWarning() + StyleUtil.getGreenGradient() + " Gratulacje! Awansowałeś na następny poziom<dark_gray>."
+                StringFormatter.formatWarning() + StringUtil.getGreenGradient() + " Gratulacje! Awansowałeś na następny poziom<dark_gray>."
         );
     }
 }

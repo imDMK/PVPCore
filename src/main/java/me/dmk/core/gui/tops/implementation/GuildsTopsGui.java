@@ -12,7 +12,7 @@ import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.SymbolUtil;
 import org.bson.conversions.Bson;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,24 +24,22 @@ import java.util.List;
  */
 
 @AllArgsConstructor
-public class GuildsTopsGui {
+public class GuildsTopsGui extends ItemStorage {
 
     private final ProfileController profileController;
     private final GuildController guildController;
 
     public void open(Player player) {
-        String circle = StyleUtil.getCircle();
-
         Gui gui = Gui.gui()
-                .title(ComponentUtil.text(circle + " <light_purple>Topki serwerowe " + circle))
+                .title(ComponentUtil.text(this.circle + " <light_purple>Topki serwerowe " + this.circle))
                 .rows(5)
                 .disableAllInteractions()
                 .create();
 
-        GuiItem backButton = ItemStorage.createBackButton(event ->
+        GuiItem backButton = this.createBackButton(event ->
                         new TopsGui(this.profileController, this.guildController).open(player),
                 "",
-                StyleUtil.getWarning() + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""
         );
 
@@ -59,12 +57,12 @@ public class GuildsTopsGui {
                     .name(ComponentUtil.text((i + 1) + ". " + guild.getTag()))
                     .lore(ComponentUtil.asList(
                             "",
-                            StyleUtil.getWarning() + " <gray>Statystyki gildii<dark_gray>:",
-                            circle + " <gray>Ranking<dark_gray>: <light_purple>" + statistics.getRank(),
-                            circle + " <gray>Zabójstwa<dark_gray>: <light_purple>" + statistics.getKills(),
-                            circle + " <gray>Seria zabójstw<dark_gray>: <light_purple>" + statistics.getKillStreak(),
-                            circle + " <gray>Największa seria zabójstw<dark_gray>: <light_purple>" + statistics.getHighestKillStreak(),
-                            circle + " <gray>Śmierci<dark_gray>: <light_purple>" + statistics.getDeaths(),
+                            this.warning + " <gray>Statystyki gildii<dark_gray>:",
+                            "<gold>" + SymbolUtil.getStar() + " <gray>Ranking<dark_gray>: <gold>" + statistics.getRank(),
+                            "<red>" + SymbolUtil.getSword() + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
+                            "<red>" + SymbolUtil.getSword() + " <gray>Seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
+                            "<red>" + SymbolUtil.getSword() + " <gray>Największa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
+                            "<gray>" + SymbolUtil.getDeath() + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
                             ""
                     ))
                     .asGuiItem();

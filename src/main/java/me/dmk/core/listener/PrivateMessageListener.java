@@ -5,7 +5,7 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.event.PrivateMessageEvent;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.settings.ProfileSettings;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -64,11 +64,11 @@ public class PrivateMessageListener implements Listener {
         String receivingName = receivingProfile.getColoredName();
 
         this.notificationController.sendMessage(sender,
-                StyleUtil.formatPrivateMessage(senderName, receivingName, event.getMessage())
+                StringFormatter.formatPrivateMessage(senderName, receivingName, event.getMessage())
         );
 
         this.notificationController.sendMessage(receiving,
-                StyleUtil.formatPrivateMessage(senderName, receivingName, event.getMessage())
+                StringFormatter.formatPrivateMessage(senderName, receivingName, event.getMessage())
         );
 
         senderSettings.setLastPrivateMessage(receiving.getUniqueId());

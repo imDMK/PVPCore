@@ -5,14 +5,15 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.gui.ConfirmationGui;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.util.StyleUtil;
+import me.dmk.core.task.executor.TaskExecutor;
+import me.dmk.core.util.string.StringFormatter;
+import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -40,7 +41,7 @@ public class GuildExtendCommand {
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
             );
             return;
         }
@@ -50,7 +51,7 @@ public class GuildExtendCommand {
 
         if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Nie posiadasz uprawnień gildyjnych<dark_gray>."
+                    StringFormatter.formatError() + " <red>Nie posiadasz uprawnień gildyjnych<dark_gray>."
             );
             return;
         }
@@ -62,7 +63,7 @@ public class GuildExtendCommand {
 
         if (!canExtend && !playerCanExtend) {
             this.notificationController.sendMessage(player,
-                    StyleUtil.getError() + " <red>Brak wystarczającej ilości monet w skarbcu gildyjnym<dark_gray>, <red>aby przedłużyć gildię<dark_gray>."
+                    StringFormatter.formatError() + " <red>Brak wystarczającej ilości monet w skarbcu gildyjnym<dark_gray>, <red>aby przedłużyć gildię<dark_gray>."
             );
             return;
         }
@@ -70,7 +71,7 @@ public class GuildExtendCommand {
         int coinsDifference = coinsToExtendGuild - guildTreasury.getCoins();
 
         new ConfirmationGui(player)
-                .create(StyleUtil.getCircle() + " <light_purple>Potwierdź przedłużenie gildii " + StyleUtil.getCircle())
+                .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Potwierdź przedłużenie gildii " + SymbolUtil.getCircle("<dark_gray>"))
                 .afterConfirm(event -> {
                     if (coinsToExtendGuild > 0) {
                         if (!canExtend) {
@@ -87,7 +88,7 @@ public class GuildExtendCommand {
                     );
 
                     this.notificationController.sendMessage(guild,
-                            StyleUtil.getGuild() + " <green>Gildia została przedłużona przez " + player.getName() + "<dark_gray>."
+                            StringFormatter.formatGuild() + " <green>Gildia została przedłużona przez " + player.getName() + "<dark_gray>."
                     );
 
                     player.closeInventory();
