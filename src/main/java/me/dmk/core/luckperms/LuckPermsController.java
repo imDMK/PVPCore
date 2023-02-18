@@ -74,8 +74,7 @@ public class LuckPermsController {
     }
 
     public Collection<InheritanceNode> getTemponaryGroups(UUID uuid) {
-        Optional<User> user = this.get(uuid);
-        return user.map(nodes ->
+        return this.get(uuid).map(nodes ->
                 nodes.getNodes(NodeType.INHERITANCE)
                         .stream()
                         .filter(Node::hasExpiry)
