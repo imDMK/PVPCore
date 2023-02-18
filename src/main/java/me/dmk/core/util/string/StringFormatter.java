@@ -17,6 +17,12 @@ import java.util.Optional;
 @UtilityClass
 public class StringFormatter {
 
+    public static String formatLong(long i, String single, String second, String many) {
+        long iDivided = i % 10L;
+
+        return (i == 1 ? single : (i < 5 || i > 20 && iDivided < 5 && iDivided != 1) ? second : many);
+    }
+
     public static String formatSuccess() {
         return StringUtil.getOpeningSquareBracket() + "<green>" + SymbolUtil.getCheckMark() + StringUtil.getClosingSquareBracket();
     }
@@ -80,6 +86,7 @@ public class StringFormatter {
     }
 
     public static String formatPrivateMessage(String senderName, String receivingName, String message) {
-        return "";
+        return StringUtil.getOpeningSquareBracket() + "<light_purple>" + SymbolUtil.getEnvelope() + StringUtil.getClosingSquareBracket()
+                + " " + senderName + " <dark_gray>-> " + receivingName + "<dark_gray>: " + message;
     }
 }

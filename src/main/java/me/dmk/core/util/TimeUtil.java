@@ -1,6 +1,7 @@
 package me.dmk.core.util;
 
 import lombok.experimental.UtilityClass;
+import me.dmk.core.util.string.StringFormatter;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -35,34 +36,28 @@ public class TimeUtil {
         if (days > 0) {
             stringBuilder.append(days)
                     .append(" ")
-                    .append((days == 1) ? "dzień" : "dni")
-                    .append(" ");
+                    .append(StringFormatter.formatLong(days, "dzień", "dni", "dni"))
+                    .append(", ");
         }
 
         if (hours > 0) {
-            long hoursDivided = hours % 10L;
-
             stringBuilder.append(hours)
                     .append(" ")
-                    .append((hours == 1) ? "godzinę" : (hours < 5 || hours > 20 && hoursDivided < 5 && hoursDivided != 1) ? "godziny" : "godzin")
-                    .append(" ");
+                    .append(StringFormatter.formatLong(hours, "godzinę", "godziny", "godzin"))
+                    .append(", ");
         }
 
         if (minutes > 0) {
-            long minutesDivided = minutes % 10L;
-
             stringBuilder.append(minutes)
                     .append(" ")
-                    .append((minutes == 1) ? "minutę" : (minutes < 5 || minutes > 20 && minutesDivided < 5 && minutesDivided != 1) ? "minuty" : "minut")
-                    .append(" ");
+                    .append(StringFormatter.formatLong(minutes, "minutę", "minuty", "minut"))
+                    .append(", ");
         }
 
         if (seconds > 0) {
-            long secondsDivided = seconds % 10L;
-
             stringBuilder.append(seconds)
                     .append(" ")
-                    .append((seconds == 1) ? "sekundę" : (seconds < 5 || seconds > 20 && secondsDivided < 5 && secondsDivided != 1) ? "sekundy" : "sekund");
+                    .append(StringFormatter.formatLong(seconds, "sekundę", "sekundy", "sekund"));
         }
 
         if (stringBuilder.isEmpty() && millis != 0) {

@@ -7,6 +7,10 @@ import me.dmk.core.util.string.StringUtil;
 import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.entity.Player;
 
+/**
+ * Created by DMK on 18.02.2023
+ */
+
 @UtilityClass
 public class MurderUtil {
 
@@ -50,7 +54,6 @@ public class MurderUtil {
                 " <red>" + formatMurderType(murderType) + " " + killer + " " + StringUtil.getOpeningSquareBracket() + "<green>+" + addedPoints + StringUtil.getClosingSquareBracket() +
                 "<dark_gray>.";
     }
-
 
     public static int getRankChange(int victimPoints, int killerPoints) {
         return 20;

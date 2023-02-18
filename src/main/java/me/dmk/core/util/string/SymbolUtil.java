@@ -2,6 +2,10 @@ package me.dmk.core.util.string;
 
 import lombok.experimental.UtilityClass;
 
+/**
+ * Created by DMK on 18.02.2023
+ */
+
 @UtilityClass
 public class SymbolUtil {
 
@@ -23,6 +27,10 @@ public class SymbolUtil {
 
     public static String getHeart() {
         return "❤";
+    }
+
+    public static String getEnvelope() {
+        return "✉";
     }
 
     public static String getWatch() {

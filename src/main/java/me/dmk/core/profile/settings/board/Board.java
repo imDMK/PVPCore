@@ -35,8 +35,8 @@ public class Board implements Serializable {
     public void update(Player player, Profile profile) {
         PluginConfiguration pluginConfiguration = CorePlugin.getCorePlugin().getPluginConfiguration();
         LuckPermsController luckPermsController = CorePlugin.getCorePlugin().getLuckPermsController();
-        ProfileStatistics statistics = profile.getProfileStatistics();
 
+        ProfileStatistics statistics = profile.getProfileStatistics();
         Optional<String> group = luckPermsController.getHighestGroupDisplayNameOrName(player.getUniqueId());
         Optional<Guild> guild = profile.getGuild();
 
@@ -46,7 +46,9 @@ public class Board implements Serializable {
         String kills = String.valueOf(statistics.getKills());
         String deaths = String.valueOf(statistics.getDeaths());
         String killStreak = String.valueOf(statistics.getKills());
-        String kdr = String.valueOf(PlayerUtil.getKDR(statistics.getKills(), statistics.getDeaths()));
+        String kdr = String.valueOf(
+                PlayerUtil.getKDR(statistics.getKills(), statistics.getDeaths())
+        );
 
         List<String> boardList = new ArrayList<>();
 

@@ -51,7 +51,7 @@ public class UnMuteCommand {
 
         profile.getPlayer().ifPresent(p ->
                 this.notificationController.sendMessage(p,
-                        StringFormatter.formatWarning() + " Odciszył </gradient><gray>cię administrator <light_purple>" + sender.getName() + "<dark_gray>."
+                        StringFormatter.formatWarning() + StringUtil.getGreenGradient() + " Odciszył </gradient><gray>cię administrator <light_purple>" + sender.getName() + "<dark_gray>."
                 )
         );
 

@@ -13,6 +13,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
+import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.SymbolUtil;
 import org.bson.conversions.Bson;
 import org.bukkit.Material;
@@ -54,11 +55,14 @@ public class KillsTopsGui extends ItemStorage {
             Profile profile = profileList.get(i);
             ProfileStatistics statistics = profile.getProfileStatistics();
 
+            int kills = statistics.getKills();
+            String killFormat = StringFormatter.formatLong(kills, "zabójstwo", "zabójstwa", "zabójstw");
+
             GuiItem item = SkullStorage.createPlayerHead(profile.getUuid())
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<red>" + SymbolUtil.getSword() + " <gray>Gracz posiada <red>" + statistics.getKills() + " <gray>zabójstw<dark_gray>.",
+                            "<red>" + SymbolUtil.getSword() + " <gray>Gracz posiada <red>" + kills + " <gray>" + killFormat + "<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

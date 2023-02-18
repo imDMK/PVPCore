@@ -191,6 +191,13 @@ public class CorePlugin extends JavaPlugin {
         eventBus.subscribe(this, NodeAddEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeAdd);
         eventBus.subscribe(this, NodeRemoveEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeRemove);
 
+        Bukkit.getOnlinePlayers().forEach(player -> { //Needed when the server is reloaded.
+            Profile profile = this.profileController.findByUUIDOrCreate(player.getUniqueId(), player.getName());
+
+            this.profileCache.add(profile);
+            profile.getGuild().ifPresent(guildCache::add);
+        });
+
         this.getLogger().info("Loaded plugin in " + (System.currentTimeMillis() - start) + " ms.");
     }
 

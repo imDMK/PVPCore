@@ -8,7 +8,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created by DMK on 17.01.2023
@@ -27,6 +26,6 @@ public class ComponentUtil {
         return Arrays.stream(strings)
                 .filter(Objects::nonNull)
                 .map(ComponentUtil::text)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
