@@ -113,8 +113,8 @@ public class CorePlugin extends JavaPlugin {
         this.pluginConfiguration = ConfigManager.create(PluginConfiguration.class, (it) -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
             it.withBindFile(new File(this.getDataFolder(), "configuration.yml"));
-            it.saveDefaults();
             it.load(true);
+            it.saveDefaults();
         });
 
         RegisteredServiceProvider<LuckPerms> luckPermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
