@@ -56,7 +56,8 @@ public class MurderUtil {
     }
 
     public static int calulcateAddPoints(MurderType murderType, int victimPoints, int killerPoints) {
-        int add = (int) (murderType.getPointsMultiplier() * (20.0 + (killerPoints - victimPoints) * -0.02));
+        int change = killerPoints - victimPoints;
+        int add = (int) (murderType.getPointsMultiplier() * (20.0 + change * -0.02));
 
         if (add < 25) {
             return 25;
