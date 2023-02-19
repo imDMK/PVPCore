@@ -154,14 +154,14 @@ public class GuildAllianceCommand {
             return;
         }
 
+        guild.inviteToAlliance(otherGuild);
+
         this.notificationController.sendMessage(otherGuild,
-                StringFormatter.formatGuild() + " <gray>Otrzymaliście zaproszenie sojuszu od gildii <light_purple>" + otherGuild.getTag() + "<dark_gray>."
+                StringFormatter.formatGuild() + " <gray>Otrzymaliście zaproszenie sojuszu od gildii <light_purple>" + guild.getTag() + "<dark_gray>."
         );
 
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zaproszono <gray>gildię <light_purple>" + otherGuild.getTag() + " <gray>do sojuszu<dark_gray>."
         );
-
-        guild.inviteToAlliance(otherGuild);
     }
 }
