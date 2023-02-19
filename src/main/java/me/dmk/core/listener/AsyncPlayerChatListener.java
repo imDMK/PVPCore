@@ -67,17 +67,19 @@ public class AsyncPlayerChatListener implements Listener {
         if (guildOptional.isPresent()) {
             Guild guild = guildOptional.get();
 
-            if (event.getMessage().startsWith("!!")) {
-                String guildMessage = StringFormatter.formatAlliance() + " " + player.getName() + "<dark_gray>: <gold>" + message.replaceFirst("!!", "");
+            boolean isAllianceMessage = event.getMessage().startsWith("!!");
+            boolean isGuildMessage = event.getMessage().startsWith("!");
 
-                guild.getAlliances().forEach(guildTag -> this.guildCache.getByTag(guildTag).ifPresent(allianceGuild ->
-                        this.notificationController.sendMessage(allianceGuild, guildMessage))
-                );
+            if (isAllianceMessage || isGuildMessage) {
+                String guildMessage = (isAllianceMessage ? StringFormatter.formatAlliance() : StringFormatter.formatGuild())
+                        + " " + player.getName() + "<dark_gray>: <gold>"
+                        + message.replaceFirst((isAllianceMessage ? "!!" : "!"), "");
 
-                this.notificationController.sendMessage(guild, guildMessage);
-                return;
-            } else if (event.getMessage().startsWith("!")) {
-                String guildMessage = StringFormatter.formatGuild() + " " + player.getName() + "<dark_gray>: <green>" + message.replaceFirst("!", "");
+                if (isAllianceMessage) {
+                    guild.getAlliances().forEach(guildTag -> this.guildCache.getByTag(guildTag).ifPresent(allianceGuild ->
+                            this.notificationController.sendMessage(allianceGuild, guildMessage))
+                    );
+                }
 
                 this.notificationController.sendMessage(guild, guildMessage);
                 return;

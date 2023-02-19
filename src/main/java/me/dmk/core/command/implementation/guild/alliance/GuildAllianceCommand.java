@@ -98,7 +98,6 @@ public class GuildAllianceCommand {
         );
     }
 
-    @Async
     @Execute(required = 1)
     @Route(name = "invite")
     void executeInvite(Player player, @Arg Guild otherGuild) {
