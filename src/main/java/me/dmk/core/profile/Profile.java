@@ -112,11 +112,6 @@ public class Profile implements Serializable {
         return this.getFight().getLastAttacker().isPresent();
     }
 
-    public void playerJoined() {
-        this.lastJoin = new Date();
-        this.profileStatistics.increaseEntrances();
-    }
-
     public Optional<Guild> getGuild() {
         if (this.guildTag == null) {
             return Optional.empty();

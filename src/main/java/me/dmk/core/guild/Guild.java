@@ -2,6 +2,7 @@ package me.dmk.core.guild;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.dmk.core.database.data.entity.DataEntity;
@@ -14,7 +15,6 @@ import org.bukkit.entity.Player;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -38,7 +38,7 @@ public class Guild {
     private UUID leader;
     private UUID coLeader = null;
 
-    private Map<UUID, GuildMember> members = new ConcurrentHashMap<>();
+    private Map<UUID, GuildMember> members = Maps.newConcurrentMap();
     private Set<String> alliances = new HashSet<>();
 
     private GuildStatistics guildStatistics = new GuildStatistics();
