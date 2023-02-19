@@ -70,10 +70,10 @@ public class PlayerDeathListener implements Listener {
 
         if (this.murderCache.hasKilled(killer, victim)) {
             this.notificationController.sendMessage(victim,
-                    StringFormatter.formatWarning() + " <red>Gracz ostatnio zabił cię<dark_gray>, <red>nie straciłeś/aś żadnych statystyk<dark_gray>."
+                    StringFormatter.formatWarning() + " <red>Gracz ostatnio zabił cię <dark_gray>- <red>nie straciłeś(-aś) żadnych statystyk<dark_gray>."
             );
             this.notificationController.sendMessage(killer,
-                    StringFormatter.formatWarning() + " <red>Ten gracz ostatnio został przez ciebie zabity/a <dark_gray>- <red>nie zyskałeś/aś żadnych statystyk<dark_gray>."
+                    StringFormatter.formatWarning() + " <red>Ten gracz ostatnio został przez ciebie zabity(-a) <dark_gray>- <red>nie zyskałeś(-aś) żadnych statystyk<dark_gray>."
             );
 
             this.hideBossBarAndRespawn(victim, victimProfile, victimFight);
