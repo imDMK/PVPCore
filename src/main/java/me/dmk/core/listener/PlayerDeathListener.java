@@ -47,12 +47,11 @@ public class PlayerDeathListener implements Listener {
         Profile victimProfile = this.profileCache.getOrElseThrow(victim.getUniqueId());
         ProfileStatistics victimStatistics = victimProfile.getProfileStatistics();
         ProfileSettings victimSettings = victimProfile.getProfileSettings();
-
-        Fight victimFight = victimProfile.getFight();
         IncognitoSettings victimIncognitoSettings = victimSettings.getIncognitoSettings();
 
         String victimName = victimIncognitoSettings.isEnabled() ? StringFormatter.formatIncognito(victimIncognitoSettings.getIdentifier()) : victim.getName();
 
+        Fight victimFight = victimProfile.getFight();
         Optional<UUID> lastAttacker = victimFight.getLastAttacker();
         Player killer = lastAttacker.isPresent() ? Bukkit.getServer().getPlayer(lastAttacker.get()) : victim.getKiller();
 
@@ -81,15 +80,14 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        int addExp;
-        if (killer.hasPermission("core.double.experience")) {
-            addExp = 10;
-        } else {
-            addExp = 5;
-        }
+        int addExp = (killer.hasPermission("core.double.experience") ? 10 : 5);
 
-        boolean revenge = this.murderCache.hasKilled(victim, killer);
-        MurderType murderType = MurderUtil.getMurderType(victim, victimStatistics, killer, revenge);
+        MurderType murderType = MurderUtil.getMurderType(
+                victim,
+                victimStatistics,
+                killer,
+                this.murderCache.hasKilled(victim, killer)
+        );
 
         int addPoints = MurderUtil.calulcateAddPoints(murderType, victimStatistics.getPoints(), killerStatistics.getPoints());
         int removePoints = MurderUtil.calculateRemovePoints(murderType, addPoints);
