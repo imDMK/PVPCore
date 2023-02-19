@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.Guild;
+import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
@@ -37,6 +38,7 @@ public class AsyncPlayerChatListener implements Listener {
     private final LuckPermsController luckPermsController;
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
+    private final GuildCache guildCache;
     private final GlobalChatCache globalChatCache;
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -45,6 +47,9 @@ public class AsyncPlayerChatListener implements Listener {
 
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+
+        String message = (player.hasPermission("core.chat.message.color") ? event.getMessage() : this.miniMessage.escapeTags(event.getMessage()))
+                .replace("<3", "<red>" + SymbolUtil.getHeart());
 
         Profile profile = this.profileCache.getOrElseThrow(uuid);
         ProfileSettings profileSettings = profile.getProfileSettings();
@@ -56,6 +61,27 @@ public class AsyncPlayerChatListener implements Listener {
                     StringFormatter.formatError() + " <red>Wyciszono cię <dark_gray>- <red>wygasa <gold>" + (punishment.get().isPermanent() ? "nigdy" : "za " + TimeUtil.instantToString(punishment.get().getExpireAt().toInstant(), true)) + "<dark_gray>."
             );
             return;
+        }
+
+        Optional<Guild> guildOptional = profile.getGuild();
+        if (guildOptional.isPresent()) {
+            Guild guild = guildOptional.get();
+
+            if (event.getMessage().startsWith("!!")) {
+                String guildMessage = StringFormatter.formatAlliance() + " " + player.getName() + "<dark_gray>: <gold>" + message.replaceFirst("!!", "");
+
+                guild.getAlliances().forEach(guildTag -> this.guildCache.getByTag(guildTag).ifPresent(allianceGuild ->
+                        this.notificationController.sendMessage(allianceGuild, guildMessage))
+                );
+
+                this.notificationController.sendMessage(guild, guildMessage);
+                return;
+            } else if (event.getMessage().startsWith("!")) {
+                String guildMessage = StringFormatter.formatGuild() + " " + player.getName() + "<dark_gray>: <green>" + message.replaceFirst("!", "");
+
+                this.notificationController.sendMessage(guild, guildMessage);
+                return;
+            }
         }
 
         if (!profileSettings.isGlobalMessages()) {
@@ -83,26 +109,20 @@ public class AsyncPlayerChatListener implements Listener {
             this.globalChatCache.put(uuid);
         }
 
-        boolean isAdmin = player.hasPermission("core.chat.format.admin");
-        boolean useColors = player.hasPermission("core.chat.message.color");
+        boolean useAdminFormat = player.hasPermission("core.chat.format.admin");
+
+        String openingSquareBracket = StringUtil.getOpeningSquareBracket();
+        String closingSquareBracket = StringUtil.getClosingSquareBracket();
 
         String group = this.luckPermsController.getHighestGroupPrefix(uuid)
                 .map(g -> g + " ")
                 .orElse("");
 
-        String openingSquareBracket = StringUtil.getOpeningSquareBracket();
-        String closingSquareBracket = StringUtil.getClosingSquareBracket();
-
-        String message = (useColors ? event.getMessage() : this.miniMessage.escapeTags(event.getMessage()))
-                .replace("<3", "<red>" + SymbolUtil.getHeart());
-
         String level = openingSquareBracket + "<gray>" + player.getLevel() + closingSquareBracket;
         String points = openingSquareBracket + "<gray>" + profileStatistics.getPoints() + closingSquareBracket;
-        String nameAndMessage = profileSettings.getColorName().getFormat() + player.getName() + "<dark_gray>: " + (isAdmin ? "<red>" : "<white>") + message;
+        String nameAndMessage = profileSettings.getColorName().getFormat() + player.getName() + "<dark_gray>: " + (useAdminFormat ? "<red>" : "<white>") + message;
 
-        String format = (isAdmin ? group + nameAndMessage : level + " " + points + " " + "<guild>" + group + nameAndMessage);
-
-        Optional<Guild> guildOptional = profile.getGuild();
+        String format = (useAdminFormat ? group + nameAndMessage : level + " " + points + " " + "<guild>" + group + nameAndMessage);
 
         for (Player online : Bukkit.getOnlinePlayers()) {
             this.profileCache.get(online.getUniqueId()).ifPresent(onlineProfile -> {

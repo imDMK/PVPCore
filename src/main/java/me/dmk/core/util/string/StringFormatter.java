@@ -51,6 +51,10 @@ public class StringFormatter {
         return StringUtil.getOpeningSquareBracket() + "<green>GILDIA" + StringUtil.getClosingSquareBracket();
     }
 
+    public static String formatAlliance() {
+        return StringUtil.getOpeningSquareBracket() + "<gold>SOJUSZNICY" + StringUtil.getClosingSquareBracket();
+    }
+
     public static Optional<String> formatGuildTag(Player player, @Nullable Guild guild, @Nullable Guild otherGuild) {
         if (guild == null) {
             return Optional.empty();

@@ -55,7 +55,23 @@ public class MurderUtil {
                 "<dark_gray>.";
     }
 
-    public static int getRankChange(int victimPoints, int killerPoints) {
-        return 20;
+    public static int calulcateAddPoints(MurderType murderType, int victimPoints, int killerPoints) {
+        int add = (int) (murderType.getPointsMultiplier() * (20.0 + (killerPoints - victimPoints) * -0.02));
+
+        if (add < 25) {
+            return 25;
+        }
+
+        return Math.max(add, 200);
+    }
+
+    public static int calculateRemovePoints(MurderType murderType, int addedPoints) {
+        int remove = (int) ((addedPoints / 4) * murderType.getPointsMultiplier());
+
+        if (remove < 25) {
+            return 25;
+        }
+
+        return Math.max(remove, 150);
     }
 }

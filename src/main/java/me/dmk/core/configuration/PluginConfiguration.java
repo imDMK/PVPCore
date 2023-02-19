@@ -49,7 +49,7 @@ public class PluginConfiguration extends OkaeriConfig {
     @Comment("# Sidebar (no support for HEX colors)")
     public String sidebarName = "&d&lPVP&f&lCORE.PL";
 
-    @Comment("# Sidebar lines (Legacy formatting &)")
+    @Comment("# Sidebar lines (mo support for HEX colors)")
     public List<String> sidebarList = Arrays.asList(
             "&a",
             "&7Ranga&8: &d<rank>",

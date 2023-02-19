@@ -5,13 +5,11 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 /**
  * Created by DMK on 01.01.2023
@@ -73,13 +71,12 @@ public class LuckPermsController {
         return group.getDisplayName().describeConstable();
     }
 
-    public Collection<InheritanceNode> getTemponaryGroups(UUID uuid) {
-        return this.get(uuid).map(nodes ->
-                nodes.getNodes(NodeType.INHERITANCE)
-                        .stream()
-                        .filter(Node::hasExpiry)
-                        .filter(node -> !node.hasExpired())
-                        .collect(Collectors.toList()))
+    public Collection<InheritanceNode> getGroups(UUID uuid) {
+        return this.getOrElseLoad(uuid).map(u ->
+                        u.getNodes(NodeType.INHERITANCE)
+                                .stream()
+                                .toList()
+                )
                 .orElse(Collections.emptyList());
     }
 }

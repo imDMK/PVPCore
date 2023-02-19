@@ -91,16 +91,16 @@ public class PlayerDeathListener implements Listener {
         boolean revenge = this.murderCache.hasKilled(victim, killer);
         MurderType murderType = MurderUtil.getMurderType(victim, victimStatistics, killer, revenge);
 
-        int addPoints = MurderUtil.getRankChange(victimStatistics.getPoints(), killerStatistics.getPoints());
-        int removePoints = MurderUtil.getRankChange(killerStatistics.getPoints(), victimStatistics.getPoints());
-
-        victimStatistics.removePoints(removePoints);
-        victimStatistics.increaseDeaths();
+        int addPoints = MurderUtil.calulcateAddPoints(murderType, victimStatistics.getPoints(), killerStatistics.getPoints());
+        int removePoints = MurderUtil.calculateRemovePoints(murderType, addPoints);
 
         killerStatistics.addPoints(addPoints);
         killerStatistics.increaseKills();
 
         killer.giveExp(addExp);
+
+        victimStatistics.removePoints(removePoints);
+        victimStatistics.increaseDeaths();
 
         this.checkForGuilds(victimProfile, killerProfile, addPoints, removePoints);
 

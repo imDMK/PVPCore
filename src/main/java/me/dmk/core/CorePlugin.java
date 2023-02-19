@@ -169,11 +169,11 @@ public class CorePlugin extends JavaPlugin {
 
         /* Listeners */
         Stream.of(
-                new PlayerJoinListener(this.pluginConfiguration, this.luckPermsController, this.notificationController, this.profileCache, this.guildCache, this.taskExecutor),
+                new PlayerJoinListener(this.pluginConfiguration, this.notificationController, this.profileCache, this.guildCache),
                 new PlayerLoginListener(this.profileCache),
                 new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
 
-                new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileCache, this.globalChatCache),
+                new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileCache, this.guildCache, this.globalChatCache),
                 new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache),
                 new EntityResurrectListener(this.notificationController, this.profileCache),
                 new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),
@@ -206,13 +206,14 @@ public class CorePlugin extends JavaPlugin {
         this.pluginConfiguration.load(true);
         this.pluginConfiguration.save();
 
+        this.mongoClientService.close();
+        this.taskExecutor.shutdownNow();
+        this.liteCommands.getPlatform().unregisterAll();
+
         Bukkit.getScheduler().cancelTasks(this);
         Bukkit.getOnlinePlayers().forEach(player -> this.profileCache.get(player.getUniqueId())
                 .ifPresent(profile -> this.profileController.save(profile))
         );
-
-        this.mongoClientService.close();
-        this.taskExecutor.shutdownNow();
 
         this.getLogger().info("Goodbye!");
     }
@@ -269,6 +270,7 @@ public class CorePlugin extends JavaPlugin {
                         new GuildKickCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
                         new GuildLeaveCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
 
+                        new GroupsCommand(this.luckPermsController, this.notificationController),
                         new IgnoreCommand(this.notificationController, this.profileCache),
                         new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController, this.profileCache),
                         new MessageCommand(this.notificationController, this.profileCache),
