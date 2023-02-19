@@ -60,7 +60,7 @@ public class TimeUtil {
                     .append(StringFormatter.formatLong(seconds, "sekundę", "sekundy", "sekund"));
         }
 
-        if (stringBuilder.isEmpty() && millis != 0) {
+        if (stringBuilder.isEmpty() && millis > 0) {
             stringBuilder.append(millis)
                     .append(" ")
                     .append("ms");
