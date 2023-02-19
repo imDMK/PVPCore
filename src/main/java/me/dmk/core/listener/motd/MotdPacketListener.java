@@ -14,6 +14,7 @@ import me.dmk.core.CorePlugin;
 import me.dmk.core.configuration.MotdConfiguration;
 import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +86,10 @@ public class MotdPacketListener {
 
         if (maxPlayers > 0) {
             ping.setPlayersMaximum(maxPlayers);
+        }
+
+        if (Bukkit.getOnlinePlayers().size() > maxPlayers) {
+            ping.setPlayersOnline(maxPlayers);
         }
     }
 }
