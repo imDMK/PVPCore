@@ -23,17 +23,17 @@ public class PlayerCommandPreprocessListener implements Listener {
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
 
-        String message = event.getMessage().toLowerCase();
+        String command = event.getMessage().toLowerCase();
 
         if (profile.hasFight()) {
             boolean anyMatch = this.pluginConfiguration.getFightBlockedCommands()
                     .stream()
-                    .anyMatch(message::startsWith);
+                    .anyMatch(command::startsWith);
 
             if (anyMatch) {
                 this.notificationController.sendMessage(player,
