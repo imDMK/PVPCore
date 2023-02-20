@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class GuildCache {
 
+    private final GuildController guildController;
+
     @Getter
     private final Cache<String, Guild> stringGuildCache = Caffeine.newBuilder()
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build();
-
-    private final GuildController guildController;
 
     public Optional<Guild> getByTag(String tag) {
         return Optional.ofNullable(this.stringGuildCache.asMap().get(tag));

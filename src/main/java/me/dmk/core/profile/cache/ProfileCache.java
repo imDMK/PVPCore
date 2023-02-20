@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ProfileCache {
 
+    private final ProfileController profileController;
+
     @Getter
     private final Cache<UUID, Profile> uuidProfileCache = Caffeine.newBuilder()
             .expireAfterAccess(12, TimeUnit.HOURS)
@@ -29,8 +31,6 @@ public class ProfileCache {
     private final Cache<String, Profile> stringProfileCache = Caffeine.newBuilder()
             .expireAfterAccess(12, TimeUnit.HOURS)
             .build();
-
-    private final ProfileController profileController;
 
     public Optional<Profile> get(UUID uuid) {
         return Optional.ofNullable(this.uuidProfileCache.asMap().get(uuid));
