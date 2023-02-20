@@ -56,23 +56,22 @@ public class MurderUtil {
     }
 
     public static int calulcateAddPoints(MurderType murderType, int victimPoints, int killerPoints) {
-        int change = killerPoints - victimPoints;
-        int add = (int) (murderType.getPointsMultiplier() * (20.0 + change * -0.02));
+        int change = (victimPoints - killerPoints) / 3;
 
+        int add = (int) (murderType.getPointsMultiplier() * change);
         if (add < 25) {
-            return 25;
+            add = 25;
         }
 
-        return Math.max(add, 200);
+        return Math.min(add, 200);
     }
 
     public static int calculateRemovePoints(MurderType murderType, int addedPoints) {
-        int remove = (int) ((addedPoints / 4) * murderType.getPointsMultiplier());
-
+        int remove = (int) (2 * (addedPoints / 4) * murderType.getPointsMultiplier());
         if (remove < 25) {
-            return 25;
+            remove = 25;
         }
 
-        return Math.max(remove, 150);
+        return Math.min(remove, 150);
     }
 }
