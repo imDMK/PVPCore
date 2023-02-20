@@ -21,14 +21,14 @@ public class TimeUtil {
     private static final SimpleDateFormat timeForamt = new SimpleDateFormat("HH:mm");
 
     public static String durationToString(Duration duration) {
-        if (duration.isNegative()) {
+        if (duration.isNegative() || duration.isZero()) {
             return "<1s";
         }
 
         long millis = duration.toMillis();
-        long seconds = duration.toSeconds() % 60L;
-        long minutes = duration.toMinutes() % 60L;
-        long hours = duration.toHours() % 24L;
+        long seconds = duration.toSecondsPart();
+        long minutes = duration.toMinutesPart();
+        long hours = duration.toHoursPart();
         long days = duration.toDays();
 
         StringBuilder stringBuilder = new StringBuilder();
