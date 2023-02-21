@@ -90,6 +90,7 @@ public class GuildMembersGui extends ItemStorage {
                             (isLeaderOrCoLeader ? "<!italic>" + this.warning + " <light_purple>Kilknij SHIFT + PPM<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>." : null),
                             ""
                     ))
+                    .glow(memberIsCoLeader || memberIsLeader || memberIsCreator)
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {
                             this.profileCache.getOrElseLoad(guildMember.getUuid())

@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.util.TimeUtil;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,10 @@ public class StringFormatter {
         long iDivided = i % 10L;
 
         return (i == 1 ? single : (i < 5 || i > 20 && iDivided < 5 && iDivided != 1) ? second : many);
+    }
+
+    public static String formatLocation(Location location) {
+        return "<light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + " z";
     }
 
     public static String formatSuccess() {

@@ -8,6 +8,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.fight.Fight;
 import me.dmk.core.profile.settings.ProfileSettings;
+import me.dmk.core.teleport.TeleportMap;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -28,8 +29,9 @@ public class EntityDamageByEntityListener implements Listener {
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
+    private final TeleportMap teleportMap;
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player player)) {
             return;
@@ -61,6 +63,8 @@ public class EntityDamageByEntityListener implements Listener {
             }
         }
 
+        this.teleportMap.ifTeleporting(player, this.teleportMap::removeTeleporting);
+
         if (!damager.hasPermission("core.fight.bypass")) {
             Fight playerFight = playerProfile.getFight();
             Fight damagerFight = damagerProfile.getFight();
@@ -83,6 +87,7 @@ public class EntityDamageByEntityListener implements Listener {
         BossBar bossBar = BossBar.bossBar(bossBarName, BossBar.MAX_PROGRESS, BossBar.Color.RED, BossBar.Overlay.PROGRESS);
 
         this.notificationController.showBossBar(player, bossBar);
+
         fight.setBossBar(bossBar);
     }
 }

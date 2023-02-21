@@ -69,7 +69,7 @@ public class GuildInviteCommand {
 
         other.getPlayer().ifPresent(otherPlayer ->
                 this.notificationController.sendMessage(otherPlayer, List.of(
-                        StringFormatter.formatWarning() + " <gray>Otrzymano zaproszenie do gildii " + guild.getTag() + ", <light_purple>" + guild.getName() + "<dark_gray>.",
+                        StringFormatter.formatWarning() + " <gray>Otrzymano zaproszenie do gildii o tagu <light_purple>" + guild.getTag() + " <gray>oraz nazwie <light_purple>" + guild.getName() + "<dark_gray>.",
                         "<dark_gray>- <click:run_command:/guild join " + guild.getTag() + ">" + StringFormatter.formatSuccess() + " <dark_gray><- <gray>Kliknij, aby <green>zaakceptować<dark_gray>."
                 ))
         );

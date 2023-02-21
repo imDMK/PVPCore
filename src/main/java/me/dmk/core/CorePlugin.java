@@ -51,6 +51,7 @@ import me.dmk.core.profile.settings.task.VanishTask;
 import me.dmk.core.profile.task.SaveProfileTask;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.task.executor.TaskExecutorImpl;
+import me.dmk.core.teleport.TeleportMap;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.LuckPerms;
@@ -100,6 +101,8 @@ public class CorePlugin extends JavaPlugin {
     private GuildCache guildCache;
     private GlobalChatCache globalChatCache;
     private MurderCache murderCache;
+
+    private TeleportMap teleportMap;
 
     private TaskExecutor taskExecutor;
 
@@ -156,6 +159,9 @@ public class CorePlugin extends JavaPlugin {
         this.globalChatCache = new GlobalChatCache();
         this.murderCache = new MurderCache();
 
+        /* Maps */
+        this.teleportMap = new TeleportMap();
+
         /* Tasks */
         this.taskExecutor = new TaskExecutorImpl();
 
@@ -174,13 +180,14 @@ public class CorePlugin extends JavaPlugin {
                 new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
 
                 new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileCache, this.guildCache, this.globalChatCache),
-                new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache),
+                new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache, this.teleportMap),
                 new EntityResurrectListener(this.notificationController, this.profileCache),
                 new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),
                 new PlayerDeathListener(this.notificationController, this.profileCache, this.murderCache),
                 new PlayerInteractListener(this.profileCache),
                 new PlayerItemConsumeListener(this.profileCache),
                 new PlayerLevelChangeListener(this.notificationController, this.profileCache),
+                new PlayerMoveListener(this.teleportMap),
                 new PrivateMessageListener(this.notificationController)
         ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
 
@@ -250,6 +257,7 @@ public class CorePlugin extends JavaPlugin {
                         new KickCommand(this.notificationController),
                         new MuteCommand(this.notificationController, this.profileController),
                         new SpeedCommand(this.notificationController),
+                        new SetSpawnCommand(this.notificationController),
                         new TeleportCommand(this.notificationController),
                         new TempBanCommand(this.notificationController, this.profileController),
                         new TempMuteCommand(this.notificationController, this.profileController),
@@ -274,11 +282,12 @@ public class CorePlugin extends JavaPlugin {
                         new IgnoreCommand(this.notificationController, this.profileCache),
                         new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController, this.profileCache),
                         new MessageCommand(this.notificationController, this.profileCache),
-                        new PingCommand(this, this.notificationController),
+                        new PingCommand( this.notificationController),
                         new ProfileCommand(this.pluginConfiguration, this.luckPermsController, this.notificationController, this.profileController, this.profileCache, this.guildCache),
                         new ReplyCommand(this.notificationController, this.profileCache),
                         new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.profileCache, this.taskExecutor),
                         new SidebarCommand(this.notificationController, this.profileCache),
+                        new SpawnCommand(this.notificationController, this.teleportMap),
                         new TopsCommand(this.profileController, this.guildController)
                 )
                 .register();

@@ -4,7 +4,6 @@ import dev.rollczi.litecommands.argument.Arg;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
-import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.task.BukkitTask;
 import me.dmk.core.util.string.StringFormatter;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by DMK on 17.01.2023
@@ -23,7 +21,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Route(name = "ping")
 public class PingCommand {
 
-    private final CorePlugin corePlugin;
     private final NotificationController notificationController;
 
     @Execute(required = 0)
@@ -52,36 +49,34 @@ public class PingCommand {
                 StringFormatter.formatWarning() + " <green>Rozpoczynanie ping testu... "
         );
 
-        AtomicInteger integer = new AtomicInteger(0);
         List<Integer> pings = new ArrayList<>();
 
-        new BukkitTask(this.corePlugin, 20, 20) {
+        new BukkitTask(20L, 10L) {
             @Override
-            public void run() {
+            public void onRun(long time) {
                 if (!player.isOnline()) {
-                    cancel();
+                    setCanceled(true);
                     return;
                 }
 
                 int ping = player.getPing();
                 String message = colorPing(ping);
 
+                pings.add(ping);
+
                 notificationController.sendMessage(player,
                         StringFormatter.formatWarning() + " <gray>Twój ping jest " + message
                 );
+            }
 
-                pings.add(ping);
+            @Override
+            public void onFinish() {
+                int sum = pings.stream().reduce(0, Integer::sum);
+                int average = sum / pings.size();
 
-                if (integer.incrementAndGet() >= 10) {
-                    cancel();
-
-                    int sum = pings.stream().reduce(0, Integer::sum);
-                    int average = sum / pings.size();
-
-                    notificationController.sendMessage(player,
-                            StringFormatter.formatWarning() + " <green>Zakończono test pingu<dark_gray>, <green>średni ping " + colorPing(average)
-                    );
-                }
+                notificationController.sendMessage(player,
+                        StringFormatter.formatWarning() + " <green>Zakończono test pingu<dark_gray>, <green>średni ping " + colorPing(average)
+                );
             }
         };
     }

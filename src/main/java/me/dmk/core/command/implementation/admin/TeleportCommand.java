@@ -38,7 +38,7 @@ public class TeleportCommand {
 
         player.teleport(loc);
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>cię na koordynaty <light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>cię na koordynaty " + StringFormatter.formatLocation(location) + "<dark_gray>."
         );
     }
 
@@ -58,7 +58,7 @@ public class TeleportCommand {
 
         other.teleport(loc);
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na kordynaty <light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z<dark_gray>."
+                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na kordynaty " + StringFormatter.formatLocation(location) + "<dark_gray>."
         );
     }
 }

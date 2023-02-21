@@ -1,20 +1,45 @@
 package me.dmk.core.task;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
+import lombok.Setter;
+import me.dmk.core.CorePlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by DMK on 09.02.2023
  */
 
-public abstract class BukkitTask implements Runnable {
-    private final int taskId;
+@Setter
+public abstract class BukkitTask {
 
-    public BukkitTask(JavaPlugin javaPlugin, int initialDelay, int repeatDelay) {
-        this.taskId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(javaPlugin, this, initialDelay, repeatDelay);
+    private boolean canceled;
+
+    public BukkitTask(long initialDelay, long time) {
+        AtomicLong atomicLong = new AtomicLong(time);
+
+        BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (canceled) {
+                    this.cancel();
+                    return;
+                }
+
+                if (atomicLong.decrementAndGet() == -1) {
+                    onFinish();
+                    this.cancel();
+                    return;
+                }
+
+                onRun(atomicLong.get());
+            }
+        };
+
+        bukkitRunnable.runTaskTimerAsynchronously(CorePlugin.getCorePlugin(), initialDelay, 20L);
     }
 
-    public void cancel() {
-        Bukkit.getScheduler().cancelTask(this.taskId);
-    }
+    public abstract void onRun(long time);
+
+    public abstract void onFinish();
 }
