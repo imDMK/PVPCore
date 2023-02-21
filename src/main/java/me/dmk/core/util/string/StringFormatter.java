@@ -96,6 +96,6 @@ public class StringFormatter {
 
     public static String formatPrivateMessage(String senderName, String receivingName, String message) {
         return StringUtil.getOpeningSquareBracket() + SymbolUtil.getEnvelope("<light_purple>") + StringUtil.getClosingSquareBracket()
-                + " " + senderName + " <dark_gray>-> " + receivingName + "<dark_gray>: " + message;
+                + " " + senderName + " <dark_gray>-> " + receivingName + "<dark_gray>: <white>" + message;
     }
 }

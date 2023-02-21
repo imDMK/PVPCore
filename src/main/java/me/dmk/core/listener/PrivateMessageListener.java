@@ -30,11 +30,11 @@ public class PrivateMessageListener implements Listener {
         ProfileSettings senderSettings = senderProfile.getProfileSettings();
         ProfileSettings receivingSettings = receivingProfile.getProfileSettings();
 
-        //if (sender.getUniqueId().equals(receiving.getUniqueId())) {
-            //event.setCancelMessage("<red>Nie możesz wysyłać prywatnych wiadomości do samego siebie<dark_gray>.");
-            //event.setCancelled(true);
-            //return;
-        //}
+        if (sender.getUniqueId().equals(receiving.getUniqueId())) {
+            event.setCancelMessage("<red>Nie możesz wysyłać prywatnych wiadomości do samego siebie<dark_gray>.");
+            event.setCancelled(true);
+            return;
+        }
 
         if (!senderSettings.isPrivateMessages()) {
             event.setCancelMessage("<red>Posiadasz wyłączone prywatne wiadomości<dark_gray>.");
@@ -63,12 +63,14 @@ public class PrivateMessageListener implements Listener {
         String senderName = senderProfile.getColoredName();
         String receivingName = receivingProfile.getColoredName();
 
+        String message = this.notificationController.getMiniMessage().escapeTags(event.getMessage());
+
         this.notificationController.sendMessage(sender,
-                StringFormatter.formatPrivateMessage(senderName, receivingName, event.getMessage())
+                StringFormatter.formatPrivateMessage(senderName, receivingName, message)
         );
 
         this.notificationController.sendMessage(receiving,
-                StringFormatter.formatPrivateMessage(senderName, receivingName, event.getMessage())
+                StringFormatter.formatPrivateMessage(senderName, receivingName, message)
         );
 
         senderSettings.setLastPrivateMessage(receiving.getUniqueId());
