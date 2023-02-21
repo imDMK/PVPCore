@@ -25,20 +25,14 @@ public class MotdPacketListener {
 
     private final CorePlugin corePlugin;
     private final MotdConfiguration motdConfiguration;
-    private final ProtocolManager protocolManager;
     private final MiniMessage miniMessage;
 
     public MotdPacketListener(CorePlugin corePlugin, MotdConfiguration motdConfiguration, ProtocolManager protocolManager, MiniMessage miniMessage) {
         this.corePlugin = corePlugin;
         this.motdConfiguration = motdConfiguration;
-        this.protocolManager = protocolManager;
         this.miniMessage = miniMessage;
 
-        this.addListener();
-    }
-
-    public void addListener() {
-        this.protocolManager.addPacketListener(
+        protocolManager.addPacketListener(
                 new PacketAdapter(
                         this.corePlugin,
                         ListenerPriority.NORMAL,
