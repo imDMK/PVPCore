@@ -69,6 +69,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -192,36 +193,42 @@ public class CorePlugin extends JavaPlugin {
                 new PrivateMessageListener(this.notificationController)
         ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
 
-        new LuckPermsListener(this.notificationController, this.taskExecutor);
         new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager, this.miniMessage);
+        LuckPermsListener luckPermsListener = new LuckPermsListener(this.notificationController, this.taskExecutor);
 
         EventBus eventBus = luckPerms.getEventBus();
-        eventBus.subscribe(this, NodeAddEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeAdd);
-        eventBus.subscribe(this, NodeRemoveEvent.class, new LuckPermsListener(this.notificationController, this.taskExecutor)::onNodeRemove);
+        eventBus.subscribe(this, NodeAddEvent.class, luckPermsListener::onNodeAdd);
+        eventBus.subscribe(this, NodeRemoveEvent.class, luckPermsListener::onNodeRemove);
 
-        Bukkit.getOnlinePlayers().forEach(player -> { //Needed when the server is reloaded.
-            Profile profile = this.profileController.findByUUIDOrCreate(player.getUniqueId(), player.getName());
+        Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+        if (!onlinePlayers.isEmpty()) { //Needed when server reload
+            for (Player player : onlinePlayers) {
+                Profile profile = this.profileController.findByUUIDOrCreate(player.getUniqueId(), player.getName());
 
-            this.profileCache.add(profile);
-            profile.getGuild().ifPresent(guildCache::add);
-        });
+                this.profileCache.add(profile);
+                profile.getGuild().ifPresent(guildCache::add);
+
+                player.teleport(player.getWorld().getSpawnLocation());
+            }
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chat clear");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "broadcast SUBTITLE <green>Serwer został przeładowany.");
+        }
 
         this.getLogger().info("Loaded plugin in " + (System.currentTimeMillis() - start) + " ms.");
     }
 
     @Override
     public void onDisable() {
-        this.pluginConfiguration.load(true);
-        this.pluginConfiguration.save();
+        Bukkit.getScheduler().cancelTasks(this);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.profileCache.get(player.getUniqueId()).ifPresent(profileController::save);
+        }
 
         this.mongoClientService.close();
         this.taskExecutor.shutdownNow();
         this.liteCommands.getPlatform().unregisterAll();
-
-        Bukkit.getScheduler().cancelTasks(this);
-        Bukkit.getOnlinePlayers().forEach(player -> this.profileCache.get(player.getUniqueId())
-                .ifPresent(profile -> this.profileController.save(profile))
-        );
 
         this.getLogger().info("Goodbye!");
     }

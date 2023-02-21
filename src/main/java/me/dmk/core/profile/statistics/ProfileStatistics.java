@@ -57,7 +57,7 @@ public class ProfileStatistics implements Serializable {
         this.killStreak += 1;
 
         if (this.highestKillStreak < this.killStreak) {
-            this.setHighestKillStreak(this.getKillStreak());
+            this.setHighestKillStreak(this.killStreak);
         }
     }
 

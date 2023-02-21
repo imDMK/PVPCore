@@ -80,6 +80,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
+        int addCoins = (killer.hasPermission("core.double.coins") ? 25 : 50);
         int addExp = (killer.hasPermission("core.double.experience") ? 10 : 5);
 
         MurderType murderType = MurderUtil.getMurderType(
@@ -94,6 +95,7 @@ public class PlayerDeathListener implements Listener {
 
         killerStatistics.addPoints(addPoints);
         killerStatistics.increaseKills();
+        killerStatistics.addCoins(addCoins);
 
         killer.giveExp(addExp);
 
