@@ -58,7 +58,7 @@ public class PointsTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<gold>" + SymbolUtil.getStar() + " <gray>Gracz posiada <gold>" + statistics.getPoints() + " <gray>punktów rankingowych<dark_gray>.",
+                            SymbolUtil.getStar("<gold>") + " <gray>Gracz posiada <gold>" + statistics.getPoints() + " <gray>punktów rankingowych<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

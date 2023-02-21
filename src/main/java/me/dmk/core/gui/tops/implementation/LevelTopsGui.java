@@ -58,7 +58,7 @@ public class LevelTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<yellow>" + SymbolUtil.getStar() + " <gray>Gracz posiada <yellow>" + statistics.getLevel() + " <gray>poziom doświadczenia<dark_gray>.",
+                            SymbolUtil.getStar("<yellow>") + " <gray>Gracz posiada <yellow>" + statistics.getLevel() + " <gray>poziom doświadczenia<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

@@ -49,7 +49,7 @@ public class MurderUtil {
     }
 
     public static String formatDeathMessage(String victim, int removedPoints, MurderType murderType, String killer, int addedPoints) {
-        return StringUtil.getOpeningSquareBracket() + "<red>" + SymbolUtil.getDeath() + StringUtil.getClosingSquareBracket() +
+        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getDeath("<red>") + StringUtil.getClosingSquareBracket() +
                 " <red>Gracz " + victim + " "  + StringUtil.getOpeningSquareBracket() + "<red>-" + removedPoints + StringUtil.getClosingSquareBracket() +
                 " <red>" + formatMurderType(murderType) + " " + killer + " " + StringUtil.getOpeningSquareBracket() + "<green>+" + addedPoints + StringUtil.getClosingSquareBracket() +
                 "<dark_gray>.";

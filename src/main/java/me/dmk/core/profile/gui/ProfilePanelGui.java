@@ -74,7 +74,7 @@ public class ProfilePanelGui extends ItemStorage {
                         this.circle + " <gray>Grupa<dark_gray>: <light_purple>" + group.orElse("Brak"),
                         this.circle + " <gray>Założenie konta<dark_gray>: <light_purple>" + TimeUtil.format(profile.getFirstJoin().toInstant()),
                         this.circle + " <gray>Karany<dark_gray>: " + (profile.getPunishments().isEmpty() ? "<green>Nie" : "<red>Tak"),
-                        this.circle + " <gray>Odwiedził nas <light_purple>" + statistics.getEntrances() + " razy <green>" + SymbolUtil.getSmile(),
+                        this.circle + " <gray>Odwiedził nas <light_purple>" + statistics.getEntrances() + " razy " + SymbolUtil.getSmile("<green>"),
                         ""
                 ))
                 .asGuiItem();
@@ -83,15 +83,15 @@ public class ProfilePanelGui extends ItemStorage {
                 .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Statystyki"))
                 .lore(ComponentUtil.asList(
                         "",
-                        "<yellow>" + SymbolUtil.getStar() + " <gray>Poziom doświadczenia<dark_gray>: <yellow>" + statistics.getLevel(),
-                        "<yellow>" + SymbolUtil.getStarSecond() + " <gray>Monety<dark_gray>: <yellow>" + statistics.getCoins(),
-                        "<gold>" + SymbolUtil.getWatch() + " <gray>Spędzony czas<dark_gray>: <gold>" + timePlayed,
+                        "<yellow>" + SymbolUtil.getStar("<yellow>") + " <gray>Poziom doświadczenia<dark_gray>: <yellow>" + statistics.getLevel(),
+                        "<yellow>" + SymbolUtil.getStarSecond("<yellow>") + " <gray>Monety<dark_gray>: <yellow>" + statistics.getCoins(),
+                        "<gold>" + SymbolUtil.getWatch("<gold>") + " <gray>Spędzony czas<dark_gray>: <gold>" + timePlayed,
                         "",
-                        "<gold>" + SymbolUtil.getStar() + " <gray>Punkty<dark_gray>: <gold>" + statistics.getPoints(),
-                        "<red>" + SymbolUtil.getSword() + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
-                        "<red>" + SymbolUtil.getSword() + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
-                        "<red>" + SymbolUtil.getSword() + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
-                        "<gray>" + SymbolUtil.getDeath() + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
+                        "<gold>" + SymbolUtil.getStar("<gold>") + " <gray>Punkty<dark_gray>: <gold>" + statistics.getPoints(),
+                        "<red>" + SymbolUtil.getSword("<red>") + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
+                        "<red>" + SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
+                        "<red>" + SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
+                        "<gray>" + SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
                         "" + (isSelf ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
                 ))
                 .asGuiItem(event -> {
@@ -134,7 +134,7 @@ public class ProfilePanelGui extends ItemStorage {
                                         .name("<green>Gracz nie posiada historii kar")
                                         .lore(
                                                 "",
-                                                this.circle + " <gray>Zajrzyj tutaj innym razem <green>" + SymbolUtil.getSmile(),
+                                                this.circle + " <gray>Zajrzyj tutaj innym razem " + SymbolUtil.getSmile("<green>"),
                                                 ""
                                         )
                                         .updateGui(gui, event.getSlot());

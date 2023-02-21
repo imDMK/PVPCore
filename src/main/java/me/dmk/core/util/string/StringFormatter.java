@@ -29,15 +29,15 @@ public class StringFormatter {
     }
 
     public static String formatSuccess() {
-        return StringUtil.getOpeningSquareBracket() + "<green>" + SymbolUtil.getCheckMark() + StringUtil.getClosingSquareBracket();
+        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getCheckMark("<green>") + StringUtil.getClosingSquareBracket();
     }
 
     public static String formatError() {
-        return StringUtil.getOpeningSquareBracket() + "<red>" + SymbolUtil.getCrossMark() + StringUtil.getClosingSquareBracket();
+        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getCrossMark("<red>") + StringUtil.getClosingSquareBracket();
     }
 
     public static String formatWarning() {
-        return StringUtil.getOpeningSquareBracket() + "<gold>" + SymbolUtil.getExclamationMark() + StringUtil.getClosingSquareBracket();
+        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getExclamationMark("<gold>") + StringUtil.getClosingSquareBracket();
     }
 
     public static String formatBoolean(boolean status) {
@@ -95,7 +95,7 @@ public class StringFormatter {
     }
 
     public static String formatPrivateMessage(String senderName, String receivingName, String message) {
-        return StringUtil.getOpeningSquareBracket() + "<light_purple>" + SymbolUtil.getEnvelope() + StringUtil.getClosingSquareBracket()
+        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getEnvelope("<light_purple>") + StringUtil.getClosingSquareBracket()
                 + " " + senderName + " <dark_gray>-> " + receivingName + "<dark_gray>: " + message;
     }
 }

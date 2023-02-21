@@ -58,11 +58,11 @@ public class GuildsTopsGui extends ItemStorage {
                     .lore(ComponentUtil.asList(
                             "",
                             this.warning + " <gray>Statystyki gildii<dark_gray>:",
-                            "<gold>" + SymbolUtil.getStar() + " <gray>Ranking<dark_gray>: <gold>" + statistics.getRank(),
-                            "<red>" + SymbolUtil.getSword() + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
-                            "<red>" + SymbolUtil.getSword() + " <gray>Seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
-                            "<red>" + SymbolUtil.getSword() + " <gray>Największa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
-                            "<gray>" + SymbolUtil.getDeath() + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
+                            SymbolUtil.getStar("<gold>") + " <gray>Ranking<dark_gray>: <gold>" + statistics.getRank(),
+                            SymbolUtil.getSword("<red>") + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
+                            SymbolUtil.getSword("<red>") + " <gray>Seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
+                            SymbolUtil.getSword("<red>") + " <gray>Największa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
+                            SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
                             ""
                     ))
                     .asGuiItem();

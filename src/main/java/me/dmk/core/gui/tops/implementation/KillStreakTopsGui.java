@@ -62,7 +62,7 @@ public class KillStreakTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<red>" + SymbolUtil.getSword() + " <gray>Gracz posiada <red>" + statistics.getHighestKillStreak() + " <gray>" + killSteakFormat + " pod rząd<dark_gray>.",
+                            SymbolUtil.getSword("<red>") + " <gray>Gracz posiada <red>" + statistics.getHighestKillStreak() + " <gray>" + killSteakFormat + " pod rząd<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

@@ -62,7 +62,7 @@ public class TimeSpentTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<gold>" + SymbolUtil.getWatch() + " <gray>Gracz spędził <gold>" + TimeUtil.durationToString(timeSpent) + " <gray>na naszym serwerze<dark_gray>.",
+                            SymbolUtil.getWatch("<gold>") + " <gray>Gracz spędził <gold>" + TimeUtil.durationToString(timeSpent) + " <gray>na naszym serwerze<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

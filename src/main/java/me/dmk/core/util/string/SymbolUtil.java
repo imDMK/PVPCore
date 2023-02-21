@@ -9,51 +9,51 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SymbolUtil {
 
-    public static String getSmile() {
-        return "☻";
+    public static String getSmile(String color) {
+        return color + "☻";
     }
 
-    public static String getStar() {
-        return "✪";
+    public static String getStar(String color) {
+        return color + "✪";
     }
 
-    public static String getStarSecond() {
-        return "✦";
+    public static String getStarSecond(String color) {
+        return color + "✦";
     }
 
-    public static String getSword() {
-        return "\uD83D\uDDE1";
+    public static String getSword(String color) {
+        return color + "\uD83D\uDDE1";
     }
 
-    public static String getHeart() {
-        return "❤";
+    public static String getHeart(String color) {
+        return color + "❤";
     }
 
-    public static String getEnvelope() {
-        return "✉";
+    public static String getEnvelope(String color) {
+        return color + "✉";
     }
 
-    public static String getWatch() {
-        return "⌚";
+    public static String getWatch(String color) {
+        return color + "⌚";
     }
 
-    public static String getCheckMark() {
-        return "<b>✔</b>";
+    public static String getCheckMark(String color) {
+        return color + "<b>✔</b>";
     }
 
-    public static String getExclamationMark() {
-        return "<b>!</b>";
+    public static String getExclamationMark(String color) {
+        return color + "<b>!</b>";
     }
 
-    public static String getCrossMark() {
-        return "<b>✘</b>";
+    public static String getCrossMark(String color) {
+        return color + "<b>✘</b>";
     }
 
     public static String getCircle(String color) {
         return color + "●";
     }
 
-    public static String getDeath() {
-        return "☠";
+    public static String getDeath(String color) {
+        return color + "☠";
     }
 }

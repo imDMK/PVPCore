@@ -58,7 +58,7 @@ public class CoinsTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<yellow>" + SymbolUtil.getStarSecond() + " <gray>Gracz posiada <yellow>" + statistics.getCoins() + " <gray>monet<dark_gray>.",
+                            SymbolUtil.getStarSecond("<yellow>") + " <gray>Gracz posiada <yellow>" + statistics.getCoins() + " <gray>monet<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

@@ -62,7 +62,7 @@ public class KillsTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<red>" + SymbolUtil.getSword() + " <gray>Gracz posiada <red>" + kills + " <gray>" + killFormat + "<dark_gray>.",
+                            SymbolUtil.getSword("<red>") + " <gray>Gracz posiada <red>" + kills + " <gray>" + killFormat + "<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();

@@ -58,7 +58,7 @@ public class DeathsTopsGui extends ItemStorage {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            "<gray>" + SymbolUtil.getDeath() + " <gray>Gracz posiada " + statistics.getDeaths() + " <gray>śmierci<dark_gray>.",
+                            SymbolUtil.getDeath("<gray>") + " <gray>Gracz posiada " + statistics.getDeaths() + " <gray>śmierci<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();
