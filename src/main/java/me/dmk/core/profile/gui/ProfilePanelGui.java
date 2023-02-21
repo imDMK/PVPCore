@@ -83,15 +83,15 @@ public class ProfilePanelGui extends ItemStorage {
                 .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Statystyki"))
                 .lore(ComponentUtil.asList(
                         "",
-                        "<yellow>" + SymbolUtil.getStar("<yellow>") + " <gray>Poziom doświadczenia<dark_gray>: <yellow>" + statistics.getLevel(),
-                        "<yellow>" + SymbolUtil.getStarSecond("<yellow>") + " <gray>Monety<dark_gray>: <yellow>" + statistics.getCoins(),
-                        "<gold>" + SymbolUtil.getWatch("<gold>") + " <gray>Spędzony czas<dark_gray>: <gold>" + timePlayed,
+                        SymbolUtil.getStar("<yellow>") + " <gray>Poziom doświadczenia<dark_gray>: <yellow>" + statistics.getLevel(),
+                        SymbolUtil.getStarSecond("<yellow>") + " <gray>Monety<dark_gray>: <yellow>" + statistics.getCoins(),
+                        SymbolUtil.getWatch("<gold>") + " <gray>Spędzony czas<dark_gray>: <gold>" + timePlayed,
                         "",
-                        "<gold>" + SymbolUtil.getStar("<gold>") + " <gray>Punkty<dark_gray>: <gold>" + statistics.getPoints(),
-                        "<red>" + SymbolUtil.getSword("<red>") + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
-                        "<red>" + SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
-                        "<red>" + SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
-                        "<gray>" + SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
+                        SymbolUtil.getStar("<gold>") + " <gray>Punkty<dark_gray>: <gold>" + statistics.getPoints(),
+                        SymbolUtil.getSword("<red>") + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
+                        SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
+                        SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
+                        SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
                         "" + (isSelf ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
                 ))
                 .asGuiItem(event -> {
