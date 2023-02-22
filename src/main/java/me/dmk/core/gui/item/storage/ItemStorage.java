@@ -19,7 +19,7 @@ public class ItemStorage {
     public String warning = StringFormatter.formatWarning();
 
     public GuiItem createNextPageButton(PaginatedGui gui) {
-        return ItemBuilder.from(SkullStorage.getMagentaArrowRight())
+        return ItemBuilder.from(SkullStorage.getBlackArrowRight())
                 .name(ComponentUtil.text("<light_purple>Następna strona"))
                 .lore(ComponentUtil.asList(
                         "",
@@ -30,7 +30,7 @@ public class ItemStorage {
     }
 
     public GuiItem createPreviousPageButton(PaginatedGui gui) {
-        return ItemBuilder.from(SkullStorage.getMagentaArrowLeft())
+        return ItemBuilder.from(SkullStorage.getBlackArrowLeft())
                 .name(ComponentUtil.text("<light_purple>Poprzednia strona"))
                 .lore(ComponentUtil.asList(
                         "",
@@ -41,7 +41,7 @@ public class ItemStorage {
     }
 
     public GuiItem createBackButton(GuiAction<InventoryClickEvent> action, String... lore) {
-        return ItemBuilder.from(SkullStorage.getMagentaArrowDown())
+        return ItemBuilder.from(SkullStorage.getBlackArrowDown())
                 .name(ComponentUtil.text("<light_purple>Powrót"))
                 .lore(ComponentUtil.asList(lore))
                 .asGuiItem(action);
