@@ -19,16 +19,6 @@ public class TaskExecutorImpl implements TaskExecutor {
     );
 
     @Override
-    public void run(Runnable runnable) {
-        runnable.run();
-    }
-
-    @Override
-    public void runLater(Runnable runnable, long time, TimeUnit unit) {
-        this.runLaterAsync(runnable, time, unit);
-    }
-
-    @Override
     public void runAsync(Runnable runnable) {
         this.executorService.execute(runnable);
     }
@@ -41,11 +31,6 @@ public class TaskExecutorImpl implements TaskExecutor {
     @Override
     public void runTimerAsync(Runnable runnable, long time, TimeUnit unit) {
         this.scheduledExecutorService.scheduleWithFixedDelay(runnable, 0, time, unit);
-    }
-
-    @Override
-    public void runTimer(Runnable runnable, long time, TimeUnit unit) {
-        this.runTimerAsync(runnable, time, unit);
     }
 
     @Override

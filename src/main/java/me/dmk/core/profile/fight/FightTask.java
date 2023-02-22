@@ -54,7 +54,9 @@ public class FightTask implements Runnable {
                     fight.clear();
 
                     this.taskExecutor.runLaterAsync(
-                            () -> this.notificationController.hideBossBar(player, bossBar), 2L, TimeUnit.SECONDS
+                            () -> this.notificationController.hideBossBar(player, bossBar),
+                            2L,
+                            TimeUnit.SECONDS
                     );
                 }
             });
