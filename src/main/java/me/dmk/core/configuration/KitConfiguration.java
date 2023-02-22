@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by DMK on 21.02.2023
  */
+
 @Getter
 public class KitConfiguration extends OkaeriConfig {
 
