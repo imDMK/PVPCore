@@ -66,11 +66,11 @@ public class PrivateMessageListener implements Listener {
         String message = this.notificationController.getMiniMessage().escapeTags(event.getMessage());
 
         this.notificationController.sendMessage(sender,
-                StringFormatter.formatPrivateMessage(senderName, receivingName, message)
+                StringFormatter.formatPrivateMessage("<gray>Ja", receivingName, message)
         );
 
         this.notificationController.sendMessage(receiving,
-                StringFormatter.formatPrivateMessage(senderName, receivingName, message)
+                StringFormatter.formatPrivateMessage(senderName, "<gray>Ja", message)
         );
 
         senderSettings.setLastPrivateMessage(receiving.getUniqueId());
