@@ -3,14 +3,8 @@ package me.dmk.core.profile.settings.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.item.storage.ItemStorage;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
@@ -22,14 +16,7 @@ import org.bukkit.entity.Player;
  * Created by DMK on 19.01.2023
  */
 
-@AllArgsConstructor
-public class MessagesSettingsGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class MessagesSettingsGui extends PluginGui {
 
     public void open(Player player, Profile profile) {
         Gui gui = Gui.gui()
@@ -125,7 +112,7 @@ public class MessagesSettingsGui extends ItemStorage {
                 });
 
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfileSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
+                        new ProfileSettingsGui().open(player, profile),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień profilu<dark_gray>.",
                 ""

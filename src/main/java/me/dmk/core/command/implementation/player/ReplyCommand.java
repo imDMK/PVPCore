@@ -30,7 +30,7 @@ public class ReplyCommand {
 
     @Execute(min = 1)
     void execute(Player player, @Joiner @Name("message") String message) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         UUID lastPrivateMessage = profileSettings.getLastPrivateMessage();
@@ -49,7 +49,7 @@ public class ReplyCommand {
             return;
         }
 
-        Profile otherProfile = this.profileCache.getOrElseThrow(other.getUniqueId());
+        Profile otherProfile = this.profileCache.getOrElseThrow(other);
 
         PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(player, profile, other, otherProfile, message);
         Bukkit.getPluginManager().callEvent(privateMessageEvent);

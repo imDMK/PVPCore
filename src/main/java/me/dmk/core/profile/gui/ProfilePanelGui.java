@@ -3,17 +3,13 @@ package me.dmk.core.profile.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.gui.item.storage.SkullStorage;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.gui.GuildPanelGui;
-import me.dmk.core.luckperms.LuckPermsController;
+import me.dmk.core.kit.Kit;
+import me.dmk.core.kit.gui.KitPreviewGui;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.PunishmentHistoryGui;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.gui.ProfileSettingsGui;
@@ -34,14 +30,7 @@ import java.util.Optional;
  * Created by DMK on 17.01.2023
  */
 
-@AllArgsConstructor
-public class ProfilePanelGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class ProfilePanelGui extends PluginGui {
 
     public void open(Player player, Profile profile) {
         Gui gui = Gui.gui()
@@ -87,6 +76,7 @@ public class ProfilePanelGui extends ItemStorage {
                         SymbolUtil.getStarSecond("<yellow>") + " <gray>Monety<dark_gray>: <yellow>" + statistics.getCoins(),
                         SymbolUtil.getWatch("<gold>") + " <gray>Spędzony czas<dark_gray>: <gold>" + timePlayed,
                         "",
+                        SymbolUtil.getSword("<yellow>") + " <gray>Poziom zestawu<dark_gray>: <yellow>" + statistics.getKitLevel(),
                         SymbolUtil.getStar("<gold>") + " <gray>Punkty<dark_gray>: <gold>" + statistics.getPoints(),
                         SymbolUtil.getSword("<red>") + " <gray>Zabójstwa<dark_gray>: <red>" + statistics.getKills(),
                         SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
@@ -119,7 +109,17 @@ public class ProfilePanelGui extends ItemStorage {
                         this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do poglądu zestawu<dark_gray>.",
                         ""
                 ))
-                .asGuiItem();
+                .asGuiItem(event -> {
+                    Optional<Kit> kit = this.kitMap.get(statistics.getKitLevel());
+                    if (kit.isEmpty()) {
+                        new BarrierBuilder()
+                                .name("<red>Nie znaleziono zestawu")
+                                .updateGui(gui, event.getSlot());
+                        return;
+                    }
+
+                    new KitPreviewGui().open(player, profile, kit.get());
+                });
 
         GuiItem punishmentsItem = ItemBuilder.from(Material.TARGET)
                         .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Historia kar"))
@@ -141,7 +141,7 @@ public class ProfilePanelGui extends ItemStorage {
                                 return;
                             }
 
-                            new PunishmentHistoryGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache)
+                            new PunishmentHistoryGui()
                                     .open(player, profile);
                         });
 
@@ -155,12 +155,13 @@ public class ProfilePanelGui extends ItemStorage {
                             ""
                     ))
                     .asGuiItem(event ->
-                            new ProfileSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile)
+                            new ProfileSettingsGui().open(player, profile)
                     );
         } else {
             Optional<Profile> playerProfile = this.profileCache.get(player.getUniqueId());
 
-            boolean playerIgnoredProfile = playerProfile.map(p -> p.getProfileSettings().getIgnoredPlayers().contains(profile.getUuid()))
+            boolean playerIgnoredProfile = playerProfile
+                    .map(p -> p.getProfileSettings().getIgnoredPlayers().contains(profile.getUuid()))
                     .orElse(false);
 
             settingsOrIgnoreItem = ItemBuilder.from(playerIgnoredProfile ? Material.LIME_DYE : Material.RED_DYE)
@@ -190,7 +191,7 @@ public class ProfilePanelGui extends ItemStorage {
                             ""
                     ))
                     .asGuiItem(event ->
-                            new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild)
+                            new GuildPanelGui().open(player, profile, guild)
                     );
 
             gui.setItem(40, guildItem);

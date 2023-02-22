@@ -33,7 +33,7 @@ public class GuildLeaveCommand {
     @Async
     @Execute
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {

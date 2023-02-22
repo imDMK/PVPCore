@@ -34,7 +34,7 @@ public class GuildAllianceCommand {
     @Execute(required = 1)
     @Route(name = "accept")
     void executeAccept(Player player, @Arg Guild otherGuild) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
@@ -68,7 +68,7 @@ public class GuildAllianceCommand {
     @Execute(required = 1)
     @Route(name = "break")
     void executeBreak(Player player, @Arg Guild otherGuild) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
@@ -101,7 +101,7 @@ public class GuildAllianceCommand {
     @Execute(required = 1)
     @Route(name = "invite")
     void executeInvite(Player player, @Arg Guild otherGuild) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
 

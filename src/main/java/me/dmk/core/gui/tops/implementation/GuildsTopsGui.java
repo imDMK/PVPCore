@@ -4,13 +4,10 @@ import com.mongodb.client.model.Sorts;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.gui.item.storage.ItemStorage;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.tops.TopsGui;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.statistics.GuildStatistics;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.SymbolUtil;
 import org.bson.conversions.Bson;
@@ -23,11 +20,7 @@ import java.util.List;
  * Created by DMK on 13.02.2023
  */
 
-@AllArgsConstructor
-public class GuildsTopsGui extends ItemStorage {
-
-    private final ProfileController profileController;
-    private final GuildController guildController;
+public class GuildsTopsGui extends PluginGui {
 
     public void open(Player player) {
         Gui gui = Gui.gui()
@@ -37,7 +30,7 @@ public class GuildsTopsGui extends ItemStorage {
                 .create();
 
         GuiItem backButton = this.createBackButton(event ->
-                        new TopsGui(this.profileController, this.guildController).open(player),
+                        new TopsGui().open(player),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""

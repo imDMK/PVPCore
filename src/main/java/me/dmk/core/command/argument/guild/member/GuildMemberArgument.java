@@ -47,7 +47,7 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
             return Result.error("&cNie możesz użyć tej komendy&8.");
         }
 
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
@@ -76,7 +76,7 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
             return Collections.emptyList();
         }
 
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {

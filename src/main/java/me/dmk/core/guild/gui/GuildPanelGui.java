@@ -3,20 +3,14 @@ package me.dmk.core.guild.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.member.GuildMembersGui;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import me.dmk.core.guild.treasury.GuildTreasuryGui;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.PlayerUtil;
 import me.dmk.core.util.TimeUtil;
@@ -31,14 +25,7 @@ import java.util.Optional;
  * Created by DMK on 19.01.2023
  */
 
-@AllArgsConstructor
-public class GuildPanelGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class GuildPanelGui extends PluginGui {
 
     public void open(Player player, Profile profile, Guild guild) {
         Gui gui = Gui.gui()
@@ -110,7 +97,7 @@ public class GuildPanelGui extends ItemStorage {
                         ""
                 ))
                 .asGuiItem(event ->
-                        new GuildMembersGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild)
+                        new GuildMembersGui().open(player, profile, guild)
                 );
 
         GuiItem coinsTrasureItem = ItemBuilder.from(Material.SUNFLOWER)
@@ -125,7 +112,7 @@ public class GuildPanelGui extends ItemStorage {
                         return;
                     }
 
-                    new GuildTreasuryGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild);
+                    new GuildTreasuryGui().open(player, profile, guild);
                 });
 
         GuiItem alliancesItem = ItemBuilder.from(Material.SHIELD)
@@ -143,7 +130,7 @@ public class GuildPanelGui extends ItemStorage {
                         return;
                     }
 
-                    new GuildAllianceGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild);
+                    new GuildAllianceGui().open(player, profile, guild);
                 });
 
         GuiItem leaveOrDeleteGuildItem;

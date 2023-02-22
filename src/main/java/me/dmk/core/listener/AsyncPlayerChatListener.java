@@ -51,7 +51,7 @@ public class AsyncPlayerChatListener implements Listener {
         String message = (player.hasPermission("core.chat.message.color") ? event.getMessage() : this.miniMessage.escapeTags(event.getMessage()))
                 .replace("<3", SymbolUtil.getHeart("<red>"));
 
-        Profile profile = this.profileCache.getOrElseThrow(uuid);
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
         ProfileStatistics profileStatistics = profile.getProfileStatistics();
 

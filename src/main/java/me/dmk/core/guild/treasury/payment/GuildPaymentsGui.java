@@ -4,16 +4,10 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.item.storage.ItemStorage;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.treasury.GuildTreasuryGui;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.TimeUtil;
 import org.bukkit.Material;
@@ -26,14 +20,7 @@ import java.util.List;
  * Created by DMK on 01.02.2023
  */
 
-@AllArgsConstructor
-public class GuildPaymentsGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class GuildPaymentsGui extends PluginGui {
 
     public void open(Player player, Profile profile, Guild guild) {
         PaginatedGui gui = Gui.paginated()
@@ -44,7 +31,7 @@ public class GuildPaymentsGui extends ItemStorage {
 
         GuiItem previousButton = this.createPreviousPageButton(gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new GuildTreasuryGui(this.pluginConfiguration,  this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
+                        new GuildTreasuryGui().open(player, profile, guild),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildyjnego<dark_gray>.",
                 ""

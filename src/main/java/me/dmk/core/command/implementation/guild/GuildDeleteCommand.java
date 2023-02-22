@@ -4,7 +4,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.gui.ConfirmationGui;
+import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
@@ -35,7 +35,7 @@ public class GuildDeleteCommand {
 
     @Execute(required = 0)
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {

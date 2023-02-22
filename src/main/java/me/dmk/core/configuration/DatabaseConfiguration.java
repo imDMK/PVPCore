@@ -2,7 +2,6 @@ package me.dmk.core.configuration;
 
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
-import eu.okaeri.configs.annotation.Header;
 import lombok.Getter;
 
 /**
@@ -10,10 +9,6 @@ import lombok.Getter;
  */
 
 @Getter
-
-@Header("#")
-@Header("# MongoDB database configuration")
-@Header("#")
 public class DatabaseConfiguration extends OkaeriConfig {
 
     @Comment("# Boolean value whether to connect to the database user.")

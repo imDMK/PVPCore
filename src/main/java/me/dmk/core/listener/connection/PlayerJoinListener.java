@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.guild.cache.GuildCache;
+import me.dmk.core.kit.KitMap;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
@@ -29,11 +30,10 @@ import java.util.UUID;
 public class PlayerJoinListener implements Listener {
 
     private final PluginConfiguration pluginConfiguration;
-
     private final NotificationController notificationController;
-
     private final ProfileCache profileCache;
     private final GuildCache guildCache;
+    private final KitMap kitMap;
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {

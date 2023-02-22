@@ -5,7 +5,7 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.ConfirmationGui;
+import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
@@ -34,7 +34,7 @@ public class ResetStatisticsCommand {
 
     @Execute
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         int coinsToResetStatistics = this.pluginConfiguration.getCoinsToResetStatistics();
@@ -69,6 +69,7 @@ public class ResetStatisticsCommand {
                     this.notificationController.sendMessage(player,
                             StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zresetowano <gray>twoje statystyki<dark_gray>."
                     );
+
                     player.closeInventory();
                 })
                 .closeAfterCancel()

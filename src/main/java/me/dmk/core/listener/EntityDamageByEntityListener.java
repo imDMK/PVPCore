@@ -45,10 +45,10 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
 
-        Profile playerProfile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile playerProfile = this.profileCache.getOrElseThrow(player);
         ProfileSettings playerSettings = playerProfile.getProfileSettings();
 
-        Profile damagerProfile = this.profileCache.getOrElseThrow(damager.getUniqueId());
+        Profile damagerProfile = this.profileCache.getOrElseThrow(damager);
 
         if (playerSettings.isGod()) {
             event.setCancelled(true);

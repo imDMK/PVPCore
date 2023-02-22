@@ -4,14 +4,8 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import lombok.RequiredArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.item.storage.ItemStorage;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.TimeUtil;
@@ -26,14 +20,7 @@ import java.util.List;
  * Created by DMK on 18.01.2023
  */
 
-@RequiredArgsConstructor
-public class PunishmentHistoryGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class PunishmentHistoryGui extends PluginGui {
 
     public void open(Player player, Profile profile) {
         PaginatedGui gui = Gui.paginated()
@@ -44,7 +31,7 @@ public class PunishmentHistoryGui extends ItemStorage {
 
         GuiItem previousButton = this.createPreviousPageButton(gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfilePanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
+                        new ProfilePanelGui().open(player, profile),
                 "",
                 this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
                 ""
@@ -88,11 +75,11 @@ public class PunishmentHistoryGui extends ItemStorage {
             );
 
             if (punishment.isRemoved()) {
-                lore.addAll(ComponentUtil.asList(
-                        this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
-                        this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getRemovedAt().toInstant()),
-                        ""
-                ));
+                //lore.addAll(Arrays.asList(
+                        //this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
+                        //this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getRemovedAt().toInstant()),
+                        //""
+                //));
             }
 
             GuiItem punishmentItem = ItemBuilder.from(material)

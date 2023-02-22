@@ -3,19 +3,13 @@ package me.dmk.core.guild.treasury;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.gui.GuildPanelGui;
 import me.dmk.core.guild.treasury.payment.GuildPaymentsGui;
 import me.dmk.core.guild.treasury.payment.GuildTopPaymentsGui;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
@@ -26,14 +20,7 @@ import org.bukkit.entity.Player;
  * Created by DMK on 01.02.2023
  */
 
-@AllArgsConstructor
-public class GuildTreasuryGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class GuildTreasuryGui extends PluginGui {
 
     public void open(Player player, Profile profile, Guild guild) {
         Gui gui = Gui.gui()
@@ -51,7 +38,7 @@ public class GuildTreasuryGui extends ItemStorage {
         boolean canExtend = profile.getProfileStatistics().getCoins() > coinsToExtendGuild;
 
         GuiItem backButton = this.createBackButton(event ->
-                        new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
+                        new GuildPanelGui().open(player, profile, guild),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
@@ -75,7 +62,7 @@ public class GuildTreasuryGui extends ItemStorage {
                         return;
                     }
 
-                    new GuildTopPaymentsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild);
+                    new GuildTopPaymentsGui().open(player, profile, guild);
                 });
 
         GuiItem coinsItem = ItemBuilder.from(Material.SUNFLOWER)
@@ -107,7 +94,7 @@ public class GuildTreasuryGui extends ItemStorage {
                         return;
                     }
 
-                    new GuildPaymentsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild);
+                    new GuildPaymentsGui().open(player, profile, guild);
                 });
 
         gui.setItem(12, topsItem);

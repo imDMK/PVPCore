@@ -38,7 +38,7 @@ public class IncognitoCommand {
     @Async
     @Execute(required = 0)
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         IncognitoSettings incognitoSettings = profile.getProfileSettings().getIncognitoSettings();
 
         boolean changed = this.incognitoController.changeSkin(player, profile);
@@ -59,7 +59,7 @@ public class IncognitoCommand {
     @Execute(route = "changeIdentifier")
     @Permission("core.command.incognito.changeidentifier")
     void executeChangeIdentifier(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         IncognitoSettings incognitoSettings = profile.getProfileSettings().getIncognitoSettings();
 
         if (!incognitoSettings.canChangeIdentifier()) {

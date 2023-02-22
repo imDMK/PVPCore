@@ -3,15 +3,9 @@ package me.dmk.core.profile.settings.nametag.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
-import me.dmk.core.gui.item.storage.ItemStorage;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.util.ComponentUtil;
 import org.bukkit.Material;
@@ -21,14 +15,7 @@ import org.bukkit.entity.Player;
  * Created by DMK on 19.01.2023
  */
 
-@AllArgsConstructor
-public class ColorNameGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class ColorNameGui extends PluginGui {
 
     public void open(Player player, Profile profile) {
         ColorNameType gray = ColorNameType.DEAFULT;
@@ -180,9 +167,7 @@ public class ColorNameGui extends ItemStorage {
                         this.circle + " " + purpleGradient.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), purpleGradient)
-                );
+                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), purpleGradient));
 
         GuiItem aquaGradientItem = ItemBuilder.from(Material.LIGHT_BLUE_GLAZED_TERRACOTTA)
                 .name(ComponentUtil.text(aquaGradient.getFormat() + "Jasny-niebieski gradient"))
@@ -192,9 +177,7 @@ public class ColorNameGui extends ItemStorage {
                         this.circle + " " + aquaGradient.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), aquaGradient)
-                );
+                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), aquaGradient));
 
         GuiItem blueGradientItem = ItemBuilder.from(Material.BLUE_GLAZED_TERRACOTTA)
                 .name(ComponentUtil.text(blueGradient.getFormat() + "Jasny niebieski-ciemny niebieski gradient"))
@@ -204,24 +187,20 @@ public class ColorNameGui extends ItemStorage {
                         this.circle + " " + blueGradient.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), blueGradient)
-                );
+                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), blueGradient));
 
         GuiItem grayGradientItem = ItemBuilder.from(Material.GRAY_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text("Szary-ciemny szary gradient"))
+                .name(ComponentUtil.text(grayGradient.getFormat() + "Szary-ciemny szary gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
                         this.circle + " " + grayGradient.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), grayGradient)
-                );
+                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), grayGradient));
 
         GuiItem backButton = this.createBackButton(event ->
-                        new NameTagSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
+                        new NameTagSettingsGui().open(player, profile),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
                 ""
@@ -241,7 +220,7 @@ public class ColorNameGui extends ItemStorage {
         gui.setItem(30, goldYellowGradientItem);
         gui.setItem(31, greenGradientItem);
 
-        gui.setItem(32, purpleColorItem);
+        gui.setItem(32, purpleGradientItem);
         gui.setItem(33, aquaGradientItem);
         gui.setItem(38, blueGradientItem);
         gui.setItem(42, grayGradientItem);

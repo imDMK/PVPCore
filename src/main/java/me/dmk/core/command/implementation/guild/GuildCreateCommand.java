@@ -39,7 +39,7 @@ public class GuildCreateCommand {
     @Async
     @Execute(required = 2)
     void execute(Player player, @Arg @Name("tag") String tag, @Arg @Name("name") String name) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         if (profile.getGuild().isPresent()) {

@@ -17,6 +17,7 @@ public class ProfileStatistics implements Serializable {
 
     private int level = 0;
     private int coins = 0;
+    private int kitLevel = 1;
 
     private int points = CorePlugin.getCorePlugin().getPluginConfiguration().getDefaultPoints();
     private int kills = 0;
@@ -42,6 +43,10 @@ public class ProfileStatistics implements Serializable {
 
     public void addCoins(int coins) {
         this.coins += coins;
+    }
+
+    public void increaseKitLevel() {
+        this.kitLevel += 1;
     }
 
     public void addPoints(int points) {

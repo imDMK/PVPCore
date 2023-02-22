@@ -32,7 +32,7 @@ public class GuildJoinCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, @Arg Guild guild) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         if (!guild.isInvited(player.getUniqueId())) {
             this.notificationController.sendMessage(player,

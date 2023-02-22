@@ -1,4 +1,4 @@
-package me.dmk.core.gui;
+package me.dmk.core.gui.confirmation;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;

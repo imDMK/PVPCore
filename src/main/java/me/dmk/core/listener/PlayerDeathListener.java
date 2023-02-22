@@ -44,7 +44,7 @@ public class PlayerDeathListener implements Listener {
 
         Player victim = event.getEntity();
 
-        Profile victimProfile = this.profileCache.getOrElseThrow(victim.getUniqueId());
+        Profile victimProfile = this.profileCache.getOrElseThrow(victim);
         ProfileStatistics victimStatistics = victimProfile.getProfileStatistics();
         ProfileSettings victimSettings = victimProfile.getProfileSettings();
         IncognitoSettings victimIncognitoSettings = victimSettings.getIncognitoSettings();
@@ -61,7 +61,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        Profile killerProfile = this.profileCache.getOrElseThrow(killer.getUniqueId());
+        Profile killerProfile = this.profileCache.getOrElseThrow(killer);
         ProfileStatistics killerStatistics = killerProfile.getProfileStatistics();
         ProfileSettings killerSettings = killerProfile.getProfileSettings();
         IncognitoSettings killerIncognitoSettings = killerSettings.getIncognitoSettings();

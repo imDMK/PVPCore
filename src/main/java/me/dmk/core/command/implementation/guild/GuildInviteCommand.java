@@ -31,7 +31,7 @@ public class GuildInviteCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, @Arg Profile other) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
 

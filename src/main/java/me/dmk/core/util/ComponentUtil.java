@@ -28,4 +28,11 @@ public class ComponentUtil {
                 .map(ComponentUtil::text)
                 .toList();
     }
+
+    public static List<Component> asList(List<String> strings) {
+        return strings.stream()
+                .filter(Objects::nonNull)
+                .map(ComponentUtil::text)
+                .toList();
+    }
 }

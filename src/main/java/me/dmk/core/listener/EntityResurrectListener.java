@@ -36,7 +36,7 @@ public class EntityResurrectListener implements Listener {
             return;
         }
 
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         IncognitoSettings incognitoSettings = profile.getProfileSettings().getIncognitoSettings();
 
         profile.getProfileStatistics().increaseUsedTotemOfUndying();

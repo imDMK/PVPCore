@@ -3,15 +3,9 @@ package me.dmk.core.profile.settings.nametag.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
-import me.dmk.core.gui.item.storage.ItemStorage;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.gui.ProfileSettingsGui;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
@@ -25,14 +19,7 @@ import org.bukkit.entity.Player;
  * Created by DMK on 19.01.2023
  */
 
-@AllArgsConstructor
-public class NameTagSettingsGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class NameTagSettingsGui extends PluginGui {
 
     public void open(Player player, Profile profile) {
         ProfileSettings profileSettings = profile.getProfileSettings();
@@ -69,7 +56,7 @@ public class NameTagSettingsGui extends ItemStorage {
                         return;
                     }
 
-                    new ColorNameGui(this.pluginConfiguration, this.luckPermsController, this.profileController,  this.profileCache, this.guildCache)
+                    new ColorNameGui()
                             .open(player, profile);
                 });
 
@@ -96,12 +83,12 @@ public class NameTagSettingsGui extends ItemStorage {
                         return;
                     }
 
-                    new CustomSuffixGui(this.pluginConfiguration, this.luckPermsController, this.profileController,  this.profileCache, this.guildCache)
+                    new CustomSuffixGui()
                             .open(player, profile);
                 });
 
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfileSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
+                        new ProfileSettingsGui().open(player, profile),
                 "",
                 this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu ustawień<dark_gray>.",
                 ""

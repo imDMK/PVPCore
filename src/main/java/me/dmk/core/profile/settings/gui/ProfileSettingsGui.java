@@ -3,16 +3,10 @@ package me.dmk.core.profile.settings.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
-import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.gui.item.storage.SkullStorage;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.board.Board;
@@ -32,14 +26,7 @@ import org.bukkit.inventory.ItemStack;
  * Created by DMK on 19.01.2023
  */
 
-@AllArgsConstructor
-public class ProfileSettingsGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class ProfileSettingsGui extends PluginGui {
 
     public void open(Player player, Profile profile) {
         Gui gui = Gui.gui()
@@ -92,7 +79,7 @@ public class ProfileSettingsGui extends ItemStorage {
                 ))
                 .glow(colorNameType != ColorNameType.DEAFULT || customSuffixType != CustomSuffixType.NONE)
                 .asGuiItem(event ->
-                        new NameTagSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile)
+                        new NameTagSettingsGui().open(player, profile)
                 );
 
         ItemStack incognitoHead = incognitoSettings.isEnabled() ? new ItemStack(Material.WITHER_SKELETON_SKULL) : SkullStorage.createPlayerHeadStack(profile.getUuid());
@@ -123,7 +110,7 @@ public class ProfileSettingsGui extends ItemStorage {
                         ""
                 ))
                 .asGuiItem(event ->
-                        new MessagesSettingsGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile)
+                        new MessagesSettingsGui().open(player, profile)
                 );
 
         GuiItem ignoredPlayersItem = ItemBuilder.from(Material.RED_DYE)
@@ -141,11 +128,11 @@ public class ProfileSettingsGui extends ItemStorage {
                         return;
                     }
 
-                    new IgnoredPlayersGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile);
+                    new IgnoredPlayersGui().open(player, profile);
                 });
 
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfilePanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile),
+                        new ProfilePanelGui().open(player, profile),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
                 ""

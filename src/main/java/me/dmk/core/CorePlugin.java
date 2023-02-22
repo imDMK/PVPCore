@@ -33,6 +33,7 @@ import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.member.GuildMember;
+import me.dmk.core.kit.KitMap;
 import me.dmk.core.listener.*;
 import me.dmk.core.listener.connection.PlayerJoinListener;
 import me.dmk.core.listener.connection.PlayerLoginListener;
@@ -103,6 +104,7 @@ public class CorePlugin extends JavaPlugin {
     private GlobalChatCache globalChatCache;
     private MurderCache murderCache;
 
+    private KitMap kitMap;
     private TeleportMap teleportMap;
 
     private TaskExecutor taskExecutor;
@@ -162,6 +164,9 @@ public class CorePlugin extends JavaPlugin {
         this.murderCache = new MurderCache();
 
         /* Maps */
+        this.kitMap = new KitMap(this.pluginConfiguration.getKitConfiguration());
+        this.kitMap.loadKitsFromConfiguration();
+
         this.teleportMap = new TeleportMap();
 
         /* Tasks */
@@ -177,7 +182,7 @@ public class CorePlugin extends JavaPlugin {
 
         /* Listeners */
         Stream.of(
-                new PlayerJoinListener(this.pluginConfiguration, this.notificationController, this.profileCache, this.guildCache),
+                new PlayerJoinListener(this.pluginConfiguration, this.notificationController, this.profileCache, this.guildCache, this.kitMap),
                 new PlayerLoginListener(this.profileCache),
                 new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
 
@@ -201,7 +206,7 @@ public class CorePlugin extends JavaPlugin {
         eventBus.subscribe(this, NodeRemoveEvent.class, luckPermsListener::onNodeRemove);
 
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-        if (!onlinePlayers.isEmpty()) { //Needed when server reload
+        if (!onlinePlayers.isEmpty()) {
             for (Player player : onlinePlayers) {
                 Profile profile = this.profileController.findByUUIDOrCreate(player.getUniqueId(), player.getName());
 
@@ -280,7 +285,7 @@ public class CorePlugin extends JavaPlugin {
                         new GuildDepositCommand(this.notificationController, this.profileController,this.guildController, this.profileCache),
                         new GuildExtendCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.profileCache, this.taskExecutor),
                         new GuildForceDeleteCommand(this.notificationController, this.guildController, this.guildCache, this.taskExecutor),
-                        new GuildInformationCommand(this.pluginConfiguration, this.luckPermsController, this.notificationController,  this.profileController, this.profileCache, this.guildCache),
+                        new GuildInformationCommand(this.notificationController, this.profileCache),
                         new GuildInviteCommand(this.notificationController, this.profileCache),
                         new GuildJoinCommand(this.notificationController, this.profileController,this.guildController, this.profileCache),
                         new GuildKickCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
@@ -289,14 +294,15 @@ public class CorePlugin extends JavaPlugin {
                         new GroupsCommand(this.luckPermsController, this.notificationController),
                         new IgnoreCommand(this.notificationController, this.profileCache),
                         new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController, this.profileCache),
+                        new KitCommand(this.notificationController, this.profileController, this.profileCache, this.kitMap),
                         new MessageCommand(this.notificationController, this.profileCache),
                         new PingCommand( this.notificationController),
-                        new ProfileCommand(this.pluginConfiguration, this.luckPermsController, this.notificationController, this.profileController, this.profileCache, this.guildCache),
+                        new ProfileCommand(this.notificationController, this.profileController, this.profileCache),
                         new ReplyCommand(this.notificationController, this.profileCache),
                         new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.profileCache, this.taskExecutor),
                         new SidebarCommand(this.notificationController, this.profileCache),
                         new SpawnCommand(this.notificationController, this.teleportMap),
-                        new TopsCommand(this.profileController, this.guildController)
+                        new TopsCommand()
                 )
                 .register();
     }

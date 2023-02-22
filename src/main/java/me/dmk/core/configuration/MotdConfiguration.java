@@ -2,17 +2,12 @@ package me.dmk.core.configuration;
 
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
-import eu.okaeri.configs.annotation.Header;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
-
-@Header("#")
-@Header("# Motd configuration")
-@Header("#")
 public class MotdConfiguration extends OkaeriConfig {
 
     @Comment("# Motd line, use {NL} to create a new line.")

@@ -4,16 +4,10 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import lombok.AllArgsConstructor;
-import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.gui.ConfirmationGui;
-import me.dmk.core.gui.item.storage.ItemStorage;
+import me.dmk.core.gui.PluginGui;
+import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.text.Component;
@@ -28,14 +22,7 @@ import java.util.Optional;
  * Created by DMK on 01.02.2023
  */
 
-@AllArgsConstructor
-public class GuildAllianceGui extends ItemStorage {
-
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
-    private final ProfileController profileController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+public class GuildAllianceGui extends PluginGui {
 
     public void open(Player player, Profile profile, Guild guild) {
         PaginatedGui gui = Gui.paginated()
@@ -48,7 +35,7 @@ public class GuildAllianceGui extends ItemStorage {
 
         GuiItem previousButton = this.createPreviousPageButton(gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, guild),
+                        new GuildPanelGui().open(player, profile, guild),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
@@ -88,7 +75,7 @@ public class GuildAllianceGui extends ItemStorage {
                     .lore(lore)
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {
-                            new GuildPanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache).open(player, profile, allianceGuild);
+                            new GuildPanelGui().open(player, profile, allianceGuild);
                         } else if (event.isRightClick() && event.isShiftClick()) {
                             new ConfirmationGui(player)
                                     .create(this.circle + " <light_purple>Zerwanie sojuszu z " + allianceGuild.getTag() + " " + this.circle)

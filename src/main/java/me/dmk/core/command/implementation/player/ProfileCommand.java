@@ -7,9 +7,6 @@ import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.guild.cache.GuildCache;
-import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
@@ -26,24 +23,21 @@ import org.bukkit.entity.Player;
 @Route(name = "profile")
 public class ProfileCommand {
 
-    private final PluginConfiguration pluginConfiguration;
-    private final LuckPermsController luckPermsController;
     private final NotificationController notificationController;
     private final ProfileController profileController;
     private final ProfileCache profileCache;
-    private final GuildCache guildCache;
 
     @Execute(required = 0)
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
-        new ProfilePanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache)
+        new ProfilePanelGui()
                 .open(player, profile);
     }
 
     @Execute(required = 1)
     void execute(Player player, @Arg Profile profile) {
-        new ProfilePanelGui(this.pluginConfiguration, this.luckPermsController, this.profileController, this.profileCache, this.guildCache)
+        new ProfilePanelGui()
                 .open(player, profile);
     }
 

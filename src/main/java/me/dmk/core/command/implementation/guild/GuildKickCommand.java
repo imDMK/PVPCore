@@ -35,7 +35,7 @@ public class GuildKickCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, @Arg GuildMember guildMember) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
 

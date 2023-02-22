@@ -29,7 +29,7 @@ public class VanishCommand {
 
     @Execute
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         if (profileSettings.isVanish()) {

@@ -27,7 +27,7 @@ public class SidebarCommand {
     @Async
     @Execute
     void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         Board board = profileSettings.getBoard();

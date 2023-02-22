@@ -36,7 +36,7 @@ public class GuildDepositCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, @Arg Integer coins) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         Optional<Guild> guildOptional = profile.getGuild();

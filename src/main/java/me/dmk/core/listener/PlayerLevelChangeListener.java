@@ -28,7 +28,7 @@ public class PlayerLevelChangeListener implements Listener {
 
         int newLevel = event.getNewLevel();
 
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
 
         profile.getProfileStatistics().setLevel(newLevel);
 

@@ -28,8 +28,8 @@ public class MessageCommand {
 
     @Execute(min = 2)
     void execute(Player player, @Arg @Name("player") Player other, @Joiner @Name("message") String message) {
-        Profile profile = this.profileCache.getOrElseThrow(player.getUniqueId());
-        Profile otherProfile = this.profileCache.getOrElseThrow(other.getUniqueId());
+        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile otherProfile = this.profileCache.getOrElseThrow(other);
 
         PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(player, profile, other, otherProfile, message);
         Bukkit.getPluginManager().callEvent(privateMessageEvent);

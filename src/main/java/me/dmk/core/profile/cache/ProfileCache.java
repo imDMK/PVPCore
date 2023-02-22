@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringUtil;
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -40,14 +40,15 @@ public class ProfileCache {
         return Optional.ofNullable(this.stringProfileCache.asMap().get(name));
     }
 
-    public Profile getOrElseThrow(UUID uuid) {
-        Optional<Profile> profile = this.get(uuid);
+    public Profile getOrElseThrow(Player player) {
+        Optional<Profile> profile = this.get(player.getUniqueId());
 
         if (profile.isEmpty()) {
-            Optional.ofNullable(Bukkit.getServer().getPlayer(uuid))
-                    .ifPresent(
-                            p -> p.kickPlayer(StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego proflu&8."))
-                    );
+            if (player.isOnline()) {
+                player.kickPlayer(
+                        StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego proflu&8.")
+                );
+            }
         }
 
         return profile.orElseThrow();

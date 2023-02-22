@@ -73,5 +73,6 @@ public class PluginConfiguration extends OkaeriConfig {
     );
 
     public DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration();
+    public KitConfiguration kitConfiguration = new KitConfiguration();
     public MotdConfiguration motdConfiguration = new MotdConfiguration();
 }
