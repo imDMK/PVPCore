@@ -3,6 +3,9 @@ package me.dmk.core.util;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Created by DMK on 14.02.2023
@@ -10,6 +13,16 @@ import org.bukkit.entity.Player;
 
 @UtilityClass
 public class PlayerUtil {
+
+    public static void addItems(Player player, List<ItemStack> items) {
+        for (ItemStack item : items) {
+            player.getInventory()
+                    .addItem(item)
+                    .forEach((integer, itemStack) ->
+                            player.getWorld().dropItemNaturally(player.getLocation(), itemStack)
+                    );
+        }
+    }
 
     public static double getKDR(double kills, double deaths) {
         if (kills == 0 && deaths == 0) {
