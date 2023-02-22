@@ -11,6 +11,7 @@ import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.profile.statistics.ProfileStatistics;
+import me.dmk.core.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,6 +47,9 @@ public class PlayerJoinListener implements Listener {
         Profile profile = this.profileCache.getOrElseCreate(uuid, name);
         ProfileStatistics statistics = profile.getProfileStatistics();
 
+        profile.setLastJoin(new Date());
+        statistics.increaseEntrances();
+
         if (!name.equals(profile.getName())) {
             profile.setName(name);
         }
@@ -54,22 +58,23 @@ public class PlayerJoinListener implements Listener {
             statistics.setLevel(player.getLevel());
         }
 
-        profile.setLastJoin(new Date());
-        statistics.increaseEntrances();
-
-        this.checkPermissions(player, profile);
-
-        Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
-                .ifPresent(onlineProfile -> profile.refreshVanish(online, onlineProfile))
-        );
-
         List<String> welcomeMessage = this.pluginConfiguration.getWelcomeMessage();
         if (!welcomeMessage.isEmpty()) {
             this.notificationController.sendMessage(player, welcomeMessage);
         }
 
+        this.refreshVanish(profile);
+        this.checkPermissions(player, profile);
+        this.addPlayerKit(player, statistics);
+
         this.profileCache.add(profile);
         profile.getGuild().ifPresent(this.guildCache::add);
+    }
+
+    private void refreshVanish(Profile profile) {
+        Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
+                .ifPresent(onlineProfile -> profile.refreshVanish(online, onlineProfile))
+        );
     }
 
     private void checkPermissions(Player player, Profile profile) {
@@ -94,5 +99,16 @@ public class PlayerJoinListener implements Listener {
         if (settings.getIncognitoSettings().isEnabled() && !player.hasPermission("core.command.incognito")) {
             settings.getIncognitoSettings().setEnabled(false);
         }
+    }
+
+    private void addPlayerKit(Player player, ProfileStatistics statistics) {
+        if (player.hasPermission("core.ignore.kit.receive"))  {
+            return;
+        }
+
+        this.kitMap.get(statistics.getKitLevel()).ifPresentOrElse(kit -> {
+            player.getInventory().clear();
+            PlayerUtil.addItems(player, kit.getItems());
+            }, () -> statistics.setKitLevel(1));
     }
 }
