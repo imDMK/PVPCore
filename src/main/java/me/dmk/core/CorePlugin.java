@@ -212,8 +212,6 @@ public class CorePlugin extends JavaPlugin {
 
                 this.profileCache.add(profile);
                 profile.getGuild().ifPresent(guildCache::add);
-
-                player.teleport(player.getWorld().getSpawnLocation());
             }
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chat clear");
