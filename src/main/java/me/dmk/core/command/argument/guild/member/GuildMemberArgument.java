@@ -1,5 +1,6 @@
 package me.dmk.core.command.argument.guild.member;
 
+import dev.rollczi.litecommands.argument.ArgumentName;
 import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  * Created by DMK on 01.02.2023
  */
 
+@ArgumentName("guildMember")
 public class GuildMemberArgument implements OneArgument<GuildMember> {
 
     private final ProfileCache profileCache;
