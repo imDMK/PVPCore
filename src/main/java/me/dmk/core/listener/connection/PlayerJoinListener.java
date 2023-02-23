@@ -13,6 +13,7 @@ import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.PlayerUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -79,6 +80,14 @@ public class PlayerJoinListener implements Listener {
 
     private void checkPermissions(Player player, Profile profile) {
         ProfileSettings settings = profile.getProfileSettings();
+
+        if (player.getGameMode() != GameMode.SURVIVAL && !player.hasPermission("core.command.gamemode")) {
+            player.setGameMode(GameMode.SURVIVAL);
+        }
+
+        if (player.getAllowFlight() && !player.hasPermission("core.command.fly")) {
+            player.setAllowFlight(false);
+        }
 
         if (settings.getColorName() != ColorNameType.DEAFULT && !player.hasPermission("core.nametag.colorname")) {
             settings.setColorName(ColorNameType.DEAFULT);
