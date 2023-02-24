@@ -22,17 +22,17 @@ public class Fight {
     private final int fightTime = CorePlugin.getCorePlugin().getPluginConfiguration().getFightTime();
 
     private UUID lastAttacker;
-    private Instant expire;
+    private Instant expireAt;
     private BossBar bossBar;
 
     public void put(UUID attacker) {
         this.lastAttacker = attacker;
-        this.expire = Instant.now().plus(this.fightTime, ChronoUnit.SECONDS);
+        this.expireAt = Instant.now().plus(this.fightTime, ChronoUnit.SECONDS);
     }
 
     public void clear() {
         this.lastAttacker = null;
-        this.expire = null;
+        this.expireAt = null;
         this.bossBar = null;
     }
 
@@ -41,7 +41,7 @@ public class Fight {
     }
 
     public long getSecondsLeft() {
-        return Duration.between(Instant.now(), this.expire).toSeconds();
+        return Duration.between(Instant.now(), this.expireAt).toSeconds();
     }
 
     public float expireToBossBarFloat() {

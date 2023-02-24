@@ -45,6 +45,6 @@ public class GuildInformationCommand {
     void execute(Player player, @Arg Guild guild) {
         Profile profile = this.profileCache.getOrElseThrow(player);
 
-        new GuildPanelGui().open(player,  profile, guild);
+        new GuildPanelGui().open(player, profile, guild);
     }
 }

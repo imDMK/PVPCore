@@ -73,13 +73,8 @@ public class Profile implements Serializable {
         return Optional.empty();
     }
 
-    public void refreshVanish(Player other, Profile otherProfile) {
-        if (this.getPlayer().isEmpty()) {
-            return;
-        }
-
+    public void refreshVanish(Player player, Player other, Profile otherProfile) {
         boolean isVanish = this.getProfileSettings().isVanish();
-        Player player = this.getPlayer().get();
 
         boolean isOtherAdmin = other.hasPermission("core.command.vanish");
         boolean isOtherVanish = otherProfile.getProfileSettings().isVanish();
@@ -102,10 +97,10 @@ public class Profile implements Serializable {
     }
 
     public boolean hasFight() {
-        if (this.getFight().getExpire() == null) {
+        if (this.getFight().getExpireAt() == null) {
             return false;
         }
-        return Instant.now().isBefore(this.getFight().getExpire());
+        return Instant.now().isBefore(this.getFight().getExpireAt());
     }
 
     public boolean wasFight() {

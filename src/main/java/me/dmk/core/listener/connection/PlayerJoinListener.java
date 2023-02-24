@@ -64,7 +64,7 @@ public class PlayerJoinListener implements Listener {
             this.notificationController.sendMessage(player, welcomeMessage);
         }
 
-        this.refreshVanish(profile);
+        this.refreshVanish(player, profile);
         this.checkPermissions(player, profile);
         this.addPlayerKit(player, statistics);
 
@@ -72,9 +72,9 @@ public class PlayerJoinListener implements Listener {
         profile.getGuild().ifPresent(this.guildCache::add);
     }
 
-    private void refreshVanish(Profile profile) {
+    private void refreshVanish(Player player, Profile profile) {
         Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
-                .ifPresent(onlineProfile -> profile.refreshVanish(online, onlineProfile))
+                .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile))
         );
     }
 

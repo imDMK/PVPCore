@@ -44,7 +44,7 @@ public class VanishCommand {
         }
 
         Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
-                .ifPresent(onlineProfile -> profile.refreshVanish(online, onlineProfile))
+                .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile))
         );
 
         this.notificationController.sendMessage(player,
