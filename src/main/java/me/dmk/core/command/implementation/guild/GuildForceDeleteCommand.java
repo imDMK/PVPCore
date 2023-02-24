@@ -60,6 +60,6 @@ public class GuildForceDeleteCommand {
                     player.closeInventory();
                 })
                 .closeAfterCancel()
-                .open();
+                .open(true);
     }
 }

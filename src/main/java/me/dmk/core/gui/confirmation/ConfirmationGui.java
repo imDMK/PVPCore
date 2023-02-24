@@ -5,8 +5,10 @@ import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import lombok.RequiredArgsConstructor;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -51,6 +53,10 @@ public class ConfirmationGui {
     }
 
     public void open() {
+        this.open(false);
+    }
+
+    public void open(boolean async) {
         GuiItem cancel = ItemBuilder.from(Material.RED_CONCRETE)
                 .name(ComponentUtil.text(StringUtil.getRedGradient() + "Anuluję"))
                 .asGuiItem();
@@ -77,6 +83,10 @@ public class ConfirmationGui {
         this.gui.setItem(23, cancel);
         this.gui.setItem(32, cancel);
 
-        this.gui.open(this.player);
+        if (async) { //opening inventory cannot be async
+            Bukkit.getScheduler().runTaskLater(CorePlugin.getCorePlugin(), () -> this.gui.open(player), 1L);
+        } else {
+            this.gui.open(this.player);
+        }
     }
 }

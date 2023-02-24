@@ -1,5 +1,6 @@
 package me.dmk.core.command.implementation.guild;
 
+import dev.rollczi.litecommands.command.async.Async;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class GuildDeleteCommand {
     private final GuildCache guildCache;
     private final TaskExecutor taskExecutor;
 
+    @Async
     @Execute(required = 0)
     void execute(Player player) {
         Profile profile = this.profileCache.getOrElseThrow(player);
@@ -72,6 +74,6 @@ public class GuildDeleteCommand {
                     player.closeInventory();
                 })
                 .closeAfterCancel()
-                .open();
+                .open(true);
     }
 }
