@@ -15,6 +15,7 @@ import java.util.UUID;
  * Created by DMK on 05.01.2023
  */
 
+@Setter
 @Getter
 public class Fight {
 
@@ -22,7 +23,6 @@ public class Fight {
 
     private UUID lastAttacker;
     private Instant expire;
-    @Setter
     private BossBar bossBar;
 
     public void put(UUID attacker) {
