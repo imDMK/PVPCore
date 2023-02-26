@@ -3,6 +3,7 @@ package me.dmk.core.listener;
 import lombok.AllArgsConstructor;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.kit.KitMap;
 import me.dmk.core.murder.MurderCache;
@@ -110,19 +111,12 @@ public class PlayerDeathListener implements Listener {
             killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100, 100);
         }
 
-        if (victimSettings.isDeathMessages()) {
-            this.notificationController.sendTitle(victim, "", "<red>" + MurderUtil.formatMurderNotification(murderType));
-        }
+        this.notificationController.sendTitle(victim, "", "<red>" + MurderUtil.formatMurderNotification(murderType));
 
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            this.profileCache.get(online.getUniqueId()).ifPresent(onlineProfile -> {
-                if (onlineProfile.getProfileSettings().isDeathMessages()) {
-                    this.notificationController.sendMessage(online,
-                            MurderUtil.formatDeathMessage(victimName, removePoints, murderType, killerName, addPoints)
-                    );
-                }
-            });
-        }
+        this.notificationController.sendGlobalPluginMessage(
+                PluginMessageType.DEATH,
+                MurderUtil.formatDeathMessage(victimName, removePoints, murderType, killerName, addPoints)
+        );
 
         this.murderCache.add(killer, victim);
         this.hideBossBarAndRespawn(victim, victimProfile, victimFight);

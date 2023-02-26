@@ -6,6 +6,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
@@ -59,7 +60,8 @@ public class GuildAllianceCommand {
         this.guildController.save(guild);
         this.guildController.save(otherGuild);
 
-        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalPluginMessage(
+                PluginMessageType.GUILD,
                 StringFormatter.formatWarning() + " <gray>Gildia <light_purple>" + guild.getTag() + " <green>zawarła <gray>sojusz <gray>z gildią <light_purple>" + otherGuild.getTag() + "<dark_gray>."
         );
     }
@@ -93,7 +95,8 @@ public class GuildAllianceCommand {
         this.guildController.save(guild);
         this.guildController.save(otherGuild);
 
-        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalPluginMessage(
+                PluginMessageType.GUILD,
                 StringFormatter.formatWarning() + " <gray>Gildia <light_purple>" + guild.getTag() + " <red>zerwała <gray>sojusz z gildią <light_purple>" + otherGuild.getTag() + "<dark_gray>."
         );
     }

@@ -18,8 +18,6 @@ import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
-
 /**
  * Created by DMK on 05.02.2023
  */
@@ -45,12 +43,11 @@ public class GuildForceDeleteCommand {
                         this.guildController.delete(guild);
                     });
 
-                    Optional.ofNullable(Bukkit.getPlayer(guild.getLeader()))
-                            .ifPresent(leader ->
-                                    this.notificationController.sendMessage(leader,
-                                            StringFormatter.formatWarning() +  " <red>Twoja gildia została usunięta z powodu " + reason + "<dark_gray>."
-                                    )
-                            );
+                    guild.getOnlineMembers().forEach(guildPlayer ->
+                            this.notificationController.sendMessage(guildPlayer,
+                                    StringFormatter.formatWarning() +  " <red>Twoja gildia została usunięta z powodu " + reason + "<dark_gray>."
+                            )
+                    );
 
                     this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
                             StringFormatter.formatWarning() + " <gray>Administrator <red>" + player.getName() + " <red>usunął <gray>gildię <red>" + guild.getTag() + " <gray>za <red>" + reason + "<dark_gray>.",

@@ -20,7 +20,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -58,10 +57,7 @@ public class PlayerJoinListener implements Listener {
             statistics.setLevel(player.getLevel());
         }
 
-        List<String> welcomeMessage = this.pluginConfiguration.getWelcomeMessage();
-        if (!welcomeMessage.isEmpty()) {
-            this.notificationController.sendMessage(player, welcomeMessage);
-        }
+        this.notificationController.sendMessage(player, this.pluginConfiguration.getWelcomeMessage());
 
         this.refreshVanish(player, profile);
         this.checkPermissions(player, profile);

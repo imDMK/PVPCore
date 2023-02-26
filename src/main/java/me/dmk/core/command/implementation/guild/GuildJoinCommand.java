@@ -6,13 +6,13 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -54,7 +54,8 @@ public class GuildJoinCommand {
         this.guildController.save(guild);
         this.profileController.save(profile);
 
-        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalPluginMessage(
+                PluginMessageType.GUILD,
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <green>dołączył <gray>do gildii <light_purple>" + guild.getTag() + "<dark_gray>."
         );
     }

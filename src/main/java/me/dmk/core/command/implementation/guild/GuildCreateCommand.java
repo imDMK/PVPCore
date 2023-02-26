@@ -7,6 +7,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
@@ -16,7 +17,6 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -95,7 +95,8 @@ public class GuildCreateCommand {
         this.guildController.create(guild);
         this.guildCache.add(guild);
 
-        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalPluginMessage(
+                PluginMessageType.GUILD,
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <gray>założył gildię o nazwie <light_purple>" + name + " <gray>oraz tagu <light_purple>" + tag.toUpperCase() + "<dark_gray>," + StringUtil.getGreenGradient() + " Gratulacje!"
         );
     }

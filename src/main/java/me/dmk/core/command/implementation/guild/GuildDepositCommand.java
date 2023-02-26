@@ -6,6 +6,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.treasury.GuildTreasury;
@@ -67,7 +68,8 @@ public class GuildDepositCommand {
         this.guildController.save(guild);
         this.profileController.save(profile);
 
-        this.notificationController.sendMessage(guild,
+        this.notificationController.sendGlobalPluginMessage(
+                PluginMessageType.GUILD,
                 StringFormatter.formatWarning() + player.getName() + " <gray>wpłacił <light_purple>" + coins + " <gray>monet do skarbca gildyjnego<dark_gray>."
         );
     }

@@ -2,13 +2,17 @@ package me.dmk.core.chat.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.guild.Guild;
+import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.cache.ProfileCache;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,6 +41,10 @@ public class NotificationController {
     }
 
     public void sendMessage(CommandSender sender, List<String> stringList) {
+        if (stringList.isEmpty()) {
+            return;
+        }
+
         String message = String.join("\n", stringList);
         this.sendMessage(sender, message);
     }
@@ -98,5 +106,48 @@ public class NotificationController {
     /* Guild players */
     public void sendMessage(Guild guild, String message) {
         guild.getOnlineMembers().forEach(p -> this.sendMessage(p, message));
+    }
+
+    /* Plugin messages */
+    public void sendGlobalPluginMessage(PluginMessageType messageType, String message) {
+        ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
+
+        switch (messageType) {
+            case ACHIEVEMENT -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+                            .map(Profile::getProfileSettings)
+                            .ifPresent(profileSettings -> {
+                                if (profileSettings.isAchievementsMessages()) {
+                                    this.sendMessage(player, message);
+                                }
+                            })
+            );
+
+            case DEATH -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+                    .map(Profile::getProfileSettings)
+                    .ifPresent(profileSettings -> {
+                        if (profileSettings.isDeathMessages()) {
+                            this.sendMessage(player, message);
+                        }
+                    })
+            );
+
+            case SYSTEM -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+                    .map(Profile::getProfileSettings)
+                    .ifPresent(profileSettings -> {
+                        if (profileSettings.isSystemMessages()) {
+                            this.sendMessage(player, message);
+                        }
+                    })
+            );
+
+            case GUILD -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+                    .map(Profile::getProfileSettings)
+                    .ifPresent(profileSettings -> {
+                        if (profileSettings.isGuildMessages()) {
+                            this.sendMessage(player, message);
+                        }
+                    })
+            );
+        }
     }
 }

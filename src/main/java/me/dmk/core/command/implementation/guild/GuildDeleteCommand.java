@@ -5,6 +5,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
@@ -14,7 +15,6 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.SymbolUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -64,10 +64,9 @@ public class GuildDeleteCommand {
                         this.guildCache.remove(guild);
                     });
 
-                    Bukkit.getOnlinePlayers().forEach(online ->
-                            this.notificationController.sendMessage(online,
+                    this.notificationController.sendGlobalPluginMessage(
+                                    PluginMessageType.GUILD,
                                     StringFormatter.formatWarning() + " <gray>Gildia <light_purple>" + guild.getTag() + " <gray>została <red>usunięta <gray>przez <light_purple>" + player.getName() + "<dark_gray>."
-                            )
                     );
 
                     profile.setGuildTag(null);
