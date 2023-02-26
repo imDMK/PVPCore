@@ -11,7 +11,6 @@ import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.profile.statistics.ProfileStatistics;
-import me.dmk.core.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -66,7 +65,7 @@ public class PlayerJoinListener implements Listener {
 
         this.refreshVanish(player, profile);
         this.checkPermissions(player, profile);
-        this.addPlayerKit(player, statistics);
+        this.kitMap.addPlayerKit(player, statistics);
 
         this.profileCache.add(profile);
         profile.getGuild().ifPresent(this.guildCache::add);
@@ -108,16 +107,5 @@ public class PlayerJoinListener implements Listener {
         if (settings.getIncognitoSettings().isEnabled() && !player.hasPermission("core.command.incognito")) {
             settings.getIncognitoSettings().setEnabled(false);
         }
-    }
-
-    private void addPlayerKit(Player player, ProfileStatistics statistics) {
-        if (player.hasPermission("core.ignore.kit.receive"))  {
-            return;
-        }
-
-        this.kitMap.get(statistics.getKitLevel()).ifPresentOrElse(kit -> {
-            player.getInventory().clear();
-            PlayerUtil.addItems(player, kit.getItems());
-            }, () -> statistics.setKitLevel(1));
     }
 }

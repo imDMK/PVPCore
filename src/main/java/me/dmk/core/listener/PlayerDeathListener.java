@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.statistics.GuildStatistics;
+import me.dmk.core.kit.KitMap;
 import me.dmk.core.murder.MurderCache;
 import me.dmk.core.murder.MurderType;
 import me.dmk.core.profile.Profile;
@@ -35,6 +36,7 @@ public class PlayerDeathListener implements Listener {
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
     private final MurderCache murderCache;
+    private final KitMap kitMap;
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -133,8 +135,14 @@ public class PlayerDeathListener implements Listener {
         }
 
         player.getWorld().strikeLightningEffect(player.getLocation());
-        Bukkit.getServer().getScheduler().runTaskLater(CorePlugin.getCorePlugin(),
-                () -> player.spigot().respawn(), 1L);
+
+        Bukkit.getServer().getScheduler().runTaskLater(
+                CorePlugin.getCorePlugin(),
+                () -> {
+                    player.spigot().respawn();
+                    this.kitMap.addPlayerKit(player, profile.getProfileStatistics());
+                },
+                1L);
     }
 
     private void checkForGuilds(Profile victimProfile, Profile killerProfile, int addRank, int removeRank) {
