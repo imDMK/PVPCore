@@ -24,7 +24,7 @@ public class PlayerQuitListener implements Listener {
     private final ProfileCache profileCache;
     private final TaskExecutor taskExecutor;
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
 
@@ -33,7 +33,7 @@ public class PlayerQuitListener implements Listener {
         this.profileCache.get(player.getUniqueId()).ifPresent(profile -> this.onProfileQuit(player, profile));
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerKick(PlayerKickEvent event) {
         Player player = event.getPlayer();
 
