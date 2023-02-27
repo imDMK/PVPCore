@@ -68,7 +68,7 @@ public class ConfirmationGui {
         if (this.actionAfterCancel != null) {
             cancel.setAction(this.actionAfterCancel);
         } else if (this.closeAfterCancel) {
-            cancel.setAction(event -> this.player.closeInventory());
+            cancel.setAction(event -> this.gui.close(player));
         }
 
         if (this.actionAfterConfirm != null) {
