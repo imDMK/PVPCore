@@ -52,13 +52,11 @@ public class Profile implements Serializable {
     }
 
     public Optional<Player> getPlayer() {
-        return Optional.ofNullable(Bukkit.getServer().getPlayer(uuid));
+        return Optional.ofNullable(Bukkit.getServer().getPlayer(this.uuid));
     }
 
     public String getColoredName() {
-        String color = this.profileSettings.getColorName().getFormat();
-
-        return color + this.name;
+        return this.profileSettings.getColorName().getFormat() + this.name;
     }
 
     public Optional<Punishment> getActivePunishment(PunishmentType type) {
@@ -97,14 +95,15 @@ public class Profile implements Serializable {
     }
 
     public boolean hasFight() {
-        if (this.getFight().getExpireAt() == null) {
+        if (this.fight.getExpireAt() == null) {
             return false;
         }
-        return Instant.now().isBefore(this.getFight().getExpireAt());
+
+        return Instant.now().isBefore(this.fight.getExpireAt());
     }
 
     public boolean wasFight() {
-        return this.getFight().getLastAttacker().isPresent();
+        return this.fight.getLastAttacker().isPresent();
     }
 
     public Optional<Guild> getGuild() {
