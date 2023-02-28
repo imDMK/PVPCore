@@ -190,7 +190,7 @@ public class CorePlugin extends JavaPlugin {
                 new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache, this.teleportMap),
                 new EntityResurrectListener(this.notificationController, this.profileCache),
                 new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),
-                new PlayerDeathListener(this.notificationController, this.profileCache, this.murderCache),
+                new PlayerDeathListener(this.notificationController, this.profileCache, this.murderCache, this.kitMap),
                 new PlayerInteractListener(this.profileCache),
                 new PlayerItemConsumeListener(this.profileCache),
                 new PlayerLevelChangeListener(this.notificationController, this.profileCache),
