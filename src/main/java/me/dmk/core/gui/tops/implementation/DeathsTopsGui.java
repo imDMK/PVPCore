@@ -1,46 +1,45 @@
 package me.dmk.core.gui.tops.implementation;
 
 import com.mongodb.client.model.Indexes;
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.gui.tops.TopsGui;
 import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.SymbolUtil;
 import org.bson.conversions.Bson;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 /**
- * Created by DMK on 13.02.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class DeathsTopsGui extends PluginGui {
 
-    public void open(Player player) {
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Topka śmierci " + this.circle))
-                .rows(5)
-                .disableAllInteractions()
-                .create();
+    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
+    public DeathsTopsGui(Player player) {
+        super(player, null, "Topka śmierci", 5, true, true);
+    }
+
+    @Override
+    public void build() {
         GuiItem backButton = this.createBackButton(event ->
-                        new TopsGui().open(player),
+                        new TopsGui(this.player).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""
         );
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
-        gui.setItem(31, backButton);
+        this.gui.setItem(31, backButton);
 
-        Bson sort = Indexes.descending("profileStatistics.deaths");
+        Bson sort = Indexes.descending("profileStatistics.deaaths");
         List<Profile> profileList = this.profileController.getTops(sort, 14);
 
         for (int i = 0; i < profileList.size(); i++) {
@@ -51,14 +50,12 @@ public class DeathsTopsGui extends PluginGui {
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            SymbolUtil.getDeath("<gray>") + " <gray>Gracz posiada " + statistics.getDeaths() + " <gray>śmierci<dark_gray>.",
+                            SymbolUtil.getDeath("<gray>") + " Gracz posiada " + statistics.getDeaths() + " śmierci<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();
 
-            gui.addItem(item);
+            this.gui.addItem(item);
         }
-
-        gui.open(player);
     }
 }

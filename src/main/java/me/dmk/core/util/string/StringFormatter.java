@@ -87,7 +87,7 @@ public class StringFormatter {
                 "&8● &cPowód: &6" + punishment.getReason(),
                 "&8● &cAdministrator&8: &6" + punishment.getAddedBy(),
                 "&8● &cWygasa&8: &6" + (punishment.isPermanent() ? "nigdy" : "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true)) + "&8.",
-                "&8● &cData utworzenia&8: &6" + TimeUtil.format(punishment.getCreatedAt().toInstant()),
+                "&8● &cData utworzenia&8: &6" + TimeUtil.formatDate(punishment.getCreatedAt().toInstant()),
                 "",
                 "&8&m--------------------"
                 ))

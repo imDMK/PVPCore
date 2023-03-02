@@ -41,7 +41,7 @@ public class ResetStatisticsCommand {
 
         int coinsToResetStatistics = this.pluginConfiguration.getCoinsToResetStatistics();
 
-        if (statistics.getCoins() < coinsToResetStatistics) {
+        if (coinsToResetStatistics > statistics.getCoins()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Aby zresetować statystyki potrzebujesz <gold>" + coinsToResetStatistics + " <red>monet<dark_gray>."
             );
@@ -51,6 +51,11 @@ public class ResetStatisticsCommand {
         new ConfirmationGui(player)
                 .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Resetowanie statystyk " + SymbolUtil.getCircle("<dark_gray>"))
                 .afterConfirm(confirmEvent -> {
+                    if (coinsToResetStatistics > statistics.getCoins()) {
+                        player.closeInventory();
+                        return;
+                    }
+
                     statistics.setEntrances(0);
                     statistics.setTimeSpent(0);
 

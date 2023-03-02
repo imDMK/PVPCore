@@ -55,6 +55,10 @@ public class Profile implements Serializable {
         return Optional.ofNullable(Bukkit.getServer().getPlayer(this.uuid));
     }
 
+    public boolean isOnline() {
+        return this.getPlayer().map(Player::isOnline).orElse(false);
+    }
+
     public String getColoredName() {
         return this.profileSettings.getColorName().getFormat() + this.name;
     }
@@ -69,6 +73,18 @@ public class Profile implements Serializable {
         }
 
         return Optional.empty();
+    }
+
+    public boolean wasPunished() {
+        if (this.punishments.isEmpty()) {
+            return false;
+        }
+
+        return !this.punishments
+                .stream()
+                .filter(p -> !p.isRemoved())
+                .toList()
+                .isEmpty();
     }
 
     public void refreshVanish(Player player, Player other, Profile otherProfile) {

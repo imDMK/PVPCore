@@ -1,17 +1,14 @@
 package me.dmk.core.profile.settings.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import dev.triumphteam.gui.guis.PaginatedGui;
-import me.dmk.core.gui.PluginGui;
+import me.dmk.core.gui.PluginPaginatedGui;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -19,39 +16,35 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Created by DMK on 19.01.2023
+ * Created by DMK on 02.03.2023
  */
 
-public class IgnoredPlayersGui extends PluginGui {
+public class IgnoredPlayersGui extends PluginPaginatedGui {
+    public IgnoredPlayersGui(Player player, Profile profile) {
+        super(player, profile, "Lista ignorowanych graczy", 6, true, true);
+    }
 
-    public void open(Player player, Profile profile) {
-        PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Lista ignorowanych graczy " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
+    @Override
+    public void build() {
+        ProfileSettings profileSettings = this.profile.getProfileSettings();
 
-        ProfileSettings profileSettings = profile.getProfileSettings();
-
-        GuiItem previousButton = this.createPreviousPageButton(gui);
+        GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfileSettingsGui().open(player, profile),
+                        new ProfileSettingsGui(this.player, this.profile).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = this.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(this.gui);
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
-
-        gui.setItem(47, previousButton);
-        gui.setItem(49, backButton);
-        gui.setItem(51, nextButton);
+        this.gui.setItem(47, previousButton);
+        this.gui.setItem(49, backButton);
+        this.gui.setItem(51, nextButton);
 
         for (UUID uuid : profileSettings.getIgnoredPlayers()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
-            GuiItem ignoredPlayer = ItemBuilder.from(SkullStorage.createPlayerHeadStack(uuid))
+            GuiItem ignoredPlayer = SkullStorage.createPlayerHead(offlinePlayer)
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
@@ -61,7 +54,7 @@ public class IgnoredPlayersGui extends PluginGui {
                     .asGuiItem(event -> {
                         profileSettings.getIgnoredPlayers().remove(uuid);
 
-                        gui.updateItem(event.getSlot(), ItemBuilder.from(Objects.requireNonNull(event.getCurrentItem()))
+                        this.gui.updateItem(event.getSlot(), ItemBuilder.from(Objects.requireNonNull(event.getCurrentItem()))
                                 .lore(ComponentUtil.asList(
                                         "",
                                         StringFormatter.formatSuccess() + " <green>Odblokowano<dark_gray>.",
@@ -71,9 +64,7 @@ public class IgnoredPlayersGui extends PluginGui {
                         );
                     });
 
-            gui.addItem(ignoredPlayer);
+            this.gui.addItem(ignoredPlayer);
         }
-
-        gui.open(player);
     }
 }

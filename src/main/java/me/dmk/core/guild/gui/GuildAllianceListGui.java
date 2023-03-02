@@ -1,96 +1,97 @@
 package me.dmk.core.guild.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import dev.triumphteam.gui.guis.PaginatedGui;
-import me.dmk.core.gui.PluginGui;
+import me.dmk.core.CorePlugin;
+import me.dmk.core.gui.PluginPaginatedGui;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
+import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringUtil;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by DMK on 01.02.2023
+ * Created by DMK on 02.03.2023
  */
 
-public class GuildAllianceGui extends PluginGui {
+public class GuildAllianceListGui extends PluginPaginatedGui {
 
-    public void open(Player player, Profile profile, Guild guild) {
-        PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(this.circle + "<light_purple>Lista członków " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
+    private final GuildCache guildCache = CorePlugin.getCorePlugin().getGuildCache();
 
-        boolean isLeaderOrCoLeader = guild.isLeaderOrCoLeader(player.getUniqueId());
+    public final Guild guild;
 
-        GuiItem previousButton = this.createPreviousPageButton(gui);
+    public GuildAllianceListGui(Player player, Profile profile, Guild guild) {
+        super(player, profile, "Lista sojuszy", 6, true, true);
+        this.guild = guild;
+    }
+
+    @Override
+    public void build() {
+        boolean isLeaderOrCoLeader = this.guild.isLeaderOrCoLeader(this.player.getUniqueId());
+
+        GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new GuildPanelGui().open(player, profile, guild),
+                        new GuildPanelGui(this.player, this.profile, this.guild).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = this.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(this.gui);
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        this.gui.setItem(47, previousButton);
+        this.gui.setItem(49, backButton);
+        this.gui.setItem(51, nextButton);
 
-        gui.setItem(47, previousButton);
-        gui.setItem(49, backButton);
-        gui.setItem(51, nextButton);
-
-        for (String guildTag : guild.getAlliances()) {
+        for (String guildTag : this.guild.getAlliances()) {
             Optional<Guild> allianceGuildOptional = this.guildCache.getOrElseLoad(guildTag);
             if (allianceGuildOptional.isEmpty()) {
-                guild.getAlliances().remove(guildTag);
+                this.guild.getAlliances().remove(guildTag);
                 continue;
             }
 
             Guild allianceGuild = allianceGuildOptional.get();
 
-            List<Component> lore = ComponentUtil.asList(
+            List<String> lore = Arrays.asList(
                     "",
                     this.circle + " <gray>Nazwa<dark_gray>: <light_purple>" + allianceGuild.getName(),
                     ""
             );
 
             if (isLeaderOrCoLeader) {
-                lore.addAll(List.of(
-                    ComponentUtil.text(this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>."),
-                    ComponentUtil.text(this.warning + " <light_purple>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>.")
+                lore.addAll(Arrays.asList(
+                        this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
+                        this.warning + " <light_purple>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>."
                 ));
             }
 
             GuiItem allianceGuildItem = ItemBuilder.from(Material.BEACON)
                     .name(ComponentUtil.text(StringUtil.getPurpleGradient() + allianceGuild.getTag()))
-                    .lore(lore)
+                    .lore(ComponentUtil.asList(lore))
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {
-                            new GuildPanelGui().open(player, profile, allianceGuild);
+                            new GuildPanelGui(this.player, this.profile, allianceGuild).open();
+
                         } else if (event.isRightClick() && event.isShiftClick()) {
-                            new ConfirmationGui(player)
+                            new ConfirmationGui(this.player)
                                     .create(this.circle + " <light_purple>Zerwanie sojuszu z " + allianceGuild.getTag() + " " + this.circle)
                                     .afterConfirm(e -> {
                                         Bukkit.dispatchCommand(player, "guild alliance break " + allianceGuild.getTag());
-                                        this.open(player, profile, guild);
+                                        this.open();
                                     })
-                                    .afterCancel(e -> this.open(player, profile, guild))
+                                    .afterCancel(e -> this.open())
                                     .open();
                         }
                     });
 
-            gui.addItem(allianceGuildItem);
+            this.gui.addItem(allianceGuildItem);
         }
-
-        gui.open(player);
     }
 }

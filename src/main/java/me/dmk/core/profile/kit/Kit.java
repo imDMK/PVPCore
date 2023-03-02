@@ -1,4 +1,4 @@
-package me.dmk.core.kit;
+package me.dmk.core.profile.kit;
 
 import eu.okaeri.configs.OkaeriConfig;
 import lombok.AllArgsConstructor;

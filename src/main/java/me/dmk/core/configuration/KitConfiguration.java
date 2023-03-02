@@ -4,7 +4,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import lombok.Getter;
-import me.dmk.core.kit.Kit;
+import me.dmk.core.profile.kit.Kit;
 import org.bukkit.Material;
 
 import java.util.Arrays;

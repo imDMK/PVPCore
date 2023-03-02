@@ -1,7 +1,6 @@
 package me.dmk.core.profile.settings.nametag.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
@@ -12,233 +11,220 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
- * Created by DMK on 19.01.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class ColorNameGui extends PluginGui {
+    public ColorNameGui(Player player, Profile profile) {
+        super(player, profile, "Ustawienia koloru nicku", 6, true, true);
+    }
 
-    public void open(Player player, Profile profile) {
-        ColorNameType gray = ColorNameType.DEAFULT;
-        ColorNameType white = ColorNameType.WHITE;
-        ColorNameType purple = ColorNameType.PURPLE;
-        ColorNameType aqua = ColorNameType.AQUA;
-        ColorNameType yellow = ColorNameType.YELLOW;
-        ColorNameType gold = ColorNameType.GOLD;
-        ColorNameType green = ColorNameType.GREEN;
-        ColorNameType rainbow = ColorNameType.RAINBOW;
-        ColorNameType goldYellowGradient = ColorNameType.GOLD_YELLOW_GRADIENT;
-        ColorNameType greenGradient = ColorNameType.GREEN_GRADIENT;
-        ColorNameType purpleGradient = ColorNameType.PURPLE_GRADIENT;
-        ColorNameType aquaGradient = ColorNameType.AQUA_GRADIENT;
-        ColorNameType blueGradient = ColorNameType.BLUE_GRADIENT;
-        ColorNameType grayGradient = ColorNameType.GRAY_GRADIENT;
-
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Edytowanie koloru nicku " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
-
+    @Override
+    public void build() {
         GuiItem grayColorItem = ItemBuilder.from(Material.GRAY_DYE)
-                .name(ComponentUtil.text(gray.getFormat() + "Szary"))
+                .name(ComponentUtil.text(ColorNameType.DEAFULT.getFormat() + "Szary"))
                 .lore(ComponentUtil.asList(
-                    "",
-                    this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                    this.circle + " " + gray.getFormat() + profile.getName(),
-                    ""
+                        "",
+                        this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
+                        this.circle + " " + ColorNameType.DEAFULT.getFormat() + this.profile.getName(),
+                        ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), gray)
+                        this.updateColor(event.getSlot(), ColorNameType.DEAFULT)
                 );
 
         GuiItem whiteColorItem = ItemBuilder.from(Material.WHITE_DYE)
-                .name(ComponentUtil.text(white.getFormat() + "Biały"))
+                .name(ComponentUtil.text(ColorNameType.WHITE.getFormat() + "Biały"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + white.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.WHITE.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), white)
+                        this.updateColor(event.getSlot(), ColorNameType.WHITE)
                 );
 
         GuiItem purpleColorItem = ItemBuilder.from(Material.PURPLE_DYE)
-                .name(ComponentUtil.text(purple.getFormat() + "Różowy"))
+                .name(ComponentUtil.text(ColorNameType.PURPLE.getFormat() + "Różowy"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + purple.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.PURPLE.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), purple)
+                        this.updateColor(event.getSlot(), ColorNameType.PURPLE)
                 );
 
         GuiItem aquaColorItem = ItemBuilder.from(Material.LIGHT_BLUE_DYE)
-                .name(ComponentUtil.text(aqua.getFormat() + "Jasny niebieski"))
+                .name(ComponentUtil.text(ColorNameType.AQUA.getFormat() + "Jasny niebieski"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + aqua.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.AQUA.getFormat() + this.profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), aqua)
+                        this.updateColor(event.getSlot(), ColorNameType.AQUA)
                 );
 
         GuiItem yellowColorItem = ItemBuilder.from(Material.YELLOW_DYE)
-                .name(ComponentUtil.text(yellow.getFormat() + "Żółty"))
+                .name(ComponentUtil.text(ColorNameType.YELLOW.getFormat() + "Żółty"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + yellow.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.YELLOW.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), yellow)
+                        this.updateColor(event.getSlot(), ColorNameType.YELLOW)
                 );
 
         GuiItem goldColorItem = ItemBuilder.from(Material.ORANGE_DYE)
-                .name(ComponentUtil.text(gold.getFormat() + "Złoty"))
+                .name(ComponentUtil.text(ColorNameType.GOLD.getFormat() + "Złoty"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + gold.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.GOLD.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), gold)
+                        this.updateColor(event.getSlot(), ColorNameType.GOLD)
                 );
 
         GuiItem blackColorItem = ItemBuilder.from(Material.GREEN_DYE)
-                .name(ComponentUtil.text(green.getFormat() + "Zielony"))
+                .name(ComponentUtil.text(ColorNameType.GREEN.getFormat() + "Zielony"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + green.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.GREEN.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), green)
+                        this.updateColor(event.getSlot(), ColorNameType.GREEN)
                 );
 
         GuiItem rainbowColorItem = ItemBuilder.from(Material.ORANGE_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(rainbow.getFormat() + "Kolorowy"))
+                .name(ComponentUtil.text(ColorNameType.RAINBOW.getFormat() + "Kolorowy"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + rainbow.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.RAINBOW.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), rainbow)
+                        this.updateColor(event.getSlot(), ColorNameType.RAINBOW)
                 );
 
         GuiItem goldYellowGradientItem = ItemBuilder.from(Material.YELLOW_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(goldYellowGradient.getFormat() + "Złoty-żółty gradient"))
+                .name(ComponentUtil.text(ColorNameType.GOLD_YELLOW_GRADIENT.getFormat() + "Złoty-żółty gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + goldYellowGradient.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.GOLD_YELLOW_GRADIENT.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), goldYellowGradient)
+                        this.updateColor(event.getSlot(), ColorNameType.GOLD_YELLOW_GRADIENT)
                 );
 
         GuiItem greenGradientItem = ItemBuilder.from(Material.GREEN_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(greenGradient.getFormat() + "Zielony-ciemny zielony gradient"))
+                .name(ComponentUtil.text(ColorNameType.GREEN_GRADIENT.getFormat() + "Zielony-ciemny zielony gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + greenGradient.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.GREEN_GRADIENT.getFormat() + profile.getName(),
                         ""
                 ))
                 .asGuiItem(event ->
-                        this.updateColor(player, profile, gui, event.getSlot(), greenGradient)
+                        this.updateColor(event.getSlot(), ColorNameType.GREEN_GRADIENT)
                 );
 
         GuiItem purpleGradientItem = ItemBuilder.from(Material.MAGENTA_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(purpleGradient.getFormat() + "Różowy-ciemny różowy gradient"))
+                .name(ComponentUtil.text(ColorNameType.PURPLE_GRADIENT.getFormat() + "Różowy-ciemny różowy gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + purpleGradient.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.PURPLE_GRADIENT.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), purpleGradient));
+                .asGuiItem(event ->
+                        this.updateColor(event.getSlot(), ColorNameType.PURPLE_GRADIENT)
+                );
 
         GuiItem aquaGradientItem = ItemBuilder.from(Material.LIGHT_BLUE_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(aquaGradient.getFormat() + "Jasny-niebieski gradient"))
+                .name(ComponentUtil.text(ColorNameType.AQUA_GRADIENT.getFormat() + "Jasny-niebieski gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + aquaGradient.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.AQUA_GRADIENT.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), aquaGradient));
+                .asGuiItem(event ->
+                        this.updateColor(event.getSlot(), ColorNameType.AQUA_GRADIENT)
+                );
 
         GuiItem blueGradientItem = ItemBuilder.from(Material.BLUE_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(blueGradient.getFormat() + "Jasny niebieski-ciemny niebieski gradient"))
+                .name(ComponentUtil.text(ColorNameType.BLUE_GRADIENT.getFormat() + "Jasny niebieski-ciemny niebieski gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + blueGradient.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.BLUE_GRADIENT.getFormat() + profile.getName(),
                         ""
                 ))
-                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), blueGradient));
+                .asGuiItem(event ->
+                        this.updateColor(event.getSlot(), ColorNameType.BLUE_GRADIENT)
+                );
 
         GuiItem grayGradientItem = ItemBuilder.from(Material.GRAY_GLAZED_TERRACOTTA)
-                .name(ComponentUtil.text(grayGradient.getFormat() + "Szary-ciemny szary gradient"))
+                .name(ComponentUtil.text(ColorNameType.GRAY_GRADIENT.getFormat() + "Szary-ciemny szary gradient"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Twój nick będzie wyglądał<dark_gray>:",
-                        this.circle + " " + grayGradient.getFormat() + profile.getName(),
+                        this.circle + " " + ColorNameType.GRAY_GRADIENT.getFormat() + this.profile.getName(),
                         ""
                 ))
-                .asGuiItem(event -> this.updateColor(player, profile, gui, event.getSlot(), grayGradient));
+                .asGuiItem(event ->
+                        this.updateColor(event.getSlot(), ColorNameType.GRAY_GRADIENT)
+                );
 
         GuiItem backButton = this.createBackButton(event ->
-                        new NameTagSettingsGui().open(player, profile),
+                        new NameTagSettingsGui(this.player, this.profile).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
                 ""
         );
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        this.gui.setItem(11, grayColorItem);
+        this.gui.setItem(20, whiteColorItem);
+        this.gui.setItem(21, purpleColorItem);
+        this.gui.setItem(22, aquaColorItem);
+        this.gui.setItem(23, yellowColorItem);
 
-        gui.setItem(11, grayColorItem);
-        gui.setItem(20, whiteColorItem);
-        gui.setItem(21, purpleColorItem);
-        gui.setItem(22, aquaColorItem);
-        gui.setItem(23, yellowColorItem);
+        this.gui.setItem(24, goldColorItem);
+        this.gui.setItem(15, blackColorItem);
+        this.gui.setItem(29, rainbowColorItem);
+        this.gui.setItem(30, goldYellowGradientItem);
+        this.gui.setItem(31, greenGradientItem);
 
-        gui.setItem(24, goldColorItem);
-        gui.setItem(15, blackColorItem);
-        gui.setItem(29, rainbowColorItem);
-        gui.setItem(30, goldYellowGradientItem);
-        gui.setItem(31, greenGradientItem);
+        this.gui.setItem(32, purpleGradientItem);
+        this.gui.setItem(33, aquaGradientItem);
+        this.gui.setItem(38, blueGradientItem);
+        this.gui.setItem(42, grayGradientItem);
 
-        gui.setItem(32, purpleGradientItem);
-        gui.setItem(33, aquaGradientItem);
-        gui.setItem(38, blueGradientItem);
-        gui.setItem(42, grayGradientItem);
-
-        gui.setItem(49, backButton);
-
-        gui.open(player);
+        this.gui.setItem(49, backButton);
     }
 
-    private void updateColor(Player player, Profile profile, Gui gui, int slot, ColorNameType colorNameType) {
-        if (profile.getProfileSettings().getColorName().equals(colorNameType)) {
+    private void updateColor(int slot, ColorNameType colorNameType) {
+        if (this.profile.getProfileSettings().getColorName().equals(colorNameType))  {
             new BarrierBuilder()
                     .name("<red>Posiadasz aktualnie ustawiony ten kolor")
-                    .updateItem(gui, slot);
+                    .updateItem(this.gui, slot);
             return;
         }
 
-        profile.getProfileSettings().setColorName(colorNameType);
-        this.open(player, profile);
+        this.profile.getProfileSettings().setColorName(colorNameType);
+        this.open();
     }
 }

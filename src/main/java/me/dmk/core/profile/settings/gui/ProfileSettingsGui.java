@@ -1,9 +1,8 @@
 package me.dmk.core.profile.settings.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import me.dmk.core.gui.PluginGui;
+import me.dmk.core.gui.PluginPaginatedGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.profile.Profile;
@@ -20,22 +19,19 @@ import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
- * Created by DMK on 19.01.2023
+ * Created by DMK on 02.03.2023
  */
 
-public class ProfileSettingsGui extends PluginGui {
+public class ProfileSettingsGui extends PluginPaginatedGui {
+    public ProfileSettingsGui(Player player, Profile profile) {
+        super(player, profile, "Ustawienia", 6, true, true);
+    }
 
-    public void open(Player player, Profile profile) {
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Ustawienia " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
-
-        ProfileSettings profileSettings = profile.getProfileSettings();
+    @Override
+    public void build() {
+        ProfileSettings profileSettings = this.profile.getProfileSettings();
 
         Board board = profileSettings.getBoard();
         IncognitoSettings incognitoSettings = profileSettings.getIncognitoSettings();
@@ -52,8 +48,8 @@ public class ProfileSettingsGui extends PluginGui {
                 ))
                 .glow(board.isEnabled())
                 .asGuiItem(event -> {
-                    Bukkit.dispatchCommand(player, "sidebar");
-                    this.open(player, profile);
+                    Bukkit.dispatchCommand(this.player, "sidebar");
+                    this.open();
                 });
 
         GuiItem soundsItem = ItemBuilder.from(Material.NOTE_BLOCK)
@@ -67,7 +63,7 @@ public class ProfileSettingsGui extends PluginGui {
                 .glow(profileSettings.isSounds())
                 .asGuiItem(event -> {
                     profileSettings.setSounds(!profileSettings.isSounds());
-                    this.open(player, profile);
+                    this.open();
                 });
 
         GuiItem nameTagItem = ItemBuilder.from(Material.NAME_TAG)
@@ -79,11 +75,14 @@ public class ProfileSettingsGui extends PluginGui {
                 ))
                 .glow(colorNameType != ColorNameType.DEAFULT || customSuffixType != CustomSuffixType.NONE)
                 .asGuiItem(event ->
-                        new NameTagSettingsGui().open(player, profile)
+                        new NameTagSettingsGui(this.player, this.profile).open()
                 );
 
-        ItemStack incognitoHead = incognitoSettings.isEnabled() ? new ItemStack(Material.WITHER_SKELETON_SKULL) : SkullStorage.createPlayerHeadStack(profile.getUuid());
-        GuiItem incognitoItem = ItemBuilder.from(incognitoHead)
+        GuiItem incognitoItem =
+                (incognitoSettings.isEnabled() ?
+                        ItemBuilder.from(Material.WITHER_SKELETON_SKULL) :
+                        SkullStorage.createPlayerHead(this.profile.getUuid())
+                )
                 .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Tryb anonimowy"))
                 .lore(ComponentUtil.asList(
                         "",
@@ -95,11 +94,11 @@ public class ProfileSettingsGui extends PluginGui {
                     if (!player.hasPermission("core.command.incognito")) {
                         new BarrierBuilder()
                                 .name("<red>Nie posiadasz dostępu do tej funkcji")
-                                .updateItem(gui, event.getSlot());
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
-                    Bukkit.dispatchCommand(player, "incognito");
+                    Bukkit.dispatchCommand(this.player, "incognito");
                 });
 
         GuiItem messagesItem = ItemBuilder.from(Material.PAPER)
@@ -110,7 +109,7 @@ public class ProfileSettingsGui extends PluginGui {
                         ""
                 ))
                 .asGuiItem(event ->
-                        new MessagesSettingsGui().open(player, profile)
+                        new MessagesSettingsGui(this.player, this.profile).open()
                 );
 
         GuiItem ignoredPlayersItem = ItemBuilder.from(Material.RED_DYE)
@@ -128,28 +127,24 @@ public class ProfileSettingsGui extends PluginGui {
                         return;
                     }
 
-                    new IgnoredPlayersGui().open(player, profile);
+                    new IgnoredPlayersGui(this.player, this.profile).open();
                 });
 
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfilePanelGui().open(player, profile),
+                        new ProfilePanelGui(this.player, this.profile).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
                 ""
         );
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        this.gui.setItem(21, sidebarItem);
+        this.gui.setItem(22, soundsItem);
+        this.gui.setItem(23, nameTagItem);
 
-        gui.setItem(21, sidebarItem);
-        gui.setItem(22, soundsItem);
-        gui.setItem(23, nameTagItem);
+        this.gui.setItem(30, incognitoItem);
+        this.gui.setItem(31, messagesItem);
+        this.gui.setItem(32, ignoredPlayersItem);
 
-        gui.setItem(30, incognitoItem);
-        gui.setItem(31, messagesItem);
-        gui.setItem(32, ignoredPlayersItem);
-
-        gui.setItem(49, backButton);
-
-        gui.open(player);
+        this.gui.setItem(49, backButton);
     }
 }

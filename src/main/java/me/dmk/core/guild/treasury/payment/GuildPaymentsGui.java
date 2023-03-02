@@ -1,10 +1,8 @@
 package me.dmk.core.guild.treasury.payment;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import dev.triumphteam.gui.guis.PaginatedGui;
-import me.dmk.core.gui.PluginGui;
+import me.dmk.core.gui.PluginPaginatedGui;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.treasury.GuildTreasuryGui;
 import me.dmk.core.profile.Profile;
@@ -17,34 +15,35 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by DMK on 01.02.2023
+ * Created by DMK on 02.03.2023
  */
 
-public class GuildPaymentsGui extends PluginGui {
+public class GuildPaymentsGui extends PluginPaginatedGui {
 
-    public void open(Player player, Profile profile, Guild guild) {
-        PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Historia wpłat do skarbca " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
+    public final Guild guild;
 
-        GuiItem previousButton = this.createPreviousPageButton(gui);
+    public GuildPaymentsGui(Player player, Profile profile, Guild guild) {
+        super(player, profile, "Historia wpłat do skarbca", 6, true, true);
+
+        this.guild = guild;
+    }
+
+    @Override
+    public void build() {
+        GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new GuildTreasuryGui().open(player, profile, guild),
+                        new GuildTreasuryGui(this.player, this.profile, this.guild).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildyjnego<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = this.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(this.gui);
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        this.gui.setItem(47, previousButton);
+        this.gui.setItem(49, backButton);
+        this.gui.setItem(51, nextButton);
 
-        gui.setItem(47, previousButton);
-        gui.setItem(49, backButton);
-        gui.setItem(51, nextButton);
-
-        List<GuildPayment> guildPaymentList = guild.getGuildTreasury().getGuildPayments()
+        List<GuildPayment> guildPaymentList = this.guild.getGuildTreasury().getGuildPayments()
                 .stream()
                 .sorted(Comparator.comparing(GuildPayment::getPaymentDate).reversed())
                 .toList();
@@ -55,7 +54,7 @@ public class GuildPaymentsGui extends PluginGui {
                     .lore(ComponentUtil.asList(
                             "",
                             this.circle + " <gray>Ilość<dark_gray>: <light_purple>" + guildPayment.getAmountCoins(),
-                            this.circle + " <gray>Data<dark_gray>: <light_purple>" + TimeUtil.format(guildPayment.getPaymentDate().toInstant()),
+                            this.circle + " <gray>Data<dark_gray>: <light_purple>" + TimeUtil.formatDate(guildPayment.getPaymentDate().toInstant()),
                             "",
                             this.circle + " <gray>Saldo skarbca po wpłacie<dark_gray>: <light_purple>" + guildPayment.getBalanceAfterPayment(),
                             ""
@@ -63,9 +62,7 @@ public class GuildPaymentsGui extends PluginGui {
                     .glow(guildPayment.getAmountCoins() > 1000)
                     .asGuiItem();
 
-            gui.addItem(paymentItem);
+            this.gui.addItem(paymentItem);
         }
-
-        gui.open(player);
     }
 }

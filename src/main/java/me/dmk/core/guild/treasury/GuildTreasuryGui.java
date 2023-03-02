@@ -1,8 +1,9 @@
 package me.dmk.core.guild.treasury;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.dmk.core.CorePlugin;
+import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.guild.Guild;
@@ -17,35 +18,30 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
- * Created by DMK on 01.02.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class GuildTreasuryGui extends PluginGui {
 
-    public void open(Player player, Profile profile, Guild guild) {
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Skarbiec gildyjny " + this.circle))
-                .rows(3)
-                .disableAllInteractions()
-                .create();
+    private final PluginConfiguration pluginConfiguration = CorePlugin.getCorePlugin().getPluginConfiguration();
 
-        GuildTreasury guildTreasury = guild.getGuildTreasury();
+    public final Guild guild;
 
-        boolean isLeaderOrCoLeader = guild.isLeaderOrCoLeader(player.getUniqueId());
+    public GuildTreasuryGui(Player player, Profile profile, Guild guild) {
+        super(player, profile, "Skarbiec gildyjny", 3, true, true);
+
+        this.guild = guild;
+    }
+
+    @Override
+    public void build() {
+        GuildTreasury guildTreasury = this.guild.getGuildTreasury();
 
         int coinsToExtendGuild = this.pluginConfiguration.getCoinsToExtendGuild();
+
         boolean guildCanExtend = guildTreasury.getCoins() > coinsToExtendGuild;
-        boolean canExtend = profile.getProfileStatistics().getCoins() > coinsToExtendGuild;
-
-        GuiItem backButton = this.createBackButton(event ->
-                        new GuildPanelGui().open(player, profile, guild),
-                "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
-                ""
-        );
-
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
-        gui.setItem(22, backButton);
+        boolean playerCanExtend = this.profile.getProfileStatistics().getCoins() > coinsToExtendGuild;
+        boolean isLeaderOrCoLeader = this.guild.isLeaderOrCoLeader(this.player.getUniqueId());
 
         GuiItem topsItem = ItemBuilder.from(Material.GLOW_ITEM_FRAME)
                 .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Topka wpłaconych monet"))
@@ -58,11 +54,11 @@ public class GuildTreasuryGui extends PluginGui {
                     if (guildTreasury.getGuildPayments().isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Brak osób będących w topce<dark_gray>.")
-                                .updateItem(gui, event.getSlot());
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
-                    new GuildTopPaymentsGui().open(player, profile, guild);
+                    new GuildTopPaymentsGui(this.player, this.profile, this.guild).open();
                 });
 
         GuiItem coinsItem = ItemBuilder.from(Material.SUNFLOWER)
@@ -70,12 +66,12 @@ public class GuildTreasuryGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualnie w skarbcu gildyjnym znajduje się <light_purple>" + guildTreasury.getCoins() + " <gray>monet<dark_gray>.",
-                        this.circle + " <gray>Możliwość przedłużenia gildii<dark_gray>: " + (guildCanExtend || canExtend ? (isLeaderOrCoLeader ? "<green>Tak - Kliknij, aby przedłużyć" : "<green>Tak") : "<red>Nie"),
+                        this.circle + " <gray>Możliwość przedłużenia gildii<dark_gray>: " + (guildCanExtend || playerCanExtend ? (isLeaderOrCoLeader ? "<green>Tak - Kliknij, aby przedłużyć" : "<green>Tak") : "<red>Nie"),
                         ""
                 ))
                 .asGuiItem(event -> {
-                    if (canExtend && isLeaderOrCoLeader) {
-                        Bukkit.dispatchCommand(player, "guild extend");
+                    if (guildCanExtend || playerCanExtend && isLeaderOrCoLeader) {
+                        Bukkit.dispatchCommand(this.player, "guild extend");
                     }
                 });
 
@@ -90,17 +86,24 @@ public class GuildTreasuryGui extends PluginGui {
                     if (guildTreasury.getGuildPayments().isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Brak historii<dark_gray>.")
-                                .updateItem(gui, event.getSlot());
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
-                    new GuildPaymentsGui().open(player, profile, guild);
+                    new GuildPaymentsGui(this.player, this.profile, this.guild).open();
                 });
 
-        gui.setItem(12, topsItem);
-        gui.setItem(13, coinsItem);
-        gui.setItem(14, guildPaymentsHistoryItem);
+        GuiItem backButton = this.createBackButton(event ->
+                        new GuildPanelGui(this.player, this.profile, this.guild).open(),
+                "",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                ""
+        );
 
-        gui.open(player);
+        this.gui.setItem(12, topsItem);
+        this.gui.setItem(13, coinsItem);
+        this.gui.setItem(14, guildPaymentsHistoryItem);
+
+        this.gui.setItem(22, backButton);
     }
 }

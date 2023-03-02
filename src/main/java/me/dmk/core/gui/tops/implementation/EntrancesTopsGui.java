@@ -1,45 +1,42 @@
 package me.dmk.core.gui.tops.implementation;
 
 import com.mongodb.client.model.Indexes;
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.gui.tops.TopsGui;
 import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
 import org.bson.conversions.Bson;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 /**
- * Created by DMK on 13.02.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class EntrancesTopsGui extends PluginGui {
 
-    public void open(Player player) {
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Topka wejść na serwer " + this.circle))
-                .rows(5)
-                .disableAllInteractions()
-                .create();
+    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
+    public EntrancesTopsGui(Player player) {
+        super(player, null, "Topka wejść na serwer", 5, true, true);
+    }
+
+    @Override
+    public void build() {
         GuiItem backButton = this.createBackButton(event ->
-                        new TopsGui().open(player),
+                        new TopsGui(this.player).open(),
                 "",
                 this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""
         );
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
-        gui.setItem(31, backButton);
+        this.gui.setItem(31, backButton);
 
         Bson sort = Indexes.descending("profileStatistics.entrances");
         List<Profile> profileList = this.profileController.getTops(sort, 14);
@@ -48,20 +45,16 @@ public class EntrancesTopsGui extends PluginGui {
             Profile profile = profileList.get(i);
             ProfileStatistics statistics = profile.getProfileStatistics();
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(profile.getUuid());
-
-            GuiItem item = SkullStorage.createPlayerHead(offlinePlayer)
+            GuiItem item = SkullStorage.createPlayerHead(profile.getUuid())
                     .name(ComponentUtil.text((i + 1) + ". " + profile.getColoredName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.circle + " <gray>Gracz wszedł <light_purple>" + statistics.getEntrances() + " <gray>razy na nasz serwer<dark_gray>.",
+                            this.circle + " <gray>Gracz posiada <light_purple>" + statistics.getEntrances() + " <gray>wejść na serwer<dark_gray>.",
                             ""
                     ))
                     .asGuiItem();
 
-            gui.addItem(item);
+            this.gui.addItem(item);
         }
-
-        gui.open(player);
     }
 }

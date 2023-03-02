@@ -1,47 +1,47 @@
-package me.dmk.core.kit.gui;
+package me.dmk.core.profile.kit.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.gui.item.storage.SkullStorage;
-import me.dmk.core.kit.Kit;
 import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.kit.Kit;
+import me.dmk.core.profile.kit.KitMap;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
 /**
- * Created by DMK on 21.02.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class KitGui extends PluginGui {
 
-    public void open(Player player, Profile profile) {
-        ProfileStatistics statistics = profile.getProfileStatistics();
+    public final KitMap kitMap = CorePlugin.getCorePlugin().getKitMap();
+
+    public KitGui(Player player, Profile profile) {
+        super(player, profile, "Zestawy", 3, true, true);
+    }
+
+    @Override
+    public void build() {
+        ProfileStatistics statistics = this.profile.getProfileStatistics();
+
         int profileKitLevel = statistics.getKitLevel();
-
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Zestawy " + this.circle))
-                .rows(3)
-                .disableAllInteractions()
-                .create();
-
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
 
         for (Kit kit : this.kitMap.getKitMap().values()) {
             GuiItem kitItem = ItemBuilder.from(kit.getIcon())
                     .name(ComponentUtil.text(kit.getName()))
                     .lore(ComponentUtil.asList(kit.getLore()))
                     .glow(kit.getLevel() == profileKitLevel)
-                    .asGuiItem(event -> new KitPreviewGui().open(player, profile, kit));
+                    .asGuiItem(event -> new KitPrewiewGui(this.player, this.profile, kit).open());
 
-            gui.addItem(kitItem);
+            this.gui.addItem(kitItem);
         }
 
         GuiItem upgrateKitItem = ItemBuilder.from(SkullStorage.getBlackArrowUp())
@@ -58,7 +58,7 @@ public class KitGui extends PluginGui {
                     if (nextKitOptional.isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Nie ma następnego zestawu do odblokowania<dark_gray>.")
-                                .updateItem(gui, event.getSlot());
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
@@ -67,16 +67,14 @@ public class KitGui extends PluginGui {
                     if (nextKit.getRequiredCoinsToBuy() > statistics.getCoins()) {
                         new BarrierBuilder()
                                 .name("<red>Aby ulepszyć zestaw potrzebujesz <gold>" + nextKit.getRequiredCoinsToBuy() + " <red>monet<dark_gray>.")
-                                .updateItem(gui, event.getSlot());
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
-                    Bukkit.dispatchCommand(player, "kit upgrade");
-                    gui.close(player);
+                    Bukkit.dispatchCommand(this.player, "kit upgrade");
+                    this.gui.close(this.player);
                 });
 
-        gui.setItem(22, upgrateKitItem);
-
-        gui.open(player);
+        this.gui.setItem(22, upgrateKitItem);
     }
 }

@@ -27,12 +27,6 @@ public class SkullStorage {
                 .setSkullOwner(offlinePlayer);
     }
 
-    public static ItemStack createPlayerHeadStack(UUID uuid) {
-        return ItemBuilder.from(Material.PLAYER_HEAD)
-                .setSkullOwner(Bukkit.getOfflinePlayer(uuid))
-                .build();
-    }
-
     public static ItemStack getBlackArrowLeft() {
         String base64 = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzdhZWU5YTc1YmYwZGY3ODk3MTgzMDE1Y2NhMGIyYTdkNzU1YzYzMzg4ZmYwMTc1MmQ1ZjQ0MTlmYzY0NSJ9fX0=";
 

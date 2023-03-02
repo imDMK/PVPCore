@@ -5,12 +5,12 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
-import me.dmk.core.kit.Kit;
-import me.dmk.core.kit.KitMap;
-import me.dmk.core.kit.gui.KitGui;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
+import me.dmk.core.profile.kit.Kit;
+import me.dmk.core.profile.kit.KitMap;
+import me.dmk.core.profile.kit.gui.KitGui;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
@@ -37,7 +37,7 @@ public class KitCommand {
     void execute(Player player) {
         Profile profile = this.profileCache.getOrElseThrow(player);
 
-        new KitGui().open(player, profile);
+        new KitGui(player, profile).open();
     }
 
     @Async

@@ -60,10 +60,10 @@ public class GuildExtendCommand {
 
         int coinsToExtendGuild = this.pluginConfiguration.getCoinsToExtendGuild();
 
-        boolean canExtend = guildTreasury.getCoins() > coinsToExtendGuild;
+        boolean guildCanExtend = guildTreasury.getCoins() > coinsToExtendGuild;
         boolean playerCanExtend = profile.getProfileStatistics().getCoins() > coinsToExtendGuild;
 
-        if (!canExtend && !playerCanExtend) {
+        if (!guildCanExtend && !playerCanExtend) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Brak wystarczającej ilości monet w skarbcu gildyjnym<dark_gray>, <red>aby przedłużyć gildię<dark_gray>."
             );
@@ -76,7 +76,7 @@ public class GuildExtendCommand {
                 .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Potwierdź przedłużenie gildii " + SymbolUtil.getCircle("<dark_gray>"))
                 .afterConfirm(event -> {
                     if (coinsToExtendGuild > 0) {
-                        if (!canExtend) {
+                        if (!guildCanExtend) {
                             Bukkit.dispatchCommand(player, "guild deposit " + coinsDifference);
                         }
 

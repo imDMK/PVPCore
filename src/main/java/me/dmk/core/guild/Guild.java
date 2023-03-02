@@ -103,6 +103,18 @@ public class Guild {
                 .collect(Collectors.toList());
     }
 
+    public String getMemberRank(UUID uuid) {
+        if (this.creator.equals(uuid)) {
+            return "Założyciel";
+        } else if (this.leader.equals(uuid)) {
+            return "Właściciel";
+        } else if (this.coLeader.equals(uuid)) {
+            return "Zastępca lidera";
+        }
+
+        return "Członek";
+    }
+
     public void invite(UUID uuid) {
         this.memberInvites.put(uuid, Boolean.TRUE);
     }

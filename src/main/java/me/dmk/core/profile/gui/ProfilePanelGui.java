@@ -1,15 +1,19 @@
 package me.dmk.core.profile.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.dmk.core.CorePlugin;
+import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.guild.gui.GuildPanelGui;
-import me.dmk.core.kit.Kit;
-import me.dmk.core.kit.gui.KitPreviewGui;
+import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
+import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.kit.Kit;
+import me.dmk.core.profile.kit.KitMap;
+import me.dmk.core.profile.kit.gui.KitPrewiewGui;
 import me.dmk.core.profile.punishment.PunishmentHistoryGui;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.gui.ProfileSettingsGui;
@@ -27,43 +31,43 @@ import java.time.Duration;
 import java.util.Optional;
 
 /**
- * Created by DMK on 17.01.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class ProfilePanelGui extends PluginGui {
 
-    public void open(Player player, Profile profile) {
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Panel gracza " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
-        
-        boolean isSelf = player.getUniqueId().equals(profile.getUuid());
+    private final PluginConfiguration pluginConfiguration = CorePlugin.getCorePlugin().getPluginConfiguration();
+    private final LuckPermsController luckPermsController = CorePlugin.getCorePlugin().getLuckPermsController();
+    private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
+    private final KitMap kitMap = CorePlugin.getCorePlugin().getKitMap();
 
-        ProfileSettings settings = profile.getProfileSettings();
-        ProfileStatistics statistics = profile.getProfileStatistics();
+    public ProfilePanelGui(Player player, Profile profile) {
+        super(player, profile, "Panel gracza", 6, true, true);
+    }
 
-        Optional<String> group = this.luckPermsController.getOrElseLoad(profile.getUuid())
-                .flatMap(u -> this.luckPermsController.getHighestGroupDisplayNameOrName(profile.getUuid()));
-        
-        long lastSeenDays = TimeUtil.toDays(profile.getLastJoin().toInstant(), false);
-        int timeSpent = (isSelf ? PlayerUtil.getSecondsPlayed(player) : statistics.getTimeSpent());
+    @Override
+    public void build() {
+        ProfileSettings settings = this.profile.getProfileSettings();
+        ProfileStatistics statistics = this.profile.getProfileStatistics();
 
-        String lastSeen = lastSeenDays == 0L ? "dzisiaj o " + TimeUtil.formatTime(profile.getLastJoin().toInstant()) : lastSeenDays + " dni temu";
-        String timePlayed = TimeUtil.durationToString(Duration.ofSeconds(timeSpent));
+        boolean self = this.player.getUniqueId().equals(this.profile.getUuid());
 
-        GuiItem headItem = SkullStorage
-                .createPlayerHead(profile.getUuid())
-                .name(ComponentUtil.text(settings.getColorName().getFormat() + profile.getName() + " " + settings.getCustomSuffix().getFormat()))
+        String group = this.luckPermsController.getOrElseLoad(this.profile.getUuid())
+                .flatMap(u -> this.luckPermsController.getHighestGroupDisplayNameOrName(u.getUniqueId()))
+                .orElse("Brak");
+
+        String timeSpent = TimeUtil.durationToString(
+                Duration.ofSeconds(self ? PlayerUtil.getSecondsPlayed(this.player) : statistics.getTimeSpent())
+        );
+
+        GuiItem playerHead = SkullStorage.createPlayerHead(this.profile.getUuid())
+                .name(ComponentUtil.text(this.profile.getColoredName() + " " + settings.getCustomSuffix().getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.circle + " <gray>Online<dark_gray>: " + (profile.getPlayer().isPresent() ? "<green>Tak" : "<red>Nie <dark_gray>- <gray>Ostatnio widziany<dark_gray>: <light_purple>" + lastSeen + "<dark_gray>."),
-                        "",
-                        this.circle + " <gray>Grupa<dark_gray>: <light_purple>" + group.orElse("Brak"),
-                        this.circle + " <gray>Założenie konta<dark_gray>: <light_purple>" + TimeUtil.format(profile.getFirstJoin().toInstant()),
-                        this.circle + " <gray>Karany<dark_gray>: " + (profile.getPunishments().isEmpty() ? "<green>Nie" : "<red>Tak"),
-                        this.circle + " <gray>Odwiedził nas <light_purple>" + statistics.getEntrances() + " razy " + SymbolUtil.getSmile("<green>"),
+                        this.circle + "<gray>Online<dark_gray>: " + (this.profile.isOnline() ? "<green>Tak" : "<red>Nie <dark_gray>(<gray>Ostatnio widziany<dark_gray>: <red>" + TimeUtil.toDays(this.profile.getLastJoin().toInstant(), false) + " dni temu<dark_gray>)"),
+                        this.circle + "<gray>Grupa<dark_gray>: <light_purple>" + group,
+                        this.circle + "<gray>Założenie konta<dark_gray>: <light_purple>" + TimeUtil.formatDate(this.profile.getFirstJoin()),
+                        this.circle + "<gray>Karany<dark_gray>: " + (this.profile.wasPunished() ? "<red>Tak" : "<green>Nie"),
                         ""
                 ))
                 .asGuiItem();
@@ -74,7 +78,7 @@ public class ProfilePanelGui extends PluginGui {
                         "",
                         SymbolUtil.getStar("<yellow>") + " <gray>Poziom doświadczenia<dark_gray>: <yellow>" + statistics.getLevel(),
                         SymbolUtil.getStarSecond("<yellow>") + " <gray>Monety<dark_gray>: <yellow>" + statistics.getCoins(),
-                        SymbolUtil.getWatch("<gold>") + " <gray>Spędzony czas<dark_gray>: <gold>" + timePlayed,
+                        SymbolUtil.getWatch("<gold>") + " <gray>Spędzony czas<dark_gray>: <gold>" + timeSpent,
                         "",
                         SymbolUtil.getSword("<yellow>") + " <gray>Poziom zestawu<dark_gray>: <yellow>" + statistics.getKitLevel(),
                         SymbolUtil.getStar("<gold>") + " <gray>Punkty<dark_gray>: <gold>" + statistics.getPoints(),
@@ -82,24 +86,24 @@ public class ProfilePanelGui extends PluginGui {
                         SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
                         SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
                         SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
-                        "" + (isSelf ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
+                        "" + (self ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
                 ))
                 .asGuiItem(event -> {
-                    if (!isSelf) {
+                    if (!self) {
                         return;
                     }
 
                     int coinsToResetStatistics = this.pluginConfiguration.getCoinsToResetStatistics();
 
-                    if (statistics.getCoins() > coinsToResetStatistics) {
+                    if (coinsToResetStatistics > statistics.getCoins()) {
                         new BarrierBuilder()
                                 .name("<red>Nie spełniasz wymagań")
-                                .lore(this.warning + " <red>Aby zresetować statystyki potrzebujesz <gold>" + coinsToResetStatistics + " <red>monet<dark_gray>.")
-                                .updateItem(gui, event.getSlot());
+                                .lore("<red>Aby zresetować statystyki potrzebujesz <gold>" + coinsToResetStatistics + " <red>monet<dark_gray>.")
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
-                    Bukkit.dispatchCommand(player, "resetstatistics");
+                    Bukkit.dispatchCommand(this.player, "resetstatistics");
                 });
 
         GuiItem kitItem = ItemBuilder.from(Material.SHIELD)
@@ -114,39 +118,38 @@ public class ProfilePanelGui extends PluginGui {
                     if (kit.isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Nie znaleziono zestawu")
-                                .updateItem(gui, event.getSlot());
+                                .updateItem(this.gui, event.getSlot());
                         return;
                     }
 
-                    new KitPreviewGui().open(player, profile, kit.get());
+                    new KitPrewiewGui(this.player, this.profile, kit.get()).open();
                 });
 
         GuiItem punishmentsItem = ItemBuilder.from(Material.TARGET)
-                        .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Historia kar"))
-                        .lore(ComponentUtil.asList(
-                                "",
-                                this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do historii kar<dark_gray>.",
-                                ""
-                        ))
-                        .asGuiItem(event -> {
-                            if (profile.getPunishments().isEmpty()) {
-                                new BarrierBuilder()
-                                        .name("<green>Gracz nie posiada historii kar")
-                                        .lore(
-                                                "",
-                                                this.circle + " <gray>Zajrzyj tutaj innym razem " + SymbolUtil.getSmile("<green>"),
-                                                ""
-                                        )
-                                        .updateItem(gui, event.getSlot());
-                                return;
-                            }
+                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Historia kar"))
+                .lore(ComponentUtil.asList(
+                        "",
+                        this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do historii kar<dark_gray>.",
+                        ""
+                ))
+                .asGuiItem(event -> {
+                    if (this.profile.getPunishments().isEmpty()) {
+                        new BarrierBuilder()
+                                .name("<green>Gracz nie posiada historii kar")
+                                .lore(
+                                        "",
+                                        this.circle + " <gray>Zajrzyj tutaj innym razem " + SymbolUtil.getSmile("<green>"),
+                                        ""
+                                )
+                                .updateItem(this.gui, event.getSlot());
+                        return;
+                    }
 
-                            new PunishmentHistoryGui()
-                                    .open(player, profile);
-                        });
+                    new PunishmentHistoryGui(this.player, this.profile).open();
+                });
 
         GuiItem settingsOrIgnoreItem;
-        if (isSelf) {
+        if (self) {
             settingsOrIgnoreItem = ItemBuilder.from(Material.REPEATER)
                     .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Ustawienia"))
                     .lore(ComponentUtil.asList(
@@ -155,56 +158,50 @@ public class ProfilePanelGui extends PluginGui {
                             ""
                     ))
                     .asGuiItem(event ->
-                            new ProfileSettingsGui().open(player, profile)
+                            new ProfileSettingsGui(this.player, this.profile).open()
                     );
         } else {
-            Optional<Profile> playerProfile = this.profileCache.get(player.getUniqueId());
-
-            boolean playerIgnoredProfile = playerProfile
-                    .map(p -> p.getProfileSettings().getIgnoredPlayers().contains(profile.getUuid()))
+            boolean playerIgnoredProfile = this.profileCache.get(this.player.getUniqueId())
+                    .map(Profile::getProfileSettings)
+                    .map(profileSettings -> profileSettings.getIgnoredPlayers().contains(this.profile.getUuid()))
                     .orElse(false);
 
             settingsOrIgnoreItem = ItemBuilder.from(playerIgnoredProfile ? Material.LIME_DYE : Material.RED_DYE)
-                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + (playerIgnoredProfile ? "Odblokuj" : "Zablokuj") + " " + profile.getName()))
+                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + (playerIgnoredProfile ? "Odblokuj" : "Zablokuj") + " " + this.profile.getName()))
                     .lore(ComponentUtil.asList(
                             "",
                             this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby " + (playerIgnoredProfile ? StringUtil.getGreenGradient() + "odblokować" : StringUtil.getRedGradient() + "zablokować") + " <gray>gracza<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event -> {
-                        Bukkit.dispatchCommand(player, "ignore " + profile.getName());
-                        this.open(player, profile);
+                        Bukkit.dispatchCommand(this.player, "ignore " + this.profile.getName());
+                        this.open();
                     });
         }
 
-        profile.getGuild().ifPresent(guild -> {
-            boolean isLeader = guild.isLeader(profile.getUuid());
-            boolean isCoLeader = guild.isCoLeader(profile.getUuid());
+        this.profile.getGuild().ifPresent(guild -> {
+            boolean isLeader = guild.isLeader(this.profile.getUuid());
+            boolean isCoLeader = guild.isCoLeader(this.profile.getUuid());
 
             GuiItem guildItem = ItemBuilder.from(Material.BEACON)
                     .name(ComponentUtil.text(me.dmk.core.util.string.StringUtil.getPurpleGradient() + guild.getTag()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.circle + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>jest " + (isLeader ? "<red>liderem" : isCoLeader ? "<yellow>zastępcą lidera" : "<light_purple>członkiem") + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",
-                            "",
+                            this.circle + " <gray>Gracz <light_purple>" + this.profile.getName() + " <gray>jest " + (isLeader ? "<red>liderem" : isCoLeader ? "<yellow>zastępcą lidera" : "<light_purple>członkiem") + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",
                             this.circle + " <light_purple>Kilknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event ->
-                            new GuildPanelGui().open(player, profile, guild)
+                            new GuildPanelGui(this.player, this.profile, guild).open()
                     );
 
-            gui.setItem(40, guildItem);
+            this.gui.setItem(40, guildItem);
         });
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
-
-        gui.setItem(13, headItem);
-        gui.setItem(21, statisticsItem);
-        gui.setItem(22, kitItem);
-        gui.setItem(30, punishmentsItem);
-        gui.setItem(31, settingsOrIgnoreItem);
-
-        gui.open(player);
+        this.gui.setItem(13, playerHead);
+        this.gui.setItem(21, statisticsItem);
+        this.gui.setItem(22, kitItem);
+        this.gui.setItem(30, punishmentsItem);
+        this.gui.setItem(31, settingsOrIgnoreItem);
     }
 }

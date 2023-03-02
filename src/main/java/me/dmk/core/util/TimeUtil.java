@@ -118,8 +118,11 @@ public class TimeUtil {
         };
     }
 
+    public static String formatDate(Date date) {
+        return dateTimeFormat.format(date);
+    }
 
-    public static String format(Instant instant) {
+    public static String formatDate(Instant instant) {
         return dateTimeFormat.format(Date.from(instant));
     }
 

@@ -1,10 +1,8 @@
 package me.dmk.core.profile.punishment;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import dev.triumphteam.gui.guis.PaginatedGui;
-import me.dmk.core.gui.PluginGui;
+import me.dmk.core.gui.PluginPaginatedGui;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.util.ComponentUtil;
@@ -13,85 +11,73 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by DMK on 18.01.2023
+ * Created by DMK on 02.03.2023
  */
 
-public class PunishmentHistoryGui extends PluginGui {
+public class PunishmentHistoryGui extends PluginPaginatedGui {
+    public PunishmentHistoryGui(Player player, Profile profile) {
+        super(player, profile, "Historia kar " + profile.getName(), 6, true, true);
+    }
 
-    public void open(Player player, Profile profile) {
-        PaginatedGui gui = Gui.paginated()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Historia kar " + profile.getName() + " " + this.circle))
-                .rows(6)
-                .disableAllInteractions()
-                .create();
-
-        GuiItem previousButton = this.createPreviousPageButton(gui);
+    @Override
+    public void build() {
+        GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
-                        new ProfilePanelGui().open(player, profile),
+                        new ProfilePanelGui(this.player, this.profile).open(),
                 "",
                 this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
                 ""
         );
-        GuiItem nextButton = this.createNextPageButton(gui);
+        GuiItem nextButton = this.createNextPageButton(this.gui);
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        this.gui.setItem(47, previousButton);
+        this.gui.setItem(49, backButton);
+        this.gui.setItem(51, nextButton);
 
-        gui.setItem(47, previousButton);
-        gui.setItem(49, backButton);
-        gui.setItem(51, nextButton);
-
-        List<Punishment> punishmentList = profile.getPunishments()
+        List<Punishment> punishments = this.profile.getPunishments()
                 .stream()
                 .sorted(Comparator.comparing(Punishment::getCreatedAt).reversed())
                 .toList();
 
-        int i = punishmentList.size();
-        for (Punishment punishment : punishmentList) {
-
+        int i = punishments.size();
+        for (Punishment punishment : punishments) {
             boolean isBan = punishment.getType().equals(PunishmentType.BAN);
-            boolean active = punishment.isActive();
 
-            Material material;
-            if (isBan) {
-                material = Material.RED_GLAZED_TERRACOTTA;
-            } else {
-                material = Material.YELLOW_GLAZED_TERRACOTTA;
-            }
+            Material material = (isBan ? Material.RED_GLAZED_TERRACOTTA : Material.YELLOW_GLAZED_TERRACOTTA);
 
             Component name = ComponentUtil.text("<light_purple>Kara #" + i);
-            List<Component> lore = ComponentUtil.asList(
+            List<String> lore = Arrays.asList(
                     "",
-                    this.circle + " <gray>Informacje o <light_purple>" + (punishment.isRemoved() ? "wycofanym" : active ? "aktywnym" : "wygaśniętym") + " " + (isBan ? "banie" : "wyciszeniu") + "<dark_gray>:",
+                    this.circle + " <gray>Informacje o <light_purple>" + (punishment.isRemoved() ? "wycofanym" : punishment.isActive() ? "aktywnym" : "wygaśniętym") + " " + (isBan ? "banie" : "wyciszeniu") + "<dark_gray>:",
                     "",
                     this.circle + " <gray>Administrator<dark_gray>: <light_purple>" + punishment.getAddedBy(),
                     this.circle + " <gray>Powód<dark_gray>: <light_purple>" + punishment.getReason(),
-                    this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : active ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
-                    this.circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getCreatedAt().toInstant()),
+                    this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : punishment.isActive() ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
+                    this.circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getCreatedAt().toInstant()),
                     ""
             );
 
             if (punishment.isRemoved()) {
-                //lore.addAll(Arrays.asList(
-                        //this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
-                        //this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.format(punishment.getRemovedAt().toInstant()),
-                        //""
-                //));
+                lore.addAll(Arrays.asList(
+                        this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
+                        this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getRemovedAt().toInstant()),
+                        ""
+                ));
             }
 
             GuiItem punishmentItem = ItemBuilder.from(material)
                     .name(name)
-                    .lore(lore)
-                    .glow(active)
+                    .lore(ComponentUtil.asList(lore))
+                    .glow(punishment.isActive())
                     .asGuiItem();
 
-            gui.addItem(punishmentItem);
+            this.gui.addItem(punishmentItem);
             i--;
         }
-
-        gui.open(player);
     }
 }

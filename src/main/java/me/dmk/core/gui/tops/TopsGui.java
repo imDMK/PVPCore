@@ -1,7 +1,6 @@
 package me.dmk.core.gui.tops;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.tops.implementation.*;
@@ -10,68 +9,78 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
- * Created by DMK on 12.02.2023
+ * Created by DMK on 02.03.2023
  */
 
 public class TopsGui extends PluginGui {
+    public TopsGui(Player player) {
+        super(player, null, "Topki serwerowe", 5, true, true);
+    }
 
-    public void open(Player player) {
-        Gui gui = Gui.gui()
-                .title(ComponentUtil.text(this.circle + " <light_purple>Topki serwerowe " + this.circle))
-                .rows(5)
-                .disableAllInteractions()
-                .create();
-
+    @Override
+    public void build() {
         GuiItem entrancesItem = ItemBuilder.from(Material.DARK_OAK_DOOR)
                 .name(ComponentUtil.text("<light_purple>Topka wejść na serwer"))
-                .asGuiItem(event -> new EntrancesTopsGui().open(player));
+                .asGuiItem(event -> new EntrancesTopsGui(this.player).open());
 
         GuiItem timeSpentItem = ItemBuilder.from(Material.CLOCK)
                 .name(ComponentUtil.text("<gold>Topka spędzonego czasu"))
-                .asGuiItem(event -> new TimeSpentTopsGui().open(player));
+                .asGuiItem(event ->
+                        new TimeSpentTopsGui(this.player).open()
+                );
 
         GuiItem levelItem = ItemBuilder.from(Material.EXPERIENCE_BOTTLE)
                 .name(ComponentUtil.text("<yellow>Topka poziomów"))
-                .asGuiItem(event -> new LevelTopsGui().open(player));
+                .asGuiItem(event ->
+                        new LevelTopsGui(this.player).open()
+                );
 
         GuiItem coinsItem = ItemBuilder.from(Material.SUNFLOWER)
                 .name(ComponentUtil.text("<yellow>Topka monet"))
-                .asGuiItem(event -> new CoinsTopsGui().open(player));
+                .asGuiItem(event ->
+                        new CoinsTopsGui(this.player).open()
+                );
 
         GuiItem pointsItem = ItemBuilder.from(Material.NETHER_STAR)
                 .name(ComponentUtil.text("<gold>Topka punktów rankingowych"))
-                .asGuiItem(event -> new PointsTopsGui().open(player));
+                .asGuiItem(event ->
+                        new PointsTopsGui(this.player).open()
+                );
 
         GuiItem killsItem = ItemBuilder.from(Material.DIAMOND_SWORD)
                 .name(ComponentUtil.text("<red>Topka zabójstw"))
-                .asGuiItem(event -> new KillsTopsGui().open(player));
+                .asGuiItem(event ->
+                        new KillsTopsGui(this.player).open()
+                );
 
         GuiItem highestKillStreak = ItemBuilder.from(Material.NETHERITE_SWORD)
                 .name(ComponentUtil.text("<red>Topka największej serii zabójstw"))
-                .asGuiItem(event -> new KillStreakTopsGui().open(player));
+                .asGuiItem(event ->
+                        new HighestKillStreakTopsGui(this.player).open()
+                );
 
         GuiItem deathsItem = ItemBuilder.from(Material.SKELETON_SKULL)
                 .name(ComponentUtil.text("<gray>Topka śmierci"))
-                .asGuiItem(event -> new DeathsTopsGui().open(player));
+                .asGuiItem(event ->
+                        new DeathsTopsGui(this.player).open()
+                );
 
         GuiItem guildsItem = ItemBuilder.from(Material.BEACON)
                 .name(ComponentUtil.text("<aqua>Topki gildyjne"))
-                .asGuiItem(event -> new GuildsTopsGui().open(player));
+                .asGuiItem(event ->
+                        new GuildsTopsGui(this.player).open()
+                );
 
-        gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
+        this.gui.setItem(12, entrancesItem);
+        this.gui.setItem(13, timeSpentItem);
+        this.gui.setItem(14, levelItem);
 
-        gui.setItem(12, entrancesItem);
-        gui.setItem(13, timeSpentItem);
-        gui.setItem(14, levelItem);
+        this.gui.setItem(21, coinsItem);
+        this.gui.setItem(22, pointsItem);
+        this.gui.setItem(23, killsItem);
 
-        gui.setItem(21, coinsItem);
-        gui.setItem(22, pointsItem);
-        gui.setItem(23, killsItem);
-
-        gui.setItem(30, highestKillStreak);
-        gui.setItem(31, deathsItem);
-        gui.setItem(32, guildsItem);
-
-        gui.open(player);
+        this.gui.setItem(30, highestKillStreak);
+        this.gui.setItem(31, deathsItem);
+        this.gui.setItem(32, guildsItem);
     }
 }

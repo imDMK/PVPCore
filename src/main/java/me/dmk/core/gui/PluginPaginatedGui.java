@@ -2,6 +2,7 @@ package me.dmk.core.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.PaginatedGui;
 import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
@@ -12,18 +13,18 @@ import org.bukkit.entity.Player;
  * Created by DMK on 02.03.2023
  */
 
-public abstract class PluginGui extends ItemStorage {
+public abstract class PluginPaginatedGui extends ItemStorage {
 
     public final Player player;
     public final Profile profile;
 
-    public final Gui gui;
+    public final PaginatedGui gui;
 
-    public PluginGui(Player player, Profile profile, String name, int rows, boolean disableAllInteractions, boolean fillBorder) {
+    public PluginPaginatedGui(Player player, Profile profile, String name, int rows, boolean disableAllInteractions, boolean fillBorder) {
         this.player = player;
         this.profile = profile;
 
-        this.gui = Gui.gui()
+        this.gui = Gui.paginated()
                 .title(ComponentUtil.text(name))
                 .rows(rows)
                 .create();

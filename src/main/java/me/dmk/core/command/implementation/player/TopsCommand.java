@@ -17,6 +17,6 @@ public class TopsCommand {
 
     @Execute
     void execute(Player player) {
-        new TopsGui().open(player);
+        new TopsGui(player).open();
     }
 }

@@ -70,7 +70,7 @@ public class GuildDepositCommand {
 
         this.notificationController.sendGlobalPluginMessage(
                 PluginMessageType.GUILD,
-                StringFormatter.formatWarning() + player.getName() + " <gray>wpłacił <light_purple>" + coins + " <gray>monet do skarbca gildyjnego<dark_gray>."
+                StringFormatter.formatWarning() + " <light_purple>" + player.getName() + " <gray>wpłacił <light_purple>" + coins + " <gray>monet do skarbca gildyjnego<dark_gray>."
         );
     }
 }

@@ -31,14 +31,12 @@ public class ProfileCommand {
     void execute(Player player) {
         Profile profile = this.profileCache.getOrElseThrow(player);
 
-        new ProfilePanelGui()
-                .open(player, profile);
+        new ProfilePanelGui(player, profile).open();
     }
 
     @Execute(required = 1)
     void execute(Player player, @Arg Profile profile) {
-        new ProfilePanelGui()
-                .open(player, profile);
+        new ProfilePanelGui(player, profile).open();
     }
 
     @Async
