@@ -157,7 +157,7 @@ public class CustomSuffixGui extends PluginGui {
         if (profile.getProfileSettings().getCustomSuffix().equals(customSuffixType)) {
             new BarrierBuilder()
                     .name("<red>Posiadasz aktualnie ustawiony ten suffix")
-                    .updateGui(gui, slot);
+                    .updateItem(gui, slot);
             return;
         }
 

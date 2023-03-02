@@ -58,7 +58,7 @@ public class KitGui extends PluginGui {
                     if (nextKitOptional.isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Nie ma następnego zestawu do odblokowania<dark_gray>.")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
@@ -67,7 +67,7 @@ public class KitGui extends PluginGui {
                     if (nextKit.getRequiredCoinsToBuy() > statistics.getCoins()) {
                         new BarrierBuilder()
                                 .name("<red>Aby ulepszyć zestaw potrzebujesz <gold>" + nextKit.getRequiredCoinsToBuy() + " <red>monet<dark_gray>.")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 

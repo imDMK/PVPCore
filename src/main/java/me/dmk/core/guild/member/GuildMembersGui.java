@@ -95,14 +95,14 @@ public class GuildMembersGui extends PluginGui {
                                         .lore(
                                                 this.warning + " <green>Aby opuścić gildię, użyj komendy /guild leave"
                                         )
-                                        .updateGui(gui, event.getSlot());
+                                        .updateItem(gui, event.getSlot());
                                 return;
                             }
 
                             if (guild.isLeader(guildMember.getUuid())) {
                                 new BarrierBuilder()
                                         .name("<red>Gracz pełni funkcję lidera gildii<dark_gray>.")
-                                        .updateGui(gui, event.getSlot());
+                                        .updateItem(gui, event.getSlot());
                                 return;
                             }
 

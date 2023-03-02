@@ -234,7 +234,7 @@ public class ColorNameGui extends PluginGui {
         if (profile.getProfileSettings().getColorName().equals(colorNameType)) {
             new BarrierBuilder()
                     .name("<red>Posiadasz aktualnie ustawiony ten kolor")
-                    .updateGui(gui, slot);
+                    .updateItem(gui, slot);
             return;
         }
 

@@ -126,7 +126,7 @@ public class GuildPanelGui extends PluginGui {
                     if (guild.getAlliances().isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Gildia nie posiada sojuszów<dark_gray>.")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 

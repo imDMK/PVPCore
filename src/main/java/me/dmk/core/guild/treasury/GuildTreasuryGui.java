@@ -58,7 +58,7 @@ public class GuildTreasuryGui extends PluginGui {
                     if (guildTreasury.getGuildPayments().isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Brak osób będących w topce<dark_gray>.")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
@@ -90,7 +90,7 @@ public class GuildTreasuryGui extends PluginGui {
                     if (guildTreasury.getGuildPayments().isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Brak historii<dark_gray>.")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 

@@ -95,7 +95,7 @@ public class ProfileSettingsGui extends PluginGui {
                     if (!player.hasPermission("core.command.incognito")) {
                         new BarrierBuilder()
                                 .name("<red>Nie posiadasz dostępu do tej funkcji")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
@@ -124,7 +124,7 @@ public class ProfileSettingsGui extends PluginGui {
                     if (profileSettings.getIgnoredPlayers().isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Nikogo nie ignorujesz")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 

@@ -95,7 +95,7 @@ public class ProfilePanelGui extends PluginGui {
                         new BarrierBuilder()
                                 .name("<red>Nie spełniasz wymagań")
                                 .lore(this.warning + " <red>Aby zresetować statystyki potrzebujesz <gold>" + coinsToResetStatistics + " <red>monet<dark_gray>.")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
@@ -114,7 +114,7 @@ public class ProfilePanelGui extends PluginGui {
                     if (kit.isEmpty()) {
                         new BarrierBuilder()
                                 .name("<red>Nie znaleziono zestawu")
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
@@ -137,7 +137,7 @@ public class ProfilePanelGui extends PluginGui {
                                                 this.circle + " <gray>Zajrzyj tutaj innym razem " + SymbolUtil.getSmile("<green>"),
                                                 ""
                                         )
-                                        .updateGui(gui, event.getSlot());
+                                        .updateItem(gui, event.getSlot());
                                 return;
                             }
 

@@ -52,7 +52,7 @@ public class NameTagSettingsGui extends PluginGui {
                                         this.circle + " <gray>Uprawnienie<dark_gray>: <red>core.nametag.colorname",
                                         ""
                                 )
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
@@ -79,7 +79,7 @@ public class NameTagSettingsGui extends PluginGui {
                                         this.circle + " <gray>Uprawnienie<dark_gray>: <red>core.nametag.suffix",
                                         ""
                                 )
-                                .updateGui(gui, event.getSlot());
+                                .updateItem(gui, event.getSlot());
                         return;
                     }
 
