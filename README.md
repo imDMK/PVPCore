@@ -2,7 +2,7 @@
 PVP core plugin spigot/bukkit for 1.19.2 version.
 
 Contains:
-- Player profiles (spent time, stats, penalties, fights),
+- Player profiles (spent time, stats, penalties, fights, tops, kits),
 - All useful commands (player, administrator),
 - Player guilds (stats, treasury),
 - Player fights,
