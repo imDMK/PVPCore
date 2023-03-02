@@ -12,25 +12,27 @@ import org.bukkit.Material;
 
 public class BarrierBuilder {
 
-    private ItemBuilder barrier;
+    private final ItemBuilder barrier = ItemBuilder.from(Material.BARRIER);
 
     public BarrierBuilder name(String name) {
-        this.barrier = ItemBuilder.from(Material.BARRIER)
-                .name(ComponentUtil.text(name));
+        this.barrier.name(
+                ComponentUtil.text(name)
+        );
         return this;
     }
 
     public BarrierBuilder lore(String... lore) {
-        this.barrier = this.barrier
-                .lore(ComponentUtil.asList(lore));
+        this.barrier.lore(
+                ComponentUtil.asList(lore)
+        );
         return this;
     }
 
-    public void updateGui(Gui gui, int slot) {
+    public void updateItem(Gui gui, int slot) {
         gui.updateItem(slot, this.barrier.asGuiItem());
     }
 
-    public void updateGui(PaginatedGui paginatedGui, int slot) {
+    public void updateItem(PaginatedGui paginatedGui, int slot) {
         paginatedGui.updateItem(slot, this.barrier.asGuiItem());
     }
 }
