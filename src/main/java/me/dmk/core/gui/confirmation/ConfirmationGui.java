@@ -57,34 +57,34 @@ public class ConfirmationGui {
     }
 
     public void open(boolean async) {
-        GuiItem cancel = ItemBuilder.from(Material.RED_CONCRETE)
+        GuiItem cancelItem = ItemBuilder.from(Material.RED_CONCRETE)
                 .name(ComponentUtil.text(StringUtil.getRedGradient() + "Anuluję"))
                 .asGuiItem();
 
-        GuiItem confirm = ItemBuilder.from(Material.GREEN_CONCRETE)
+        GuiItem confirmItem = ItemBuilder.from(Material.GREEN_CONCRETE)
                 .name(ComponentUtil.text(StringUtil.getGreenGradient() + "Potwierdzam"))
                 .asGuiItem();
 
-        if (this.actionAfterCancel != null) {
-            cancel.setAction(this.actionAfterCancel);
-        } else if (this.closeAfterCancel) {
-            cancel.setAction(event -> this.gui.close(player));
+        if (this.actionAfterConfirm != null) {
+            confirmItem.setAction(this.actionAfterConfirm);
         }
 
-        if (this.actionAfterConfirm != null) {
-            confirm.setAction(this.actionAfterConfirm);
+        if (this.actionAfterCancel != null) {
+            cancelItem.setAction(this.actionAfterCancel);
+        } else if (this.closeAfterCancel) {
+            cancelItem.setAction(event -> this.gui.close(this.player));
         }
 
         this.gui.getFiller().fillBorder(ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem());
 
-        this.gui.setItem(21, confirm);
-        this.gui.setItem(30, confirm);
+        this.gui.setItem(21, confirmItem);
+        this.gui.setItem(30, confirmItem);
 
-        this.gui.setItem(23, cancel);
-        this.gui.setItem(32, cancel);
+        this.gui.setItem(23, cancelItem);
+        this.gui.setItem(32, cancelItem);
 
         if (async) { //opening inventory cannot be async
-            Bukkit.getScheduler().runTaskLater(CorePlugin.getCorePlugin(), () -> this.gui.open(player), 1L);
+            Bukkit.getScheduler().runTaskLater(CorePlugin.getCorePlugin(), () -> this.gui.open(this.player), 1L);
         } else {
             this.gui.open(this.player);
         }
