@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -51,7 +52,7 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
             Material material = (isBan ? Material.RED_GLAZED_TERRACOTTA : Material.YELLOW_GLAZED_TERRACOTTA);
 
             Component name = ComponentUtil.text("<light_purple>Kara #" + i);
-            List<String> lore = Arrays.asList(
+            List<String> lore = new ArrayList<>(Arrays.asList(
                     "",
                     this.circle + " <gray>Informacje o <light_purple>" + (punishment.isRemoved() ? "wycofanym" : punishment.isActive() ? "aktywnym" : "wygaśniętym") + " " + (isBan ? "banie" : "wyciszeniu") + "<dark_gray>:",
                     "",
@@ -60,7 +61,7 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
                     this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : punishment.isActive() ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
                     this.circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getCreatedAt().toInstant()),
                     ""
-            );
+            ));
 
             if (punishment.isRemoved()) {
                 lore.addAll(Arrays.asList(

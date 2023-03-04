@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -59,11 +60,11 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
 
             Guild allianceGuild = allianceGuildOptional.get();
 
-            List<String> lore = Arrays.asList(
+            List<String> lore = new ArrayList<>(Arrays.asList(
                     "",
                     this.circle + " <gray>Nazwa<dark_gray>: <light_purple>" + allianceGuild.getName(),
                     ""
-            );
+            ));
 
             if (isLeaderOrCoLeader) {
                 lore.addAll(Arrays.asList(
