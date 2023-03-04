@@ -54,7 +54,7 @@ public class PlayerJoinListener implements Listener {
         }
 
         if (statistics.getLevel() != player.getLevel()) {
-            statistics.setLevel(player.getLevel());
+            player.setLevel(statistics.getLevel());
         }
 
         this.notificationController.sendMessage(player, this.pluginConfiguration.getWelcomeMessage());
