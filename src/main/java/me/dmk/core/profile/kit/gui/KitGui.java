@@ -34,7 +34,7 @@ public class KitGui extends PluginGui {
 
         int profileKitLevel = statistics.getKitLevel();
 
-        for (Kit kit : this.kitMap.getKitMap().values()) {
+        for (Kit kit : this.kitMap.getIntegerKitMap().values()) {
             GuiItem kitItem = ItemBuilder.from(kit.getIcon())
                     .name(ComponentUtil.text(kit.getName()))
                     .lore(ComponentUtil.asList(kit.getLore()))

@@ -21,11 +21,11 @@ public class KitMap {
     private final KitConfiguration kitConfiguration;
 
     @Getter
-    private final Map<Integer, Kit> kitMap = new ConcurrentHashMap<>();
+    private final Map<Integer, Kit> integerKitMap = new ConcurrentHashMap<>();
 
     public void loadKitsFromConfiguration() {
         this.kitConfiguration.getKitList().forEach(kit ->
-                this.kitMap.put(kit.getLevel(), kit)
+                this.integerKitMap.put(kit.getLevel(), kit)
         );
     }
 
@@ -41,6 +41,6 @@ public class KitMap {
     }
 
     public Optional<Kit> get(int level) {
-        return Optional.ofNullable(this.kitMap.get(level));
+        return Optional.ofNullable(this.integerKitMap.get(level));
     }
 }
