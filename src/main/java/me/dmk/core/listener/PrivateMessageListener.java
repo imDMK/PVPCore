@@ -22,12 +22,12 @@ public class PrivateMessageListener implements Listener {
     @EventHandler
     public void onPrivateMessage(PrivateMessageEvent event) {
         Player sender = event.getSender();
-        Profile senderProfile = event.getSenderProfile();
-
         Player receiving = event.getReceiving();
-        Profile receivingProfile = event.getReceivingProfile();
 
+        Profile senderProfile = event.getSenderProfile();
         ProfileSettings senderSettings = senderProfile.getProfileSettings();
+
+        Profile receivingProfile = event.getReceivingProfile();
         ProfileSettings receivingSettings = receivingProfile.getProfileSettings();
 
         if (sender.getUniqueId().equals(receiving.getUniqueId())) {
