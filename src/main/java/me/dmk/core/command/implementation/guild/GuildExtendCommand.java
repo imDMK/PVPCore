@@ -14,7 +14,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -73,7 +72,7 @@ public class GuildExtendCommand {
         int coinsDifference = coinsToExtendGuild - guildTreasury.getCoins();
 
         new ConfirmationGui(player)
-                .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Potwierdź przedłużenie gildii " + SymbolUtil.getCircle("<dark_gray>"))
+                .title("Przedłużenie gildii")
                 .afterConfirm(event -> {
                     if (coinsToExtendGuild > 0) {
                         if (!guildCanExtend) {

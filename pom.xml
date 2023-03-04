@@ -35,7 +35,13 @@
             <url>https://repo.panda-lang.org/releases</url>
         </repository>
 
-        <!-- CodeMC -->
+        <!-- CodeMC snapshots -->
+        <repository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </repository>
+
+        <!-- CodeMC releases -->
         <repository>
             <id>codemc-releases</id>
             <url>https://repo.codemc.org/repository/maven-releases/</url>
@@ -123,6 +129,13 @@
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-gui</artifactId>
             <version>3.1.4</version>
+        </dependency>
+
+        <!-- AnvilGUI -->
+        <dependency>
+            <groupId>net.wesjd</groupId>
+            <artifactId>anvilgui</artifactId>
+            <version>1.6.3-SNAPSHOT</version>
         </dependency>
 
         <!-- LiteCommands -->

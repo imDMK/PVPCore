@@ -81,7 +81,7 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
 
                         } else if (event.isRightClick() && event.isShiftClick()) {
                             new ConfirmationGui(this.player)
-                                    .create(this.circle + " <light_purple>Zerwanie sojuszu z " + allianceGuild.getTag() + " " + this.circle)
+                                    .title("Potwierdź zerwanie sojuszu z " + allianceGuild.getTag())
                                     .afterConfirm(e -> {
                                         Bukkit.dispatchCommand(player, "guild alliance break " + allianceGuild.getTag());
                                         this.open();

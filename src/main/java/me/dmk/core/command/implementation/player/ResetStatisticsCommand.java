@@ -14,7 +14,6 @@ import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
-import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
@@ -49,7 +48,7 @@ public class ResetStatisticsCommand {
         }
 
         new ConfirmationGui(player)
-                .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Resetowanie statystyk " + SymbolUtil.getCircle("<dark_gray>"))
+                .title("Resetowanie statystyk")
                 .afterConfirm(confirmEvent -> {
                     if (coinsToResetStatistics > statistics.getCoins()) {
                         player.closeInventory();

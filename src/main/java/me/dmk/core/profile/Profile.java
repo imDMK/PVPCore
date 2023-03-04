@@ -87,6 +87,10 @@ public class Profile implements Serializable {
                 .isEmpty();
     }
 
+    public void clearAllPunishments() {
+        this.punishments = Lists.newCopyOnWriteArrayList();
+    }
+
     public void refreshVanish(Player player, Player other, Profile otherProfile) {
         boolean isVanish = this.getProfileSettings().isVanish();
 

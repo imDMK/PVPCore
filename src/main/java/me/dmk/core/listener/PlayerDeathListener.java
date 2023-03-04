@@ -136,7 +136,8 @@ public class PlayerDeathListener implements Listener {
                     player.spigot().respawn();
                     this.kitMap.addPlayerKit(player, profile.getProfileStatistics());
                 },
-                1L);
+                1L
+        );
     }
 
     private void checkForGuilds(Profile victimProfile, Profile killerProfile, int addRank, int removeRank) {

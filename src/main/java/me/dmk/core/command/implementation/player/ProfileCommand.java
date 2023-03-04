@@ -1,17 +1,14 @@
 package me.dmk.core.command.implementation.player;
 
 import dev.rollczi.litecommands.argument.Arg;
-import dev.rollczi.litecommands.command.async.Async;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
-import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import me.dmk.core.profile.controller.ProfileController;
+import me.dmk.core.profile.gui.ProfileManageGui;
 import me.dmk.core.profile.gui.ProfilePanelGui;
-import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
 /**
@@ -23,8 +20,6 @@ import org.bukkit.entity.Player;
 @Route(name = "profile")
 public class ProfileCommand {
 
-    private final NotificationController notificationController;
-    private final ProfileController profileController;
     private final ProfileCache profileCache;
 
     @Execute(required = 0)
@@ -39,39 +34,9 @@ public class ProfileCommand {
         new ProfilePanelGui(player, profile).open();
     }
 
-    @Async
-    @Execute(route = "addCoins", required = 2)
-    @Permission("core.command.profile.addcoins")
-    void executeAddCoins(Player player, @Arg Profile profile, @Arg Integer coins) {
-        profile.getProfileStatistics().addCoins(coins);
-        this.profileController.save(profile);
-
-        this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + " <gray>Dodano <light_purple>" + coins + " <gray>monet do konta gracza <light_purple>" + profile.getName() + "<dark_gray>."
-        );
-    }
-
-    @Async
-    @Execute(route = "removeCoins", required = 2)
-    @Permission("core.command.profile.removecoins")
-    void executeRemoveCoins(Player player, @Arg Profile profile, @Arg Integer coins) {
-        profile.getProfileStatistics().removeCoins(coins);
-        this.profileController.save(profile);
-
-        this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + " <gray>Usunięto <light_purple>" + coins + " <gray>monet z konta gracza <light_purple>" + profile.getName() + "<dark_gray>."
-        );
-    }
-
-    @Async
-    @Execute(route = "setCoins", required = 2)
-    @Permission("core.command.profile.setcoins")
-    void executeSetCoins(Player player, @Arg Profile profile, @Arg Integer coins) {
-        profile.getProfileStatistics().setCoins(coins);
-        this.profileController.save(profile);
-
-        this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + " <gray>Zmieniono monety konta gracza <light_purple>" + profile.getName() + " <gray>na <light_purple>" + coins + "<dark_gray>."
-        );
+    @Execute(route = "manage", required = 1)
+    @Permission("core.command.profile.manage")
+    void executeManage(Player player, @Arg Profile profile) {
+        new ProfileManageGui(player, profile).open();
     }
 }

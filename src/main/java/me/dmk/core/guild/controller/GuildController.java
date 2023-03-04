@@ -23,7 +23,7 @@ public class GuildController {
     }
 
     public void delete(Guild guild) {
-        this.mongoDataService.delete(guild);
+        this.mongoDataService.delete(Filters.eq("tag", guild.getTag()), guild);
     }
 
     public Optional<Guild> findByTag(String tag) {

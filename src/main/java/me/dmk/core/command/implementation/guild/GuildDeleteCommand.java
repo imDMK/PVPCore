@@ -14,7 +14,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class GuildDeleteCommand {
         }
 
         new ConfirmationGui(player)
-                .create(SymbolUtil.getCircle("<dark_gray>") + " <light_purple>Potwierdź usunięcie gildii " + SymbolUtil.getCircle("<dark_gray>"))
+                .title("Usunięcie gildii")
                 .afterConfirm(event -> {
                     this.taskExecutor.runAsync(() -> {
                         this.guildController.delete(guild);

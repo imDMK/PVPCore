@@ -82,4 +82,9 @@ public class ProfileCache {
         this.uuidProfileCache.put(profile.getUuid(), profile);
         this.stringProfileCache.put(profile.getName(), profile);
     }
+
+    public void remove(Profile profile) {
+        this.uuidProfileCache.asMap().remove(profile.getUuid());
+        this.stringProfileCache.asMap().remove(profile.getName());
+    }
 }

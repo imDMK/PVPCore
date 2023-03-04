@@ -4,7 +4,6 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import lombok.RequiredArgsConstructor;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringUtil;
@@ -17,23 +16,28 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  * Created by DMK on 18.01.2023
  */
 
-@RequiredArgsConstructor
 public class ConfirmationGui {
 
     private final Player player;
-    private Gui gui;
+    private final Gui gui;
 
     private GuiAction<InventoryClickEvent> actionAfterConfirm;
     private GuiAction<InventoryClickEvent> actionAfterCancel;
 
     private boolean closeAfterCancel;
 
-    public ConfirmationGui create(String title) {
+    public ConfirmationGui(Player player) {
+        this.player = player;
+
         this.gui = Gui.gui()
-                .title(ComponentUtil.text(title))
+                .title(ComponentUtil.text("Zatwierdź czynność"))
                 .rows(6)
                 .disableAllInteractions()
                 .create();
+    }
+
+    public ConfirmationGui title(String title) {
+        this.gui.updateTitle(title);
         return this;
     }
 

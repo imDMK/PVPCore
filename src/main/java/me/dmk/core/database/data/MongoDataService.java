@@ -2,6 +2,7 @@ package me.dmk.core.database.data;
 
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.DeleteOptions;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.RequiredArgsConstructor;
 import me.dmk.core.database.MongoClientService;
@@ -96,7 +97,7 @@ public class MongoDataService {
         mongoCollection.replaceOne(filters, document, new ReplaceOptions().upsert(true));
     }
 
-    public <V> void delete(V vEntity) {
+    public <V> void delete(Bson filters, V vEntity) {
         String json = this.gson.toJson(vEntity);
         Document document = Document.parse(json);
 
@@ -112,7 +113,7 @@ public class MongoDataService {
             return;
         }
 
-        mongoCollection.deleteOne(document);
+        mongoCollection.deleteOne(filters, new DeleteOptions());
     }
 
     public <V> List<V> sort(Class<V> vClass, Bson sort, int limit) {

@@ -102,7 +102,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                             }
 
                             new ConfirmationGui(this.player)
-                                    .create(this.circle + " <light_purple>Wyrzucenie " + offlinePlayer.getName() + " " + this.circle)
+                                    .title("Potwierdź wyrzucenie " + offlinePlayer.getName())
                                     .afterConfirm(e -> {
                                         Bukkit.dispatchCommand(this.player, "guild kick " + offlinePlayer.getName());
                                         this.open();

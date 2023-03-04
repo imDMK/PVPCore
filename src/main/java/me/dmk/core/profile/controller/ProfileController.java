@@ -42,6 +42,10 @@ public class ProfileController {
         this.mongoDataService.save(Filters.eq("uuid", profile.getUuid().toString()), profile);
     }
 
+    public void delete(Profile profile) {
+        this.mongoDataService.delete(Filters.eq("uuid", profile.getUuid().toString()), profile);
+    }
+
     public List<Profile> getTops(Bson sort, int limit) {
         return this.mongoDataService.sort(Profile.class, sort, limit);
     }

@@ -295,7 +295,7 @@ public class CorePlugin extends JavaPlugin {
                         new KitCommand(this.notificationController, this.profileController, this.profileCache, this.kitMap),
                         new MessageCommand(this.notificationController, this.profileCache),
                         new PingCommand( this.notificationController),
-                        new ProfileCommand(this.notificationController, this.profileController, this.profileCache),
+                        new ProfileCommand(this.profileCache),
                         new ReplyCommand(this.notificationController, this.profileCache),
                         new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.profileCache, this.taskExecutor),
                         new SidebarCommand(this.notificationController, this.profileCache),
