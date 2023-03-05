@@ -1,4 +1,4 @@
-package me.dmk.core.profile.kit;
+package me.dmk.core.kit;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package me.dmk.core.profile.kit.gui;
+package me.dmk.core.kit.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -6,9 +6,9 @@ import me.dmk.core.CorePlugin;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.gui.item.storage.SkullStorage;
+import me.dmk.core.kit.Kit;
+import me.dmk.core.kit.KitMap;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.kit.Kit;
-import me.dmk.core.profile.kit.KitMap;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
 import org.bukkit.Bukkit;

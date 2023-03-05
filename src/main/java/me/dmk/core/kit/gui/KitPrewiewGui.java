@@ -1,10 +1,10 @@
-package me.dmk.core.profile.kit.gui;
+package me.dmk.core.kit.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.PluginGui;
+import me.dmk.core.kit.Kit;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.kit.Kit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
