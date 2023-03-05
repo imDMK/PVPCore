@@ -197,7 +197,8 @@ public class CorePlugin extends JavaPlugin {
                 new PlayerItemConsumeListener(this.profileCache),
                 new PlayerLevelChangeListener(this.notificationController, this.profileCache),
                 new PlayerMoveListener(this.teleportMap),
-                new PrivateMessageListener(this.notificationController)
+                new PrivateMessageListener(this.notificationController),
+                new SignChangeListener(this.miniMessage)
         ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
 
         new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager, this.miniMessage);
