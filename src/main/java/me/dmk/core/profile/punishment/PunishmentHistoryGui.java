@@ -45,6 +45,8 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
                 .sorted(Comparator.comparing(Punishment::getCreatedAt).reversed())
                 .toList();
 
+        boolean self = this.player.getUniqueId().equals(this.profile.getUuid());
+
         int i = punishments.size();
         for (Punishment punishment : punishments) {
             boolean isBan = punishment.getType().equals(PunishmentType.BAN);
@@ -57,18 +59,24 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
                     this.circle + " <gray>Informacje o <light_purple>" + (punishment.isRemoved() ? "wycofanym" : punishment.isActive() ? "aktywnym" : "wygaśniętym") + " " + (isBan ? "banie" : "wyciszeniu") + "<dark_gray>:",
                     "",
                     this.circle + " <gray>Administrator<dark_gray>: <light_purple>" + punishment.getAddedBy(),
-                    this.circle + " <gray>Powód<dark_gray>: <light_purple>" + punishment.getReason(),
-                    this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : punishment.isActive() ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
-                    this.circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getCreatedAt().toInstant()),
                     ""
             ));
 
-            if (punishment.isRemoved()) {
+            if (self || this.player.hasPermission("core.punishment.see.details")) {
                 lore.addAll(Arrays.asList(
-                        this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
-                        this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getRemovedAt().toInstant()),
+                        this.circle + " <gray>Powód<dark_gray>: <light_purple>" + punishment.getReason(),
+                        this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : punishment.isActive() ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),
+                        this.circle + " <gray>Data utworzenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getCreatedAt().toInstant()),
                         ""
                 ));
+
+                if (punishment.isRemoved()) {
+                    lore.addAll(Arrays.asList(
+                            this.circle + " <gray>Wycofana przez<dark_gray>: <light_purple>" + punishment.getRemovedBy(),
+                            this.circle + " <gray>Data wycofania<dark_gray>: <light_purple>" + TimeUtil.formatDate(punishment.getRemovedAt().toInstant()),
+                            ""
+                    ));
+                }
             }
 
             GuiItem punishmentItem = ItemBuilder.from(material)
