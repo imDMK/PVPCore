@@ -50,14 +50,12 @@ public class ProfilePanelGui extends PluginGui {
         ProfileSettings settings = this.profile.getProfileSettings();
         ProfileStatistics statistics = this.profile.getProfileStatistics();
 
-        boolean self = this.player.getUniqueId().equals(this.profile.getUuid());
-
         String group = this.luckPermsController.getOrElseLoad(this.profile.getUuid())
                 .flatMap(u -> this.luckPermsController.getHighestGroupDisplayNameOrName(u.getUniqueId()))
                 .orElse("Brak");
 
         String timeSpent = TimeUtil.durationToString(
-                Duration.ofSeconds(self ? PlayerUtil.getSecondsPlayed(this.player) : statistics.getTimeSpent())
+                Duration.ofSeconds(this.isSelf() ? PlayerUtil.getSecondsPlayed(this.player) : statistics.getTimeSpent())
         );
 
         GuiItem playerHead = SkullStorage.createPlayerHead(this.profile.getUuid())
@@ -86,10 +84,10 @@ public class ProfilePanelGui extends PluginGui {
                         SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
                         SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
                         SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
-                        "" + (self ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
+                        "" + (this.isSelf() ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
                 ))
                 .asGuiItem(event -> {
-                    if (!self) {
+                    if (!this.isSelf()) {
                         return;
                     }
 
@@ -149,7 +147,7 @@ public class ProfilePanelGui extends PluginGui {
                 });
 
         GuiItem settingsOrIgnoreItem;
-        if (self) {
+        if (this.isSelf()) {
             settingsOrIgnoreItem = ItemBuilder.from(Material.REPEATER)
                     .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Ustawienia"))
                     .lore(ComponentUtil.asList(

@@ -39,6 +39,10 @@ public abstract class PluginGui extends ItemStorage {
         }
     }
 
+    public boolean isSelf() {
+        return this.player.getUniqueId().equals(this.profile.getUuid());
+    }
+
     public abstract void build();
 
     public void open() {
