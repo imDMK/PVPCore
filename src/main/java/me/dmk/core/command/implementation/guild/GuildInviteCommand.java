@@ -8,13 +8,11 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by DMK on 08.01.2023
@@ -26,24 +24,10 @@ import java.util.Optional;
 public class GuildInviteCommand {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
 
     @Async
     @Execute(required = 1)
-    void execute(Player player, @Arg Profile other) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
-        Optional<Guild> guildOptional = profile.getGuild();
-
-        if (guildOptional.isEmpty()) {
-            this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
-            );
-            return;
-        }
-
-        final Guild guild = guildOptional.get();
-
+    void execute(Player player, Guild guild, @Arg Profile other) {
         if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."

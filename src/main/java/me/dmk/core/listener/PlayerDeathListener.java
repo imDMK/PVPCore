@@ -123,7 +123,7 @@ public class PlayerDeathListener implements Listener {
     }
 
     private void hideBossBarAndRespawn(Player player, Profile profile, Fight fight) {
-        if (profile.hasFight()) {
+        if (fight.hasFight()) {
             this.notificationController.hideBossBar(player, fight.getBossBar());
             fight.clear();
         }

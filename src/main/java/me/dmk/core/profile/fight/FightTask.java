@@ -7,6 +7,7 @@ import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.task.executor.TaskExecutor;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class FightTask implements Runnable {
 
     private final PluginConfiguration pluginConfiguration;
+    private final MiniMessage miniMessage;
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
     private final TaskExecutor taskExecutor;
@@ -29,25 +31,24 @@ public class FightTask implements Runnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             this.profileCache.get(player.getUniqueId()).ifPresent(profile -> {
                 Fight fight = profile.getFight();
+                BossBar bossBar = fight.getBossBar();
 
-                if (profile.hasFight()) {
-                    Component bossBarName = this.notificationController.getMiniMessage().deserialize(
-                            this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.getSecondsLeft()))
+                if (fight.hasFight()) {
+                    Component bossBarName = this.miniMessage.deserialize(
+                            this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.getRemainingFightTime()))
                     );
 
-                    BossBar bossBar = fight.getBossBar();
                     bossBar.name(bossBarName);
-                    bossBar.progress(fight.expireToBossBarFloat());
+                    bossBar.progress(fight.remainingFightTimeToFloat());
 
-                    if (fight.getSecondsLeft() > 10) {
+                    if (fight.getRemainingFightTime() > 10) {
                         bossBar.color(BossBar.Color.RED);
                     } else {
                         bossBar.color(BossBar.Color.YELLOW);
                     }
-                } else if (profile.wasFight()) {
-                    Component bossBarName = this.notificationController.getMiniMessage().deserialize("<green>Skończyłeś/aś walczyć - możesz się wylogować");
+                } else if (fight.hadFight()) {
+                    Component bossBarName = this.miniMessage.deserialize("<green>Skończyłeś(-aś) walczyć - możesz się wylogować");
 
-                    BossBar bossBar = fight.getBossBar();
                     bossBar.name(bossBarName);
                     bossBar.color(BossBar.Color.GREEN);
 

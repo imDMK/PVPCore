@@ -41,7 +41,7 @@ public class EntityResurrectListener implements Listener {
 
         profile.getProfileStatistics().increaseUsedTotemOfUndying();
 
-        if (profile.hasFight()) {
+        if (profile.getFight().hasFight()) {
             Fight fight = profile.getFight();
 
             fight.getLastAttacker()

@@ -23,6 +23,7 @@ public class Fight {
 
     private UUID lastAttacker;
     private Instant expireAt;
+
     private BossBar bossBar;
 
     public void put(UUID attacker) {
@@ -40,11 +41,23 @@ public class Fight {
         return Optional.ofNullable(this.lastAttacker);
     }
 
-    public long getSecondsLeft() {
+    public boolean hasFight() {
+        if (this.expireAt == null) {
+            return false;
+        }
+
+        return Instant.now().isAfter(this.expireAt);
+    }
+
+    public boolean hadFight() {
+        return this.getLastAttacker().isPresent();
+    }
+
+    public long getRemainingFightTime() {
         return Duration.between(Instant.now(), this.expireAt).toSeconds();
     }
 
-    public float expireToBossBarFloat() {
-        return (float) this.getSecondsLeft() / this.fightTime;
+    public float remainingFightTimeToFloat() {
+        return (float) this.getRemainingFightTime() / this.fightTime;
     }
 }

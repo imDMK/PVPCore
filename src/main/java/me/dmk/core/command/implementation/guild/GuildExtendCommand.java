@@ -11,13 +11,10 @@ import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.Optional;
 
 /**
  * Created by DMK on 28.01.2023
@@ -31,23 +28,11 @@ public class GuildExtendCommand {
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final ProfileCache profileCache;
     private final TaskExecutor taskExecutor;
 
     @Async
     @Execute
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
-        Optional<Guild> guildOptional = profile.getGuild();
-        if (guildOptional.isEmpty()) {
-            this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
-            );
-            return;
-        }
-
-        Guild guild = guildOptional.get();
+    void execute(Player player, Profile profile, Guild guild) {
         GuildTreasury guildTreasury = guild.getGuildTreasury();
 
         if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {

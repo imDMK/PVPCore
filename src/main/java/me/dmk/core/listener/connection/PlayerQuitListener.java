@@ -44,7 +44,7 @@ public class PlayerQuitListener implements Listener {
         profile.getProfileSettings().getBoard().remove();
         profile.getProfileStatistics().setTimeSpent(PlayerUtil.getSecondsPlayed(player));
 
-        if (profile.hasFight()) {
+        if (profile.getFight().hasFight()) {
             player.setHealth(0.0);
             profile.getFight().clear();
         }

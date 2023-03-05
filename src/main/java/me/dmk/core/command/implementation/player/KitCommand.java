@@ -6,7 +6,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.kit.Kit;
 import me.dmk.core.profile.kit.KitMap;
@@ -30,20 +29,16 @@ public class KitCommand {
 
     private final NotificationController notificationController;
     private final ProfileController profileController;
-    private final ProfileCache profileCache;
     private final KitMap kitMap;
 
     @Execute
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
+    void execute(Player player, Profile profile) {
         new KitGui(player, profile).open();
     }
 
     @Async
     @Execute(route = "upgrade")
-    void executeUpgrade(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void executeUpgrade(Player player, Profile profile) {
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         Optional<Kit> nextKitOptional = this.kitMap.get(statistics.getKitLevel() + 1);

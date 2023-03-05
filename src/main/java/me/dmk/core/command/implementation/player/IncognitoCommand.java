@@ -9,7 +9,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.incognito.IncognitoController;
 import me.dmk.core.profile.settings.incognito.IncognitoSettings;
@@ -33,12 +32,10 @@ public class IncognitoCommand {
     private final NotificationController notificationController;
     private final ProfileController profileController;
     private final IncognitoController incognitoController;
-    private final ProfileCache profileCache;
 
     @Async
     @Execute(required = 0)
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile) {
         IncognitoSettings incognitoSettings = profile.getProfileSettings().getIncognitoSettings();
 
         boolean changed = this.incognitoController.changeSkin(player, profile);
@@ -58,8 +55,7 @@ public class IncognitoCommand {
     @Async
     @Execute(route = "changeIdentifier")
     @Permission("core.command.incognito.changeidentifier")
-    void executeChangeIdentifier(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void executeChangeIdentifier(Player player, Profile profile) {
         IncognitoSettings incognitoSettings = profile.getProfileSettings().getIncognitoSettings();
 
         if (!incognitoSettings.canChangeIdentifier()) {

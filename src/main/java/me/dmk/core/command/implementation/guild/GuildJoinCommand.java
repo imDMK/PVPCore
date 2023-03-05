@@ -10,7 +10,6 @@ import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
@@ -27,13 +26,10 @@ public class GuildJoinCommand {
     private final NotificationController notificationController;
     private final ProfileController profileController;
     private final GuildController guildController;
-    private final ProfileCache profileCache;
 
     @Async
     @Execute(required = 1)
-    void execute(Player player, @Arg Guild guild) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
+    void execute(Player player, Profile profile, @Arg Guild guild) {
         if (!guild.isInvited(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie otrzymałeś/aś zaproszenia do tej gildii<dark_gray>."

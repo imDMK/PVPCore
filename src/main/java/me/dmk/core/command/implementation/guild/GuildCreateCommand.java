@@ -13,7 +13,6 @@ import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
@@ -33,21 +32,19 @@ public class GuildCreateCommand {
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final ProfileCache profileCache;
     private final GuildCache guildCache;
 
     @Async
     @Execute(required = 2)
-    void execute(Player player, @Arg @Name("tag") String tag, @Arg @Name("name") String name) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-        ProfileStatistics statistics = profile.getProfileStatistics();
-
+    void execute(Player player, Profile profile, @Arg @Name("tag") String tag, @Arg @Name("name") String name) {
         if (profile.getGuild().isPresent()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Posiadasz już gildię<dark_gray>."
             );
             return;
         }
+
+        ProfileStatistics statistics = profile.getProfileStatistics();
 
         int requiredCoins = this.pluginConfiguration.getCoinsToCreateGuild();
         int requiredLevel = this.pluginConfiguration.getLevelToCreateGuild();

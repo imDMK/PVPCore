@@ -29,8 +29,7 @@ public class ReplyCommand {
     private final ProfileCache profileCache;
 
     @Execute(min = 1)
-    void execute(Player player, @Joiner @Name("message") String message) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile, @Joiner @Name("message") String message) {
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         UUID lastPrivateMessage = profileSettings.getLastPrivateMessage();

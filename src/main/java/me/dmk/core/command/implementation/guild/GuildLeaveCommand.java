@@ -9,12 +9,9 @@ import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
-
-import java.util.Optional;
 
 /**
  * Created by DMK on 08.01.2023
@@ -28,23 +25,10 @@ public class GuildLeaveCommand {
     private final NotificationController notificationController;
     private final ProfileController profileController;
     private final GuildController guildController;
-    private final ProfileCache profileCache;
 
     @Async
     @Execute
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
-        Optional<Guild> guildOptional = profile.getGuild();
-        if (guildOptional.isEmpty()) {
-            this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
-            );
-            return;
-        }
-
-        final Guild guild = guildOptional.get();
-
+    void execute(Player player, Profile profile, Guild guild) {
         if (guild.isLeader(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Jesteś liderem tej gildii<dark_gray>."

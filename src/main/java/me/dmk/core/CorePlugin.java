@@ -20,6 +20,8 @@ import me.dmk.core.command.argument.guild.member.GuildMemberArgument;
 import me.dmk.core.command.argument.notification.NotificationTypeArgument;
 import me.dmk.core.command.argument.player.*;
 import me.dmk.core.command.argument.profile.ProfileArgument;
+import me.dmk.core.command.contextual.GuildContextual;
+import me.dmk.core.command.contextual.ProfileContextual;
 import me.dmk.core.command.handler.InvalidUsageHandler;
 import me.dmk.core.command.handler.MissingPermissionHandler;
 import me.dmk.core.command.implementation.admin.*;
@@ -173,7 +175,7 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor = new TaskExecutorImpl();
 
         this.taskExecutor.runTimerAsync(new BoardTask(this.profileCache), 5L, TimeUnit.SECONDS);
-        this.taskExecutor.runTimerAsync(new FightTask(this.pluginConfiguration, this.notificationController, this.profileCache, this.taskExecutor), 1L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new FightTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileCache, this.taskExecutor), 1L, TimeUnit.SECONDS);
         this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new VanishTask(this.notificationController, this.profileCache), 2L, TimeUnit.SECONDS);
 
@@ -256,6 +258,9 @@ public class CorePlugin extends JavaPlugin {
 
                 .argument(Profile.class, new ProfileArgument(this.profileCache, this.miniMessage))
 
+                .contextualBind(Profile.class, new ProfileContextual(this.profileCache))
+                .contextualBind(Guild.class, new GuildContextual(this.profileCache, this.miniMessage))
+
                 .commandInstance(
                         new BanCommand(this.notificationController, this.profileController),
                         new BroadCastCommand(this.notificationController),
@@ -276,29 +281,29 @@ public class CorePlugin extends JavaPlugin {
                         new UnMuteCommand(this.notificationController, this.profileController),
                         new VanishCommand(this.notificationController, this.profileCache),
 
-                        new GuildAllianceCommand(this.notificationController, this.guildController, this.profileCache),
+                        new GuildAllianceCommand(this.notificationController, this.guildController),
 
-                        new GuildCreateCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.profileCache, this.guildCache),
-                        new GuildDeleteCommand(this.notificationController, this.guildController, this.profileCache, this.guildCache, this.taskExecutor),
-                        new GuildDepositCommand(this.notificationController, this.profileController,this.guildController, this.profileCache),
-                        new GuildExtendCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.profileCache, this.taskExecutor),
+                        new GuildCreateCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.guildCache),
+                        new GuildDeleteCommand(this.notificationController, this.guildController, this.guildCache, this.taskExecutor),
+                        new GuildDepositCommand(this.notificationController, this.profileController,this.guildController),
+                        new GuildExtendCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.taskExecutor),
                         new GuildForceDeleteCommand(this.notificationController, this.guildController, this.guildCache, this.taskExecutor),
-                        new GuildInformationCommand(this.notificationController, this.profileCache),
-                        new GuildInviteCommand(this.notificationController, this.profileCache),
-                        new GuildJoinCommand(this.notificationController, this.profileController,this.guildController, this.profileCache),
+                        new GuildInformationCommand(),
+                        new GuildInviteCommand(this.notificationController),
+                        new GuildJoinCommand(this.notificationController, this.profileController,this.guildController),
                         new GuildKickCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
-                        new GuildLeaveCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
+                        new GuildLeaveCommand(this.notificationController, this.profileController, this.guildController),
 
                         new GroupsCommand(this.luckPermsController, this.notificationController),
                         new IgnoreCommand(this.notificationController, this.profileCache),
-                        new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController, this.profileCache),
-                        new KitCommand(this.notificationController, this.profileController, this.profileCache, this.kitMap),
+                        new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController),
+                        new KitCommand(this.notificationController, this.profileController, this.kitMap),
                         new MessageCommand(this.notificationController, this.profileCache),
                         new PingCommand( this.notificationController),
-                        new ProfileCommand(this.profileCache),
+                        new ProfileCommand(),
                         new ReplyCommand(this.notificationController, this.profileCache),
-                        new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.profileCache, this.taskExecutor),
-                        new SidebarCommand(this.notificationController, this.profileCache),
+                        new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.taskExecutor),
+                        new SidebarCommand(this.notificationController),
                         new SpawnCommand(this.notificationController, this.teleportMap),
                         new TopsCommand()
                 )

@@ -30,7 +30,7 @@ public class PlayerCommandPreprocessListener implements Listener {
 
         String command = event.getMessage().toLowerCase();
 
-        if (profile.hasFight()) {
+        if (profile.getFight().hasFight()) {
             boolean anyMatch = this.pluginConfiguration.getFightBlockedCommands()
                     .stream()
                     .anyMatch(command::startsWith);

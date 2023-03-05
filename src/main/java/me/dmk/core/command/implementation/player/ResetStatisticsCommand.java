@@ -8,7 +8,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.task.executor.TaskExecutor;
@@ -29,13 +28,11 @@ public class ResetStatisticsCommand {
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
     private final ProfileController profileController;
-    private final ProfileCache profileCache;
     private final TaskExecutor taskExecutor;
 
     @Async
     @Execute
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile) {
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         int coinsToResetStatistics = this.pluginConfiguration.getCoinsToResetStatistics();

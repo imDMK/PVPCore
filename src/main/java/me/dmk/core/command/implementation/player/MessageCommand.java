@@ -27,8 +27,7 @@ public class MessageCommand {
     private final ProfileCache profileCache;
 
     @Execute(min = 2)
-    void execute(Player player, @Arg @Name("player") Player other, @Joiner @Name("message") String message) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile, @Arg @Name("player") Player other, @Joiner @Name("message") String message) {
         Profile otherProfile = this.profileCache.getOrElseThrow(other);
 
         PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(player, profile, other, otherProfile, message);

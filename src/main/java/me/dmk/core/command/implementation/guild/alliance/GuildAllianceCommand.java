@@ -9,14 +9,10 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
-import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.Optional;
 
 /**
  * Created by DMK on 04.02.2023
@@ -29,24 +25,11 @@ public class GuildAllianceCommand {
 
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final ProfileCache profileCache;
 
     @Async
     @Execute(required = 1)
     @Route(name = "accept")
-    void executeAccept(Player player, @Arg Guild otherGuild) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
-        Optional<Guild> guildOptional = profile.getGuild();
-        if (guildOptional.isEmpty()) {
-            this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
-            );
-            return;
-        }
-
-        final Guild guild = guildOptional.get();
-
+    void executeAccept(Player player, Guild guild, @Arg Guild otherGuild) {
         if (!otherGuild.isInvitedToAlliance(guild)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie otrzymano zaproszenia do sojuszu od tej gildii<dark_gray>."
@@ -69,19 +52,7 @@ public class GuildAllianceCommand {
     @Async
     @Execute(required = 1)
     @Route(name = "break")
-    void executeBreak(Player player, @Arg Guild otherGuild) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
-        Optional<Guild> guildOptional = profile.getGuild();
-        if (guildOptional.isEmpty()) {
-            this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
-            );
-            return;
-        }
-
-        final Guild guild = guildOptional.get();
-
+    void executeBreak(Player player, Guild guild, @Arg Guild otherGuild) {
         if (!guild.hasAlliance(otherGuild)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie posiadacie sojuszu gildyjnego<dark_gray>."
@@ -103,20 +74,7 @@ public class GuildAllianceCommand {
 
     @Execute(required = 1)
     @Route(name = "invite")
-    void executeInvite(Player player, @Arg Guild otherGuild) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
-
-        Optional<Guild> guildOptional = profile.getGuild();
-
-        if (guildOptional.isEmpty()) {
-            this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>."
-            );
-            return;
-        }
-
-        final Guild guild = guildOptional.get();
-
+    void executeInvite(Player player, Guild guild, @Arg Guild otherGuild) {
         if (guild.getTag().equals(otherGuild.getTag())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Zwariowałeś? Nie możesz zaprosić swojej gildii do sojuszu <dark_gray>damn..."

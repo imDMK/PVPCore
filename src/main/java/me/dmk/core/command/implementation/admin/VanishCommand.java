@@ -28,8 +28,7 @@ public class VanishCommand {
     private final ProfileCache profileCache;
 
     @Execute
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile) {
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         if (profileSettings.isVanish()) {

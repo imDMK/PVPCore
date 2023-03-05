@@ -26,8 +26,7 @@ public class IgnoreCommand {
     private final ProfileCache profileCache;
 
     @Execute(required = 0)
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile) {
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         profileSettings.setPrivateMessages(!profileSettings.isPrivateMessages());
@@ -38,7 +37,7 @@ public class IgnoreCommand {
     }
 
     @Execute(required = 1)
-    void execute(Player player, @Arg Profile otherProfile) {
+    void executeIgnoreOther(Player player, @Arg Profile otherProfile) {
         Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
 

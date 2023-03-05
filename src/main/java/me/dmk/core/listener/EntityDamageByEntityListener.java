@@ -69,11 +69,11 @@ public class EntityDamageByEntityListener implements Listener {
             Fight playerFight = playerProfile.getFight();
             Fight damagerFight = damagerProfile.getFight();
 
-            if (!playerProfile.hasFight()) {
+            if (!playerFight.hasFight()) {
                 this.createBossBar(player, playerFight);
             }
 
-            if (!damagerProfile.hasFight()) {
+            if (!damagerFight.hasFight()) {
                 this.createBossBar(damager, damagerFight);
             }
 

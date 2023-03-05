@@ -6,7 +6,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.board.Board;
 import me.dmk.core.util.string.StringFormatter;
@@ -22,12 +21,10 @@ import org.bukkit.entity.Player;
 public class SidebarCommand {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
 
     @Async
     @Execute
-    void execute(Player player) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+    void execute(Player player, Profile profile) {
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         Board board = profileSettings.getBoard();

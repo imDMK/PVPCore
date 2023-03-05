@@ -15,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -112,18 +111,6 @@ public class Profile implements Serializable {
                 player.hidePlayer(corePlugin, other);
             }
         }
-    }
-
-    public boolean hasFight() {
-        if (this.fight.getExpireAt() == null) {
-            return false;
-        }
-
-        return Instant.now().isBefore(this.fight.getExpireAt());
-    }
-
-    public boolean wasFight() {
-        return this.fight.getLastAttacker().isPresent();
     }
 
     public Optional<Guild> getGuild() {
