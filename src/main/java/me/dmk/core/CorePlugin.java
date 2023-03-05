@@ -16,7 +16,7 @@ import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.NotificationType;
 import me.dmk.core.command.argument.guild.GuildArgument;
-import me.dmk.core.command.argument.guild.member.GuildMemberArgument;
+import me.dmk.core.command.argument.guild.GuildMemberArgument;
 import me.dmk.core.command.argument.notification.NotificationTypeArgument;
 import me.dmk.core.command.argument.player.*;
 import me.dmk.core.command.argument.profile.ProfileArgument;

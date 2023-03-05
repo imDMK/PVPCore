@@ -1,4 +1,4 @@
-package me.dmk.core.command.argument.guild.member;
+package me.dmk.core.command.argument.guild;
 
 import dev.rollczi.litecommands.argument.ArgumentName;
 import dev.rollczi.litecommands.argument.simple.OneArgument;
