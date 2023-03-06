@@ -221,6 +221,11 @@
                                     <pattern>dev.rollczi.litecommands</pattern>
                                     <shadedPattern>me.dmk.core.dev.rollczi.litecommands</shadedPattern>
                                 </relocation>
+
+                                <relocation>
+                                    <pattern>dev.triumphteam.gui</pattern>
+                                    <shadedPattern>me.dmk.core.gui</shadedPattern>
+                                </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
