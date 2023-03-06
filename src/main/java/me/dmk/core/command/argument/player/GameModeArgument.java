@@ -5,15 +5,14 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.GameMode;
-import panda.std.Option;
 import panda.std.Result;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Map;
 
 /**
  * Created by DMK on 29.12.2022
@@ -22,53 +21,35 @@ import java.util.concurrent.atomic.AtomicReference;
 @ArgumentName("type")
 public class GameModeArgument implements OneArgument<GameMode> {
 
-    private final String[] gameModes = {
-            "0", "1", "2", "3",
-            GameMode.SURVIVAL.name(),
-            GameMode.CREATIVE.name(),
-            GameMode.ADVENTURE.name(),
-            GameMode.SPECTATOR.name()
-    };
-
     private final Component unknownGameModeType;
+    private final Map<String, GameMode> gameModes = new HashMap<>();
 
     public GameModeArgument(MiniMessage miniMessage) {
         this.unknownGameModeType = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłowy typ gry<dark_gray>.");
+
+        for (GameMode gameMode : GameMode.values()) {
+            this.gameModes.put(gameMode.name().toUpperCase(), gameMode);
+        }
+
+        this.gameModes.put("0", GameMode.SURVIVAL);
+        this.gameModes.put("1", GameMode.CREATIVE);
+        this.gameModes.put("2", GameMode.ADVENTURE);
+        this.gameModes.put("3", GameMode.SPECTATOR);
     }
 
     @Override
     public Result<GameMode, ?> parse(LiteInvocation invocation, String argument) {
-        if (StringUtil.isInteger(argument)) {
-            AtomicReference<GameMode> atomicReference = new AtomicReference<>();
+        GameMode gameMode = this.gameModes.get(argument.toUpperCase());
 
-            switch (Integer.parseInt(argument)) {
-                case 0 -> atomicReference.set(GameMode.SURVIVAL);
-                case 1 -> atomicReference.set(GameMode.CREATIVE);
-                case 2 -> atomicReference.set(GameMode.ADVENTURE);
-                case 3 -> atomicReference.set(GameMode.SPECTATOR);
-                default -> atomicReference.set(null);
-            }
-
-            if (atomicReference.get() == null) {
-                return Result.error(this.unknownGameModeType);
-            }
-
-            return Result.ok(atomicReference.get());
+        if (gameMode == null) {
+            return Result.error(this.unknownGameModeType);
         }
 
-        Option<GameMode> gameMode = Option.supplyThrowing(IllegalArgumentException.class,
-                () -> GameMode.valueOf(argument.toUpperCase())
-        );
-
-        if (gameMode.isPresent()) {
-            return Result.ok(gameMode.get());
-        }
-
-        return Result.error(this.unknownGameModeType);
+        return Result.ok(gameMode);
     }
 
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
-        return Suggestion.of(this.gameModes);
+        return Suggestion.of(this.gameModes.keySet());
     }
 }
