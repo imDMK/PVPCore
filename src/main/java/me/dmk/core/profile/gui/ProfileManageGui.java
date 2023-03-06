@@ -135,7 +135,7 @@ public class ProfileManageGui extends PluginGui {
                             this.taskExecutor.runAsync(() -> this.profileController.save(this.profile));
 
                             this.notificationController.sendMessage(this.player,
-                                    StringFormatter.formatSuccess() + " <red>Wyczyszczono <gray>wszystkie kary profilu <light_purple>" + this.profile.getName() + "<dark_gray>."
+                                    StringFormatter.formatSuccess() + " <green>Wyczyszczono <gray>wszystkie kary profilu <light_purple>" + this.profile.getName() + "<dark_gray>."
                             );
 
                             this.close();
