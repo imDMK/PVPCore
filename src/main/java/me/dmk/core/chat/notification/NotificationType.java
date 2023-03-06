@@ -5,5 +5,5 @@ package me.dmk.core.chat.notification;
  */
 
 public enum NotificationType {
-    CHAT, TITLE, SUBTITLE
+    CHAT, TITLE, SUBTITLE, BOSSBAR
 }

@@ -103,6 +103,18 @@ public class NotificationController {
         );
     }
 
+    public void showBossBar(Collection<? extends Player> players, BossBar bossBar) {
+        players.forEach(player ->
+                this.showBossBar(player, bossBar)
+        );
+    }
+
+    public void hideBossBar(Collection<? extends Player> players, BossBar bossBar) {
+        players.forEach(player ->
+                this.hideBossBar(player, bossBar)
+        );
+    }
+
     /* Guild players */
     public void sendMessage(Guild guild, String message) {
         guild.getOnlineMembers().forEach(p -> this.sendMessage(p, message));

@@ -264,7 +264,7 @@ public class CorePlugin extends JavaPlugin {
 
                 .commandInstance(
                         new BanCommand(this.notificationController, this.profileController),
-                        new BroadCastCommand(this.notificationController),
+                        new BroadCastCommand(this.miniMessage, this.notificationController),
                         new ChatCommand(this.notificationController, this.globalChatCache),
                         new ClearCommand(this.notificationController),
                         new FlyCommand(this.notificationController),
