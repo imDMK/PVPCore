@@ -46,7 +46,7 @@ public class Fight {
             return false;
         }
 
-        return Instant.now().isAfter(this.expireAt);
+        return Instant.now().isBefore(this.expireAt);
     }
 
     public boolean hadFight() {
