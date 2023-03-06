@@ -8,6 +8,7 @@ import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import panda.std.Result;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by DMK on 30.12.2022
  */
 
-@ArgumentName("location")
+@ArgumentName("co-ordinates")
 public class LocationArgument implements MultilevelArgument<Location> {
 
     private final Component unknownLocation;
@@ -27,13 +28,17 @@ public class LocationArgument implements MultilevelArgument<Location> {
 
     @Override
     public Result<Location, ?> parseMultilevel(LiteInvocation liteInvocation, String... arguments) {
-        return Result.supplyThrowing(NumberFormatException.class, () -> {
-            double x = Double.parseDouble(arguments[0]);
-            double y = Double.parseDouble(arguments[1]);
-            double z = Double.parseDouble(arguments[2]);
+        if (liteInvocation.sender().getHandle() instanceof Player player) {
+            return Result.supplyThrowing(NumberFormatException.class, () -> {
+                double x = Double.parseDouble(arguments[0]);
+                double y = Double.parseDouble(arguments[1]);
+                double z = Double.parseDouble(arguments[2]);
 
-            return new Location(null, x, y, z);
-        }).mapErr(exception -> this.unknownLocation);
+                return new Location(player.getWorld(), x, y, z);
+            }).mapErr(exception -> this.unknownLocation);
+        }
+
+        return Result.error("Nie możesz użyć tej komendy");
     }
 
     @Override

@@ -34,9 +34,7 @@ public class TeleportCommand {
 
     @Execute(required = 3)
     void execute(Player player, @Arg Location location) {
-        Location loc = new Location(player.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
-
-        player.teleport(loc);
+        player.teleport(location);
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>cię na koordynaty " + StringFormatter.formatLocation(location) + "<dark_gray>."
         );
@@ -54,9 +52,7 @@ public class TeleportCommand {
     @Execute(required = 4)
     @Permission("core.teleport.other")
     void execute(Player player, @Arg @Name("player") Player other, @Arg Location location) {
-        Location loc = new Location(player.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
-
-        other.teleport(loc);
+        other.teleport(location);
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na kordynaty " + StringFormatter.formatLocation(location) + "<dark_gray>."
         );
