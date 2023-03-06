@@ -55,6 +55,12 @@ public class ProfileManageGui extends PluginGui {
                             this.taskExecutor.runAsync(() -> this.profileController.delete(this.profile));
                             this.profileCache.remove(this.profile);
 
+                            Bukkit.getOfflinePlayer(this.profile.getUuid())
+                                    .setStatistic(Statistic.PLAY_ONE_MINUTE, 0);
+
+                            CorePlugin.getCorePlugin().getLuckPerms().getUserManager()
+                                    .deletePlayerData(this.profile.getUuid());
+
                             this.profile.getPlayer().ifPresent(p ->
                                     p.kickPlayer(StringUtil.colorLegacy("&cTwój profil został usunięty.\nAdministrator: " + this.player.getName()))
                             );

@@ -88,6 +88,7 @@ public class CorePlugin extends JavaPlugin {
 
     private PluginConfiguration pluginConfiguration;
 
+    private LuckPerms luckPerms;
     private MiniMessage miniMessage;
     private BukkitAudiences bukkitAudiences;
     private SkinsRestorerAPI skinsRestorerAPI;
@@ -133,12 +134,12 @@ public class CorePlugin extends JavaPlugin {
             return;
         }
 
-        LuckPerms luckPerms = luckPermsProvider.getProvider();
-        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-
+        this.luckPerms = luckPermsProvider.getProvider();
         this.miniMessage = MiniMessage.miniMessage();
         this.bukkitAudiences = BukkitAudiences.create(this);
         this.skinsRestorerAPI = SkinsRestorerAPI.getApi();
+
+        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
         /* Gson */
         Gson gson = new GsonBuilder()
