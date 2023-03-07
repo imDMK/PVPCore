@@ -1,4 +1,4 @@
-package me.dmk.core.command.implementation.admin;
+package me.dmk.core.command.implementation.admin.punishment;
 
 import dev.rollczi.litecommands.argument.Arg;
 import dev.rollczi.litecommands.command.async.Async;

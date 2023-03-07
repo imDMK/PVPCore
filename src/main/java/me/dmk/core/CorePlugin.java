@@ -25,6 +25,7 @@ import me.dmk.core.command.contextual.ProfileContextual;
 import me.dmk.core.command.handler.InvalidUsageHandler;
 import me.dmk.core.command.handler.MissingPermissionHandler;
 import me.dmk.core.command.implementation.admin.*;
+import me.dmk.core.command.implementation.admin.punishment.*;
 import me.dmk.core.command.implementation.guild.*;
 import me.dmk.core.command.implementation.guild.alliance.GuildAllianceCommand;
 import me.dmk.core.command.implementation.player.*;
