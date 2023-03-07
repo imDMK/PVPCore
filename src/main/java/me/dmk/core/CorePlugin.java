@@ -241,7 +241,7 @@ public class CorePlugin extends JavaPlugin {
     }
 
     private LiteCommands<CommandSender> registerLiteCommands() {
-        return LiteBukkitAdventurePlatformFactory.builder(this.getServer(), this.getName(), this.bukkitAudiences)
+        return LiteBukkitAdventurePlatformFactory.builder(this.getServer(), this.getName(), true, this.bukkitAudiences, true)
                 .contextualBind(Player.class, new BukkitOnlyPlayerContextual<>("&cNie możesz użyć tej komendy."))
 
                 .invalidUsageHandler(new InvalidUsageHandler(this.notificationController))
