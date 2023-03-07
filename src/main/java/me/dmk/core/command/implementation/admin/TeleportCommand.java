@@ -41,7 +41,7 @@ public class TeleportCommand {
     }
 
     @Execute(required = 2)
-    @Permission("core.teleport.other")
+    @Permission("core.command.teleport.other")
     void execute(Player player, @Arg @Name("player") Player other, @Arg @Name("to") Player other2) {
         other.teleport(other2);
         this.notificationController.sendMessage(player,
@@ -50,7 +50,7 @@ public class TeleportCommand {
     }
 
     @Execute(required = 4)
-    @Permission("core.teleport.other")
+    @Permission("core.command.teleport.other")
     void execute(Player player, @Arg @Name("player") Player other, @Arg Location location) {
         other.teleport(location);
         this.notificationController.sendMessage(player,
