@@ -124,7 +124,7 @@ public class AsyncPlayerChatListener implements Listener {
         String points = openingSquareBracket + "<gray>" + profileStatistics.getPoints() + closingSquareBracket;
         String nameAndMessage = profileSettings.getColorName().getFormat() + player.getName() + "<dark_gray>: " + (useAdminFormat ? "<red>" : "<white>") + message;
 
-        String format = (useAdminFormat ? group + nameAndMessage : level + " " + points + " " + "<guild>" + group + nameAndMessage);
+        String format = (useAdminFormat ? group : level + " " + points + " " + "<guild>" + group) + nameAndMessage;
 
         for (Player online : Bukkit.getOnlinePlayers()) {
             this.profileCache.get(online.getUniqueId()).ifPresent(onlineProfile -> {
