@@ -60,7 +60,7 @@ public class IncognitoCommand {
 
         if (!incognitoSettings.canChangeIdentifier()) {
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Ponownie identyfikator będziesz mógł/a zmienić za <gold>" + TimeUtil.instantToString(incognitoSettings.getWhenCanChange(), true) + "<dark_gray>."
+                    StringFormatter.formatError() + " <red>Ponownie identyfikator będziesz mógł(-a) zmienić za <gold>" + TimeUtil.instantToString(incognitoSettings.getWhenCanChange(), true) + "<dark_gray>."
             );
             return;
         }
