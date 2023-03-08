@@ -23,7 +23,7 @@ public class PlayerCommandPreprocessListener implements Listener {
     private final NotificationController notificationController;
     private final ProfileCache profileCache;
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         Profile profile = this.profileCache.getOrElseThrow(player);
