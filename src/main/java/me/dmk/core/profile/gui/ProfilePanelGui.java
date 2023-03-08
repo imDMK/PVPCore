@@ -120,7 +120,18 @@ public class ProfilePanelGui extends PluginGui {
                         return;
                     }
 
-                    new KitPrewiewGui(this.player, this.profile, kit.get()).open();
+                    KitPrewiewGui kitPrewiewGui = new KitPrewiewGui(this.player, this.profile, kit.get());
+                    kitPrewiewGui.build();
+
+                    GuiItem backButton = this.createBackButton(e ->
+                                    this.open(),
+                            "",
+                            this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby wrócić do panelu profilu<dark_gray>.",
+                            ""
+                    );
+
+                    kitPrewiewGui.gui.setItem(49, backButton); //Changing the back button in gui
+                    kitPrewiewGui.open(false);
                 });
 
         GuiItem punishmentsItem = ItemBuilder.from(Material.TARGET)
