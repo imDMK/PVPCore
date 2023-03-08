@@ -48,10 +48,9 @@ import me.dmk.core.murder.MurderCache;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
-import me.dmk.core.profile.fight.FightTask;
 import me.dmk.core.profile.settings.board.BoardTask;
 import me.dmk.core.profile.settings.incognito.IncognitoController;
-import me.dmk.core.profile.settings.task.VanishTask;
+import me.dmk.core.profile.task.ProfileTask;
 import me.dmk.core.profile.task.SaveProfileTask;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.task.executor.TaskExecutorImpl;
@@ -177,9 +176,8 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor = new TaskExecutorImpl();
 
         this.taskExecutor.runTimerAsync(new BoardTask(this.profileCache), 5L, TimeUnit.SECONDS);
-        this.taskExecutor.runTimerAsync(new FightTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileCache, this.taskExecutor), 1L, TimeUnit.SECONDS);
         this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 20L, TimeUnit.MINUTES);
-        this.taskExecutor.runTimerAsync(new VanishTask(this.notificationController, this.profileCache), 2L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new ProfileTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileCache, this.getTaskExecutor()), 1L, TimeUnit.SECONDS);
 
         /* Commands */
         this.liteCommands = this.registerLiteCommands();
@@ -271,6 +269,7 @@ public class CorePlugin extends JavaPlugin {
                         new ClearCommand(this.notificationController),
                         new FlyCommand(this.notificationController),
                         new GameModeCommand(this.notificationController),
+                        new GodModeCommand(this.notificationController, this.profileCache),
                         new HealCommand(this.notificationController),
                         new InvseeCommand(),
                         new KickCommand(this.notificationController),

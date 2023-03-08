@@ -24,8 +24,8 @@ public final class ProfileSettings implements Serializable {
     private ColorNameType colorName = ColorNameType.DEAFULT;
     private CustomSuffixType customSuffix = CustomSuffixType.NONE;
 
-    private IncognitoSettings incognitoSettings = new IncognitoSettings();
-    private Board board = new Board();
+    private final IncognitoSettings incognitoSettings = new IncognitoSettings();
+    private final Board board = new Board();
 
     private boolean god = false;
     private boolean vanish = false;

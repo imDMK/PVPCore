@@ -33,17 +33,17 @@ public class Profile implements Serializable {
     private UUID uuid;
     private String name;
 
-    private Date firstJoin = new Date();
+    private final Date firstJoin = new Date();
     private Date lastJoin = new Date();
 
     private List<Punishment> punishments = Lists.newCopyOnWriteArrayList();
 
-    private ProfileSettings profileSettings = new ProfileSettings();
-    private ProfileStatistics profileStatistics = new ProfileStatistics();
+    private final ProfileSettings profileSettings = new ProfileSettings();
+    private final ProfileStatistics profileStatistics = new ProfileStatistics();
 
     private String guildTag = null;
 
-    private transient Fight fight = new Fight();
+    private final transient Fight fight = new Fight();
 
     public Profile(UUID uuid, String name) {
         this.uuid = uuid;

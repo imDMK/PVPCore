@@ -1,0 +1,59 @@
+package me.dmk.core.profile.fight;
+
+import lombok.AllArgsConstructor;
+import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.configuration.PluginConfiguration;
+import me.dmk.core.profile.Profile;
+import me.dmk.core.task.executor.TaskExecutor;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.entity.Player;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by DMK on 05.01.2023
+ */
+
+@AllArgsConstructor
+public class FightRefresher {
+
+    private final PluginConfiguration pluginConfiguration;
+    private final MiniMessage miniMessage;
+    private final NotificationController notificationController;
+    private final TaskExecutor taskExecutor;
+
+    public void refresh(Player player, Profile profile) {
+        Fight fight = profile.getFight();
+        BossBar bossBar = fight.getBossBar();
+
+        if (fight.hasFight()) {
+            Component bossBarName = this.miniMessage.deserialize(
+                    this.pluginConfiguration.getFightBossBarName().replace("<seconds>", String.valueOf(fight.getRemainingFightTime()))
+            );
+
+            bossBar.name(bossBarName);
+            bossBar.progress(fight.remainingFightTimeToFloat());
+
+            if (fight.getRemainingFightTime() > 10) {
+                bossBar.color(BossBar.Color.RED);
+            } else {
+                bossBar.color(BossBar.Color.YELLOW);
+            }
+        } else if (fight.hadFight()) {
+            Component bossBarName = this.miniMessage.deserialize("<green>Skończyłeś(-aś) walczyć - możesz się wylogować");
+
+            bossBar.name(bossBarName);
+            bossBar.color(BossBar.Color.GREEN);
+
+            fight.clear();
+
+            this.taskExecutor.runLaterAsync(
+                    () -> this.notificationController.hideBossBar(player, bossBar),
+                    2L,
+                    TimeUnit.SECONDS
+            );
+        }
+    }
+}
