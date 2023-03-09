@@ -32,10 +32,14 @@ import me.dmk.core.command.implementation.player.*;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.database.MongoClientService;
 import me.dmk.core.database.data.MongoDataService;
+import me.dmk.core.database.data.adapter.JsonDateAdapter;
+import me.dmk.core.database.data.serializer.GsonSerializer;
+import me.dmk.core.database.data.serializer.GsonSerializerImpl;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.member.GuildMember;
+import me.dmk.core.guild.task.GuildExpirationTimeTask;
 import me.dmk.core.kit.KitMap;
 import me.dmk.core.listener.*;
 import me.dmk.core.listener.connection.PlayerJoinListener;
@@ -73,6 +77,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -141,17 +146,20 @@ public class CorePlugin extends JavaPlugin {
 
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
-        /* Gson */
+        /* Gson serializer */
         Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new JsonDateAdapter())
                 .setLongSerializationPolicy(LongSerializationPolicy.STRING)
                 .serializeNulls()
                 .create();
+
+        GsonSerializer gsonSerializer = new GsonSerializerImpl(gson);
 
         /* Services */
         this.mongoClientService = new MongoClientService(this, this.pluginConfiguration.getDatabaseConfiguration());
         this.mongoClientService.connect();
 
-        this.mongoDataService = new MongoDataService(this.getLogger(), this.mongoClientService, gson);
+        this.mongoDataService = new MongoDataService(this.getLogger(), gsonSerializer, this.mongoClientService);
 
         /* Controllers */
         this.luckPermsController = new LuckPermsController(luckPerms);
@@ -178,6 +186,7 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor.runTimerAsync(new BoardTask(this.profileCache), 5L, TimeUnit.SECONDS);
         this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new ProfileTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileCache, this.getTaskExecutor()), 1L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController, this.guildCache), 1L, TimeUnit.MINUTES);
 
         /* Commands */
         this.liteCommands = this.registerLiteCommands();

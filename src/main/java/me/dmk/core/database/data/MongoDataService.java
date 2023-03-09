@@ -1,19 +1,16 @@
 package me.dmk.core.database.data;
 
-import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.DeleteOptions;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.RequiredArgsConstructor;
 import me.dmk.core.database.MongoClientService;
 import me.dmk.core.database.data.entity.DataEntity;
+import me.dmk.core.database.data.serializer.GsonSerializer;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -26,8 +23,8 @@ import java.util.stream.Collectors;
 public class MongoDataService {
 
     private final Logger logger;
+    private final GsonSerializer gsonSerializer;
     private final MongoClientService mongoClientService;
-    private final Gson gson;
 
     private final Map<Class<?>, String> collections = new ConcurrentHashMap<>();
 
@@ -47,15 +44,46 @@ public class MongoDataService {
             return;
         }
 
-        String json = this.gson.toJson(entity);
-        Document document = Document.parse(json);
+        Document document = Document.parse(
+                this.gsonSerializer.serialize(entity)
+        );
 
-        if (document == null) {
-            logger.severe("Error while trying to parse document from json: " + json);
+        mongoCollection.insertOne(document);
+    }
+
+    public <V> void save(Bson filters, V entity) {
+        MongoCollection<Document> mongoCollection = this.getCollection(entity.getClass());
+
+        if (mongoCollection == null) {
+            logger.severe("Cannot find collection from class " + entity.getClass().getSimpleName() + ", check entity annotation.");
             return;
         }
 
-        mongoCollection.insertOne(document);
+        Document document = Document.parse(
+                this.gsonSerializer.serialize(entity)
+        );
+
+        mongoCollection.replaceOne(filters, document, new ReplaceOptions().upsert(true));
+    }
+
+    public <V> void delete(Bson filters, V entity) {
+        Document document = Document.parse(
+                this.gsonSerializer.serialize(entity)
+        );
+
+        if (document == null) {
+            logger.severe("Error while trying to parse document from class: " + entity.toString());
+            return;
+        }
+
+        MongoCollection<Document> mongoCollection = this.getCollection(entity.getClass());
+
+        if (mongoCollection == null) {
+            logger.severe("Cannot find collection from class " + entity.getClass().getSimpleName() + ", check entity annotation.");
+            return;
+        }
+
+        mongoCollection.deleteOne(filters, new DeleteOptions());
     }
 
     public <V> Optional<V> find(Bson filters, Class<V> vClass) {
@@ -67,53 +95,26 @@ public class MongoDataService {
         }
 
         Document document = mongoCollection.find(filters).first();
-
         if (document == null) {
             return Optional.empty();
         }
 
-        String json = document.toJson();
-        V entity = this.gson.fromJson(json, vClass);
-
-        return Optional.ofNullable(entity);
+        return Optional.ofNullable(
+                this.gsonSerializer.deserialize(document.toJson(), vClass)
+        );
     }
 
-    public <V> void save(Bson filters, V entity) {
-        MongoCollection<Document> mongoCollection = this.getCollection(entity.getClass());
+    public <V> List<V> findAll(Bson filters, Class<V> vClass) {
+        MongoCollection<Document> mongoCollection = this.getCollection(vClass);
 
         if (mongoCollection == null) {
-            logger.severe("Cannot find collection from class " + entity.getClass().getSimpleName() + ", check entity annotation.");
-            return;
+            logger.severe("Cannot find collection from class " + vClass.getSimpleName() + ", check entity annotation.");
+            return Collections.emptyList();
         }
 
-        String json = this.gson.toJson(entity);
-        Document document = Document.parse(json);
-
-        if (document == null) {
-            logger.severe("Error while trying to parse document from json: " + json);
-            return;
-        }
-
-        mongoCollection.replaceOne(filters, document, new ReplaceOptions().upsert(true));
-    }
-
-    public <V> void delete(Bson filters, V vEntity) {
-        String json = this.gson.toJson(vEntity);
-        Document document = Document.parse(json);
-
-        if (document == null) {
-            logger.severe("Error while trying to parse document from json: " + json);
-            return;
-        }
-
-        MongoCollection<Document> mongoCollection = this.getCollection(vEntity.getClass());
-
-        if (mongoCollection == null) {
-            logger.severe("Cannot find collection from class " + vEntity.getClass().getSimpleName() + ", check entity annotation.");
-            return;
-        }
-
-        mongoCollection.deleteOne(filters, new DeleteOptions());
+        return mongoCollection.find(filters)
+                .map(document -> this.gsonSerializer.deserialize(document.toJson(), vClass))
+                .into(new ArrayList<>());
     }
 
     public <V> List<V> sort(Class<V> vClass, Bson sort, int limit) {
@@ -124,7 +125,7 @@ public class MongoDataService {
                 .limit(limit)
                 .into(new ArrayList<>())
                 .stream()
-                .map(document -> this.gson.fromJson(document.toJson(), vClass))
+                .map(document -> this.gsonSerializer.deserialize(document.toJson(), vClass))
                 .collect(Collectors.toList());
     }
 }
