@@ -10,7 +10,6 @@ import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -121,7 +120,7 @@ public class GuildAllianceCommand {
         );
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zaproszono <gray>gildię <light_purple>" + otherGuild.getTag() + " <gray>do sojuszu<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zaproszono <gray>gildię <light_purple>" + otherGuild.getTag() + " <gray>do sojuszu<dark_gray>."
         );
     }
 }

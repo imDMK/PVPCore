@@ -10,7 +10,7 @@ import me.dmk.core.profile.settings.gui.ProfileSettingsGui;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -31,7 +31,7 @@ public class NameTagSettingsGui extends PluginGui {
         CustomSuffixType customSuffixType = profileSettings.getCustomSuffix();
 
         GuiItem colorNameItem = ItemBuilder.from(Material.RED_DYE)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zmiana koloru nicku"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zmiana koloru nicku"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny kolor nicku<dark_gray>:",
@@ -57,7 +57,7 @@ public class NameTagSettingsGui extends PluginGui {
                 });
 
         GuiItem customSuffixItem = ItemBuilder.from(Material.RED_DYE)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zmiana suffixu"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zmiana suffixu"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny suffix<dark_gray>:",

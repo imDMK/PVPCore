@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -46,7 +45,7 @@ public class ChatCommand {
 
         this.notificationController.sendMessage(
                 Bukkit.getOnlinePlayers(),
-                StringFormatter.formatWarning() + " <gray>Globalny czat został " + StringUtil.getPurpleGradient() + "wyczyszczony</gradient> <gray>przez <light_purple>" + sender.getName() + "<dark_gray>."
+                StringFormatter.formatWarning() + " <gray>Globalny czat został " + StringFormatter.formatPurpleGradient() + "wyczyszczony</gradient> <gray>przez <light_purple>" + sender.getName() + "<dark_gray>."
         );
     }
 

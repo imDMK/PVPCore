@@ -3,7 +3,7 @@ package me.dmk.core.util;
 import lombok.experimental.UtilityClass;
 import me.dmk.core.murder.MurderType;
 import me.dmk.core.profile.statistics.ProfileStatistics;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.entity.Player;
 
@@ -49,9 +49,9 @@ public class MurderUtil {
     }
 
     public static String formatDeathMessage(String victim, int removedPoints, MurderType murderType, String killer, int addedPoints) {
-        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getDeath("<red>") + StringUtil.getClosingSquareBracket() +
-                " <red>Gracz " + victim + " "  + StringUtil.getOpeningSquareBracket() + "<red>-" + removedPoints + StringUtil.getClosingSquareBracket() +
-                " <red>" + formatMurderType(murderType) + " " + killer + " " + StringUtil.getOpeningSquareBracket() + "<green>+" + addedPoints + StringUtil.getClosingSquareBracket() +
+        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getDeath("<red>") + StringFormatter.formatClosingSquareBracket() +
+                " <red>Gracz " + victim + " "  + StringFormatter.formatOpeningSquareBracket() + "<red>-" + removedPoints + StringFormatter.formatClosingSquareBracket() +
+                " <red>" + formatMurderType(murderType) + " " + killer + " " + StringFormatter.formatOpeningSquareBracket() + "<green>+" + addedPoints + StringFormatter.formatClosingSquareBracket() +
                 "<dark_gray>.";
     }
 

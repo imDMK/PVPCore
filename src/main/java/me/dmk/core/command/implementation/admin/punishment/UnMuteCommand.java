@@ -12,7 +12,6 @@ import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -51,13 +50,13 @@ public class UnMuteCommand {
 
         profile.getPlayer().ifPresent(p ->
                 this.notificationController.sendMessage(p,
-                        StringFormatter.formatWarning() + StringUtil.getGreenGradient() + " Odciszył </gradient><gray>cię administrator <light_purple>" + sender.getName() + "<dark_gray>."
+                        StringFormatter.formatWarning() + StringFormatter.formatGreenGradient() + " Odciszył </gradient><gray>cię administrator <light_purple>" + sender.getName() + "<dark_gray>."
                 )
         );
 
         this.notificationController.sendMessage(
                 Bukkit.getOnlinePlayers(),
-                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został " + StringUtil.getGreenGradient() + "odciszony </gradient><gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został " + StringFormatter.formatGreenGradient() + "odciszony </gradient><gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
                 "core.command.unban"
         );
     }

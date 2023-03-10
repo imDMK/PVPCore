@@ -9,7 +9,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -50,13 +49,13 @@ public class IgnoreCommand {
             profileSettings.getIgnoredPlayers().remove(otherProfile.getUuid());
 
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Odblokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
+                    StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Odblokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
             );
         } else {
             profileSettings.getIgnoredPlayers().add(otherProfile.getUuid());
 
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatSuccess() + StringUtil.getRedGradient() + " Zablokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
+                    StringFormatter.formatSuccess() + StringFormatter.formatRedGradient() + " Zablokowano <gray>gracza <light_purple>" + otherProfile.getName() + "<dark_gray>."
             );
         }
     }

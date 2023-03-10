@@ -12,7 +12,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.NotificationType;
 import me.dmk.core.task.BukkitTask;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -57,7 +56,7 @@ public class BroadCastCommand {
         }
 
         this.notificationController.sendMessage(sender,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Wysłano</gradient> <gray>globalną wiadomość <light_purple>" + notificationType.name().toUpperCase() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wysłano</gradient> <gray>globalną wiadomość <light_purple>" + notificationType.name().toUpperCase() + "<dark_gray>."
         );
     }
 

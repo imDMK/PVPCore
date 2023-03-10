@@ -14,7 +14,6 @@ import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.TimeUtil;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import me.dmk.core.util.string.SymbolUtil;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -96,7 +95,7 @@ public class AsyncPlayerChatListener implements Listener {
         if (!player.hasPermission("core.chat.cooldown.bypass")) {
             if (!this.globalChatCache.getGlobalChatSettings().isEnabled()) {
                 this.notificationController.sendMessage(player,
-                        StringFormatter.formatError() + " <red>Globalny czat jest aktualnie " + StringUtil.getRedGradient() + "wyłączony</gradient><dark_gray>."
+                        StringFormatter.formatError() + " <red>Globalny czat jest aktualnie " + StringFormatter.formatRedGradient() + "wyłączony</gradient><dark_gray>."
                 );
                 return;
             }
@@ -113,8 +112,8 @@ public class AsyncPlayerChatListener implements Listener {
 
         boolean useAdminFormat = player.hasPermission("core.chat.format.admin");
 
-        String openingSquareBracket = StringUtil.getOpeningSquareBracket();
-        String closingSquareBracket = StringUtil.getClosingSquareBracket();
+        String openingSquareBracket = StringFormatter.formatOpeningSquareBracket();
+        String closingSquareBracket = StringFormatter.formatClosingSquareBracket();
 
         String group = this.luckPermsController.getHighestGroupPrefix(uuid)
                 .map(g -> g + " ")

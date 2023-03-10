@@ -8,7 +8,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 /**
@@ -39,7 +38,7 @@ public class SpeedCommand {
         }
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>twoją prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>na <light_purple>" + speed + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>twoją prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>na <light_purple>" + speed + "<dark_gray>."
         );
     }
 
@@ -60,7 +59,7 @@ public class SpeedCommand {
         }
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + speed + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + speed + "<dark_gray>."
         );
     }
 }

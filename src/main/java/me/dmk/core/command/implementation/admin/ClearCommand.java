@@ -8,7 +8,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -37,7 +36,7 @@ public class ClearCommand {
 
         inventory.clear();
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>twój ekwipunek<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wyczyszczono</gradient> <gray>twój ekwipunek<dark_gray>."
         );
     }
 
@@ -55,7 +54,7 @@ public class ClearCommand {
 
         inventory.clear();
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Wyczyszczono</gradient> <gray>ekwipunek gracza <light_purple>" + other.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wyczyszczono</gradient> <gray>ekwipunek gracza <light_purple>" + other.getName() + "<dark_gray>."
         );
     }
 }

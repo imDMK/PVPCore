@@ -9,7 +9,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public class GuildInviteCommand {
         );
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii<dark_gray>."
         );
 
         guild.invite(other.getUuid());

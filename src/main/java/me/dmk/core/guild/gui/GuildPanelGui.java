@@ -13,7 +13,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.PlayerUtil;
 import me.dmk.core.util.TimeUtil;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -55,7 +55,7 @@ public class GuildPanelGui extends PluginGui {
                 .orElse("Brak");
 
         GuiItem beaconItem = ItemBuilder.from(Material.BEACON)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + this.guild.getTag()))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + this.guild.getTag()))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Nazwa<dark_gray><dark_gray>: <light_purple>" + guild.getName(),
@@ -69,7 +69,7 @@ public class GuildPanelGui extends PluginGui {
                 .asGuiItem();
 
         GuiItem statisticsItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Statystyki"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Statystyki"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Ranking<dark_gray>: <light_purple>" + guildStatistics.getRank(),
@@ -83,7 +83,7 @@ public class GuildPanelGui extends PluginGui {
                 .asGuiItem();
 
         GuiItem expireItem = ItemBuilder.from(Material.REDSTONE_TORCH)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wygasa"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Wygasa"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Gildia wygasa za<dark_gray>: <red>" + TimeUtil.instantToString(this.guild.getExpireAt().toInstant(), true),
@@ -92,7 +92,7 @@ public class GuildPanelGui extends PluginGui {
                 .asGuiItem();
 
         GuiItem membersItem = ItemBuilder.from(Material.PLAYER_HEAD)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Członkowie"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Członkowie"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy członków gildii<dark_gray>.",
@@ -103,7 +103,7 @@ public class GuildPanelGui extends PluginGui {
                 );
 
         GuiItem coinsTrasureItem = ItemBuilder.from(Material.SUNFLOWER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Skarbiec gildijny"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Skarbiec gildijny"))
                 .lore(ComponentUtil.asList(
                         "",
                         isMember ? this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu skarbca gildyjnego<dark_gray>." : this.circle + " <gray>Gildia posiada <light_purple>" + guildTreasury.getCoins() + " <gray>monet w skarbcu<dark_gray>.",
@@ -118,7 +118,7 @@ public class GuildPanelGui extends PluginGui {
                 });
 
         GuiItem alliancesItem = ItemBuilder.from(Material.SHIELD)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Sojusznicy"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Sojusznicy"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy sojuszów gildii<dark_gray>.",
@@ -138,7 +138,7 @@ public class GuildPanelGui extends PluginGui {
         GuiItem leaveOrDeleteGuildItem;
         if (isLeader) {
             leaveOrDeleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
-                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Usuń gildię"))
+                    .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Usuń gildię"))
                     .lore(ComponentUtil.asList(
                             "",
                             this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>usunąć gildię<dark_gray>.",
@@ -149,7 +149,7 @@ public class GuildPanelGui extends PluginGui {
                     );
         } else {
             leaveOrDeleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
-                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Opuść gildię"))
+                    .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Opuść gildię"))
                     .lore(ComponentUtil.asList(
                             "",
                             this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>opuścić gildię<dark_gray>.",

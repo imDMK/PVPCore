@@ -24,40 +24,60 @@ public class StringFormatter {
         return (i == 1 ? single : (i < 5 || i > 20 && iDivided < 5 && iDivided != 1) ? second : many);
     }
 
+    public static String formatOpeningSquareBracket() {
+        return "<dark_gray>[</dark_gray>";
+    }
+
+    public static String formatClosingSquareBracket() {
+        return "<dark_gray>]</dark_gray>";
+    }
+
+    public static String formatPurpleGradient() {
+        return "<gradient:light_purple:dark_purple>";
+    }
+
+    public static String formatGreenGradient() {
+        return "<gradient:green:dark_green>";
+    }
+
+    public static String formatRedGradient() {
+        return "<gradient:red:dark_red>";
+    }
+
     public static String formatLocation(Location location) {
         return "<light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + " z";
     }
 
     public static String formatSuccess() {
-        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getCheckMark("<green>") + StringUtil.getClosingSquareBracket();
+        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getCheckMark("<green>") + StringFormatter.formatClosingSquareBracket();
     }
 
     public static String formatError() {
-        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getCrossMark("<red>") + StringUtil.getClosingSquareBracket();
+        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getCrossMark("<red>") + StringFormatter.formatClosingSquareBracket();
     }
 
     public static String formatWarning() {
-        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getExclamationMark("<gold>") + StringUtil.getClosingSquareBracket();
+        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getExclamationMark("<gold>") + StringFormatter.formatClosingSquareBracket();
     }
 
     public static String formatBoolean(boolean status) {
-        return (status ? StringUtil.getGreenGradient() + "włączony" : StringUtil.getRedGradient() + "wyłączony") + "</gradient>";
+        return (status ? StringFormatter.formatGreenGradient() + "włączony" : StringFormatter.formatRedGradient() + "wyłączony") + "</gradient>";
     }
 
     public static String formatBoolean(boolean status, char symbol) {
-        return (status ? StringUtil.getGreenGradient() + "włączon" : StringUtil.getRedGradient() + "wyłączon") + symbol + "</gradient>";
+        return (status ? StringFormatter.formatGreenGradient() + "włączon" : StringFormatter.formatRedGradient() + "wyłączon") + symbol + "</gradient>";
     }
 
     public static String formatIncognito(String incognitoIdentifier) {
-        return "Anonimowy" + StringUtil.getOpeningSquareBracket() + "<red>" + incognitoIdentifier + StringUtil.getClosingSquareBracket();
+        return "Anonimowy" + StringFormatter.formatOpeningSquareBracket() + "<red>" + incognitoIdentifier + StringFormatter.formatClosingSquareBracket();
     }
 
     public static String formatGuild() {
-        return StringUtil.getOpeningSquareBracket() + "<green>GILDIA" + StringUtil.getClosingSquareBracket();
+        return StringFormatter.formatOpeningSquareBracket() + "<green>GILDIA" + StringFormatter.formatClosingSquareBracket();
     }
 
     public static String formatAlliance() {
-        return StringUtil.getOpeningSquareBracket() + "<gold>SOJUSZNICY" + StringUtil.getClosingSquareBracket();
+        return StringFormatter.formatOpeningSquareBracket() + "<gold>SOJUSZNICY" + StringFormatter.formatClosingSquareBracket();
     }
 
     public static Optional<String> formatGuildTag(Player player, @Nullable Guild guild, @Nullable Guild otherGuild) {
@@ -75,7 +95,7 @@ public class StringFormatter {
         }
 
         return Optional.of(
-                StringUtil.getOpeningSquareBracket() + color + guild.getTag() + StringUtil.getClosingSquareBracket()
+                StringFormatter.formatOpeningSquareBracket() + color + guild.getTag() + StringFormatter.formatClosingSquareBracket()
         );
     }
 
@@ -95,7 +115,7 @@ public class StringFormatter {
     }
 
     public static String formatPrivateMessage(String senderName, String receivingName, String message) {
-        return StringUtil.getOpeningSquareBracket() + SymbolUtil.getEnvelope("<light_purple>") + StringUtil.getClosingSquareBracket()
+        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getEnvelope("<light_purple>") + StringFormatter.formatClosingSquareBracket()
                 + " " + senderName + " <dark_gray>-> " + receivingName + "<dark_gray>: <white>" + message;
     }
 }

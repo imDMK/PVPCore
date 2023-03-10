@@ -12,7 +12,6 @@ import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
@@ -70,7 +69,7 @@ public class ResetStatisticsCommand {
                     );
 
                     this.notificationController.sendMessage(player,
-                            StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zresetowano <gray>twoje statystyki<dark_gray>."
+                            StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zresetowano <gray>twoje statystyki<dark_gray>."
                     );
 
                     player.closeInventory();

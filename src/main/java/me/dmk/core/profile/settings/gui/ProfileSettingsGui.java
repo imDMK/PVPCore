@@ -15,7 +15,6 @@ import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.profile.settings.nametag.gui.NameTagSettingsGui;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,7 +38,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
         CustomSuffixType customSuffixType = profileSettings.getCustomSuffix();
 
         GuiItem sidebarItem = ItemBuilder.from(Material.PAINTING)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Boczny panel"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Boczny panel"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(board.isEnabled()),
@@ -53,7 +52,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 });
 
         GuiItem soundsItem = ItemBuilder.from(Material.NOTE_BLOCK)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Dźwięki"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Dźwięki"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isSounds()),
@@ -67,7 +66,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 });
 
         GuiItem nameTagItem = ItemBuilder.from(Material.NAME_TAG)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zmiana nametagu"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zmiana nametagu"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu zmiany nametagu<dark_gray>.",
@@ -83,7 +82,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                         ItemBuilder.from(Material.WITHER_SKELETON_SKULL) :
                         SkullStorage.createPlayerHead(this.profile.getUuid())
                 )
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Tryb anonimowy"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Tryb anonimowy"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(incognitoSettings.isEnabled()),
@@ -102,7 +101,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 });
 
         GuiItem messagesItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Wiadomości"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu ustawień wiadomości<dark_gray>.",
@@ -113,7 +112,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 );
 
         GuiItem ignoredPlayersItem = ItemBuilder.from(Material.RED_DYE)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zablokowani gracze"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zablokowani gracze"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu listy ignorowanych graczy<dark_gray>.",

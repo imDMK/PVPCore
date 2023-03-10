@@ -12,7 +12,7 @@ import me.dmk.core.guild.treasury.payment.GuildPaymentsGui;
 import me.dmk.core.guild.treasury.payment.GuildTopPaymentsGui;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,7 +44,7 @@ public class GuildTreasuryGui extends PluginGui {
         boolean isLeaderOrCoLeader = this.guild.isLeaderOrCoLeader(this.player.getUniqueId());
 
         GuiItem topsItem = ItemBuilder.from(Material.GLOW_ITEM_FRAME)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Topka wpłaconych monet"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Topka wpłaconych monet"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
@@ -62,7 +62,7 @@ public class GuildTreasuryGui extends PluginGui {
                 });
 
         GuiItem coinsItem = ItemBuilder.from(Material.SUNFLOWER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Monety"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Monety"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualnie w skarbcu gildyjnym znajduje się <light_purple>" + guildTreasury.getCoins() + " <gray>monet<dark_gray>.",
@@ -76,7 +76,7 @@ public class GuildTreasuryGui extends PluginGui {
                 });
 
         GuiItem guildPaymentsHistoryItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Historia wpłaconych monet"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Historia wpłaconych monet"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",

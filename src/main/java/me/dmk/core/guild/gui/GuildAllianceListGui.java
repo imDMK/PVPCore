@@ -9,7 +9,7 @@ import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -74,7 +74,7 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
             }
 
             GuiItem allianceGuildItem = ItemBuilder.from(Material.BEACON)
-                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + allianceGuild.getTag()))
+                    .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + allianceGuild.getTag()))
                     .lore(ComponentUtil.asList(lore))
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {

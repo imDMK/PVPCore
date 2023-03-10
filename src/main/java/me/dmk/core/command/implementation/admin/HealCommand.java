@@ -8,7 +8,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 /**
@@ -30,7 +29,7 @@ public class HealCommand {
         player.setFoodLevel(20);
 
        this.notificationController.sendMessage(player,
-               StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Uleczono</gradient> <gray>cię<dark_gray>."
+               StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Uleczono</gradient> <gray>cię<dark_gray>."
        );
     }
 
@@ -42,7 +41,7 @@ public class HealCommand {
         other.setFoodLevel(20);
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Uleczono</gradient> <gray>gracza <light_purple>" + other.getName() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Uleczono</gradient> <gray>gracza <light_purple>" + other.getName() + "<dark_gray>."
         );
     }
 }

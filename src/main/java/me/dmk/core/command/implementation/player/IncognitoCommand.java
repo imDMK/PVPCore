@@ -14,7 +14,6 @@ import me.dmk.core.profile.settings.incognito.IncognitoController;
 import me.dmk.core.profile.settings.incognito.IncognitoSettings;
 import me.dmk.core.util.TimeUtil;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -70,7 +69,7 @@ public class IncognitoCommand {
         this.profileController.save(profile);
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono </gradient><gray>twój identyfikator anonimowego na <light_purple>" + newIdentifier + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono </gradient><gray>twój identyfikator anonimowego na <light_purple>" + newIdentifier + "<dark_gray>."
         );
     }
 

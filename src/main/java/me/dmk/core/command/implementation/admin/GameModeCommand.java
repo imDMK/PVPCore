@@ -8,7 +8,6 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -35,7 +34,7 @@ public class GameModeCommand {
 
         player.setGameMode(gameMode);
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>twój tryb gry na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>twój tryb gry na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
         );
     }
 
@@ -51,7 +50,7 @@ public class GameModeCommand {
 
         other.setGameMode(gameMode);
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zmieniono</gradient> <gray>tryb gry gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>tryb gry gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
         );
     }
 }

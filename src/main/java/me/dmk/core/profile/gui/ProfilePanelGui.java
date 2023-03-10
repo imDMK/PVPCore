@@ -21,7 +21,7 @@ import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.PlayerUtil;
 import me.dmk.core.util.TimeUtil;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -71,7 +71,7 @@ public class ProfilePanelGui extends PluginGui {
                 .asGuiItem();
 
         GuiItem statisticsItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Statystyki"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Statystyki"))
                 .lore(ComponentUtil.asList(
                         "",
                         SymbolUtil.getStar("<yellow>") + " <gray>Poziom doświadczenia<dark_gray>: <yellow>" + statistics.getLevel(),
@@ -105,7 +105,7 @@ public class ProfilePanelGui extends PluginGui {
                 });
 
         GuiItem kitItem = ItemBuilder.from(Material.SHIELD)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Zestaw"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zestaw"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do poglądu zestawu<dark_gray>.",
@@ -135,7 +135,7 @@ public class ProfilePanelGui extends PluginGui {
                 });
 
         GuiItem punishmentsItem = ItemBuilder.from(Material.TARGET)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Historia kar"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Historia kar"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do historii kar<dark_gray>.",
@@ -160,7 +160,7 @@ public class ProfilePanelGui extends PluginGui {
         GuiItem settingsOrIgnoreItem;
         if (this.isSelf()) {
             settingsOrIgnoreItem = ItemBuilder.from(Material.REPEATER)
-                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Ustawienia"))
+                    .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Ustawienia"))
                     .lore(ComponentUtil.asList(
                             "",
                             this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do ustawień profilu<dark_gray>.",
@@ -176,10 +176,10 @@ public class ProfilePanelGui extends PluginGui {
                     .orElse(false);
 
             settingsOrIgnoreItem = ItemBuilder.from(playerIgnoredProfile ? Material.LIME_DYE : Material.RED_DYE)
-                    .name(ComponentUtil.text(StringUtil.getPurpleGradient() + (playerIgnoredProfile ? "Odblokuj" : "Zablokuj") + " " + this.profile.getName()))
+                    .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + (playerIgnoredProfile ? "Odblokuj" : "Zablokuj") + " " + this.profile.getName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby " + (playerIgnoredProfile ? StringUtil.getGreenGradient() + "odblokować" : StringUtil.getRedGradient() + "zablokować") + " <gray>gracza<dark_gray>.",
+                            this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby " + (playerIgnoredProfile ? StringFormatter.formatGreenGradient() + "odblokować" : StringFormatter.formatRedGradient() + "zablokować") + " <gray>gracza<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event -> {
@@ -193,7 +193,7 @@ public class ProfilePanelGui extends PluginGui {
             boolean isCoLeader = guild.isCoLeader(this.profile.getUuid());
 
             GuiItem guildItem = ItemBuilder.from(Material.BEACON)
-                    .name(ComponentUtil.text(me.dmk.core.util.string.StringUtil.getPurpleGradient() + guild.getTag()))
+                    .name(ComponentUtil.text(me.dmk.core.util.string.StringFormatter.formatPurpleGradient() + guild.getTag()))
                     .lore(ComponentUtil.asList(
                             "",
                             this.circle + " <gray>Gracz <light_purple>" + this.profile.getName() + " <gray>jest " + (isLeader ? "<red>liderem" : isCoLeader ? "<yellow>zastępcą lidera" : "<light_purple>członkiem") + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",

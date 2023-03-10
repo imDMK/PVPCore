@@ -6,7 +6,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.util.ComponentUtil;
-import me.dmk.core.util.string.StringUtil;
+import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -62,11 +62,11 @@ public class ConfirmationGui {
 
     public void open(boolean async) {
         GuiItem cancelItem = ItemBuilder.from(Material.RED_CONCRETE)
-                .name(ComponentUtil.text(StringUtil.getRedGradient() + "Anuluję"))
+                .name(ComponentUtil.text(StringFormatter.formatRedGradient() + "Anuluję"))
                 .asGuiItem();
 
         GuiItem confirmItem = ItemBuilder.from(Material.GREEN_CONCRETE)
-                .name(ComponentUtil.text(StringUtil.getGreenGradient() + "Potwierdzam"))
+                .name(ComponentUtil.text(StringFormatter.formatGreenGradient() + "Potwierdzam"))
                 .asGuiItem();
 
         if (this.actionAfterConfirm != null) {

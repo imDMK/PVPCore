@@ -10,7 +10,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.teleport.TeleportMap;
 import me.dmk.core.teleport.TeleportRequest;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -50,7 +49,7 @@ public class SpawnCommand {
         other.teleport(spawn);
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na spawn<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Przeteleportowano</gradient> <gray>gracza <light_purple>" + other.getName() + " <gray>na spawn<dark_gray>."
         );
     }
 }

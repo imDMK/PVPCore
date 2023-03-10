@@ -12,7 +12,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -64,7 +63,7 @@ public class KitCommand {
 
         this.notificationController.sendMessage(player,
                 List.of(
-                        StringFormatter.formatSuccess() + StringUtil.getGreenGradient() + " Zwiększono</gradient> <gray>poziom zestawu<dark_gray>!",
+                        StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zwiększono</gradient> <gray>poziom zestawu<dark_gray>!",
                         StringFormatter.formatWarning() + " <gold>Zestaw będzie dostępny po ponownym wejściu na serwer lub odrodzeniu<dark_gray>."
                 )
         );

@@ -15,7 +15,6 @@ import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -94,7 +93,7 @@ public class GuildCreateCommand {
 
         this.notificationController.sendGlobalPluginMessage(
                 PluginMessageType.GUILD,
-                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <gray>założył gildię o nazwie <light_purple>" + name + " <gray>oraz tagu <light_purple>" + tag.toUpperCase() + "<dark_gray>," + StringUtil.getGreenGradient() + " Gratulacje!"
+                StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + player.getName() + " <gray>założył gildię o nazwie <light_purple>" + name + " <gray>oraz tagu <light_purple>" + tag.toUpperCase() + "<dark_gray>," + StringFormatter.formatGreenGradient() + " Gratulacje!"
         );
     }
 }

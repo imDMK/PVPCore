@@ -7,7 +7,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -25,7 +24,7 @@ public class MessagesSettingsGui extends PluginGui {
         ProfileSettings profileSettings = this.profile.getProfileSettings();
 
         GuiItem privateMessagesItem = ItemBuilder.from(Material.PAPER)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Prywatne wiadomości"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Prywatne wiadomości"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isPrivateMessages()),
@@ -39,7 +38,7 @@ public class MessagesSettingsGui extends PluginGui {
                 });
 
         GuiItem achievementsItem = ItemBuilder.from(Material.BOOK)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości osiągnięć"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Wiadomości osiągnięć"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isAchievementsMessages()),
@@ -53,7 +52,7 @@ public class MessagesSettingsGui extends PluginGui {
                 });
 
         GuiItem deathMessagesItem = ItemBuilder.from(Material.DIAMOND_SWORD)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości o zabójstwach"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Wiadomości o zabójstwach"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isDeathMessages()),
@@ -67,7 +66,7 @@ public class MessagesSettingsGui extends PluginGui {
                 });
 
         GuiItem systemMessagesItem = ItemBuilder.from(Material.COMMAND_BLOCK)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Automatyczne wiadomości"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Automatyczne wiadomości"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isSystemMessages()),
@@ -81,7 +80,7 @@ public class MessagesSettingsGui extends PluginGui {
                 });
 
         GuiItem guildMessagesItem = ItemBuilder.from(Material.BEACON)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Wiadomości o gildiach"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Wiadomości o gildiach"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isGuildMessages()),
@@ -95,7 +94,7 @@ public class MessagesSettingsGui extends PluginGui {
                 });
 
         GuiItem globalMessagesItem = ItemBuilder.from(Material.PLAYER_HEAD)
-                .name(ComponentUtil.text(StringUtil.getPurpleGradient() + "Globalne wiadomości graczy"))
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Globalne wiadomości graczy"))
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isGlobalMessages()),

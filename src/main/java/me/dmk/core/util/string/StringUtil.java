@@ -15,26 +15,6 @@ public class StringUtil {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
-    public static String getOpeningSquareBracket() {
-        return "<dark_gray>[</dark_gray>";
-    }
-
-    public static String getClosingSquareBracket() {
-        return "<dark_gray>]</dark_gray>";
-    }
-
-    public static String getPurpleGradient() {
-        return "<gradient:light_purple:dark_purple>";
-    }
-
-    public static String getGreenGradient() {
-        return "<gradient:green:dark_green>";
-    }
-
-    public static String getRedGradient() {
-        return "<gradient:red:dark_red>";
-    }
-
     public static boolean isInteger(String string) {
         try {
             Integer.parseInt(string);
