@@ -72,7 +72,7 @@ public class KitGui extends PluginGui {
                     }
 
                     Bukkit.dispatchCommand(this.player, "kit upgrade");
-                    this.gui.close(this.player);
+                    this.close();
                 });
 
         this.gui.setItem(22, upgrateKitItem);
