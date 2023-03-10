@@ -13,7 +13,6 @@ import org.bson.conversions.Bson;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Created by DMK on 10.02.2023
@@ -123,9 +122,7 @@ public class MongoDataService {
         return mongoCollection.find()
                 .sort(sort)
                 .limit(limit)
-                .into(new ArrayList<>())
-                .stream()
                 .map(document -> this.gsonSerializer.deserialize(document.toJson(), vClass))
-                .collect(Collectors.toList());
+                .into(new ArrayList<>());
     }
 }
