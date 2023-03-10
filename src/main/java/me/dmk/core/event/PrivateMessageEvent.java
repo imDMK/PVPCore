@@ -27,7 +27,7 @@ public class PrivateMessageEvent extends Event implements Cancellable {
 
     private final String message;
 
-    private boolean cancelled = false;
+    private boolean cancelled;
     private String cancelMessage;
 
     private static final HandlerList handlerList = new HandlerList();
