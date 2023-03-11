@@ -68,6 +68,10 @@ public class StringFormatter {
         return (status ? StringFormatter.formatGreenGradient() + "włączon" : StringFormatter.formatRedGradient() + "wyłączon") + symbol + "</gradient>";
     }
 
+    public static String formatBooleanYesOrNo(boolean status) {
+        return (status ? "<green>Tak" : "<red>Nie");
+    }
+
     public static String formatIncognito(String incognitoIdentifier) {
         return "Anonimowy" + StringFormatter.formatOpeningSquareBracket() + "<red>" + incognitoIdentifier + StringFormatter.formatClosingSquareBracket();
     }
