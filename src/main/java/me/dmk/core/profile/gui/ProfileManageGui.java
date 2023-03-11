@@ -165,8 +165,9 @@ public class ProfileManageGui extends PluginGui {
                         ""
                 ))
                 .asGuiItem(event -> {
-                    this.notificationController.sendMessage(this.player,
-                            StringFormatter.formatWarning() + " <gold>Wprowadź ilość monet<dark_gray>."
+                    this.notificationController.sendTitle(this.player,
+                            "",
+                            "<gold>Wprowadź ilość monet"
                     );
 
                     ChatWaiter chatWaiter = message -> {
@@ -196,6 +197,7 @@ public class ProfileManageGui extends PluginGui {
                     };
 
                     this.chatWaiterCache.put(this.player, chatWaiter);
+                    this.close();
                 });
 
         GuiItem setLevelItem = ItemBuilder.from(Material.EXPERIENCE_BOTTLE)
@@ -206,6 +208,11 @@ public class ProfileManageGui extends PluginGui {
                         ""
                 ))
                 .asGuiItem(event -> {
+                    this.notificationController.sendTitle(this.player,
+                            "",
+                            "<gold>Wprowadź poziom"
+                    );
+
                     ChatWaiter chatWaiter = (message) -> {
                         if (!StringUtil.isInteger(message)) {
                             this.notificationController.sendMessage(this.player,
@@ -219,6 +226,8 @@ public class ProfileManageGui extends PluginGui {
                             this.notificationController.sendMessage(this.player,
                                     StringFormatter.formatError() + " <red>Wprowadzono nieprawidłową ilość poziomu doświadczenia.<dark_gray>."
                             );
+
+                            this.chatWaiterCache.remove(this.player);
                             return;
                         }
 
@@ -237,6 +246,7 @@ public class ProfileManageGui extends PluginGui {
                     };
 
                     this.chatWaiterCache.put(this.player, chatWaiter);
+                    this.close();
                 });
 
         this.gui.setItem(11, deleteProfileItem);

@@ -132,13 +132,6 @@
             <version>3.1.4</version>
         </dependency>
 
-        <!-- AnvilGUI -->
-        <dependency>
-            <groupId>net.wesjd</groupId>
-            <artifactId>anvilgui</artifactId>
-            <version>1.6.3-SNAPSHOT</version>
-        </dependency>
-
         <!-- LiteCommands -->
         <dependency>
             <groupId>dev.rollczi.litecommands</groupId>
