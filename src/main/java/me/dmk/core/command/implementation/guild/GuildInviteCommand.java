@@ -58,7 +58,7 @@ public class GuildInviteCommand {
         );
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii <dark_gray>(<red>zaproszenie wygaśnie za 30 minut<dark_gray>)."
         );
 
         guild.invite(other.getUuid());
