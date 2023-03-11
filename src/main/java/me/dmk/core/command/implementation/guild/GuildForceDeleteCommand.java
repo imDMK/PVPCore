@@ -3,6 +3,7 @@ package me.dmk.core.command.implementation.guild;
 import dev.rollczi.litecommands.argument.Arg;
 import dev.rollczi.litecommands.argument.Name;
 import dev.rollczi.litecommands.argument.joiner.Joiner;
+import dev.rollczi.litecommands.command.async.Async;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
@@ -31,6 +32,7 @@ public class GuildForceDeleteCommand {
     private final GuildCache guildCache;
     private final TaskExecutor taskExecutor;
 
+    @Async
     @Execute(min = 2)
     void execute(Player player, @Arg Guild guild, @Joiner @Name("reason") String reason) {
         new ConfirmationGui(player)
