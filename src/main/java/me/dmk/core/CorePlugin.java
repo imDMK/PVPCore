@@ -15,7 +15,7 @@ import lombok.Getter;
 import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.NotificationType;
-import me.dmk.core.chat.waiting.ChatWaiterCache;
+import me.dmk.core.chat.waiter.ChatWaiterCache;
 import me.dmk.core.command.argument.guild.GuildArgument;
 import me.dmk.core.command.argument.guild.GuildMemberArgument;
 import me.dmk.core.command.argument.notification.NotificationTypeArgument;

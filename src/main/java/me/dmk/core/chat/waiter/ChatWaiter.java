@@ -1,4 +1,4 @@
-package me.dmk.core.chat.waiting;
+package me.dmk.core.chat.waiter;
 
 /**
  * Created by DMK on 11.03.2023
