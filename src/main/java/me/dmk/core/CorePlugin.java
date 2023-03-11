@@ -244,6 +244,8 @@ public class CorePlugin extends JavaPlugin {
             this.profileCache.get(player.getUniqueId()).ifPresent(profileController::save);
         }
 
+        this.guildCache.getGuilds().forEach(guildController::save);
+
         this.mongoClientService.close();
         this.taskExecutor.shutdownNow();
         this.liteCommands.getPlatform().unregisterAll();
