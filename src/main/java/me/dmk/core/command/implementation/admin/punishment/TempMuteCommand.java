@@ -54,7 +54,7 @@ public class TempMuteCommand {
                 )
         );
 
-        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <gradient:red:dark_red>tymczasowo wyciszony</gradient> <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
                 "core.command.mute"
         );
@@ -79,7 +79,7 @@ public class TempMuteCommand {
                 )
         );
 
-        this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <gradient:red:dark_red>tymczasowo wyciszony</gradient> <gray>przez <light_purple>" + sender.getName() + " <gray>za <red>" + reason + "<dark_gray>.",
                 "core.command.mute"
         );

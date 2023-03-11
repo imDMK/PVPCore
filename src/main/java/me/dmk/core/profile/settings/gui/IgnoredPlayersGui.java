@@ -44,7 +44,7 @@ public class IgnoredPlayersGui extends PluginPaginatedGui {
         for (UUID uuid : profileSettings.getIgnoredPlayers()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
-            GuiItem ignoredPlayer = SkullStorage.createPlayerHead(offlinePlayer)
+            GuiItem ignoredPlayer = SkullStorage.createPlayerHead(uuid)
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",

@@ -6,7 +6,6 @@ import me.dmk.core.CorePlugin;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.text.TextComponent;
@@ -16,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,8 +31,7 @@ public class NotificationController {
     /* CommandSender */
     public void sendMessage(CommandSender sender, String message) {
         if (sender instanceof Player player) {
-            this.audienceProvider.player(player.getUniqueId())
-                    .sendMessage(this.miniMessage.deserialize(message));
+            this.audienceProvider.player(player.getUniqueId()).sendMessage(this.miniMessage.deserialize(message));
         } else {
             sender.sendMessage(message);
         }
@@ -56,15 +53,14 @@ public class NotificationController {
     }
 
     public void sendTitle(Player player, String title, String subTitle) {
-        Audience audience = this.audienceProvider.player(player.getUniqueId());
-
         Title titleMessage = Title.title(
                 this.miniMessage.deserialize(title),
                 this.miniMessage.deserialize(subTitle),
                 Title.DEFAULT_TIMES
         );
 
-        audience.showTitle(titleMessage);
+        this.audienceProvider.player(player.getUniqueId())
+                .showTitle(titleMessage);
     }
 
     public void sendActionBar(Player player, String message) {
@@ -82,37 +78,36 @@ public class NotificationController {
                 .hideBossBar(bossBar);
     }
 
-    /* Collection extends Player */
-    public void sendMessage(Collection<? extends Player> players, String message) {
-        players.forEach(player ->
-                this.sendMessage(player, message)
-        );
+    /* Global messages */
+    public void sendGlobalMessage(String message) {
+        this.audienceProvider.all()
+                .sendMessage(this.miniMessage.deserialize(message));
     }
 
-    public void sendMessage(Collection<? extends Player> players, String message, String permission) {
-        players.forEach(player -> {
-            if (player.hasPermission(permission)) {
-                this.sendMessage(player, message);
-            }
-        });
+    public void sendGlobalMessage(String message, String permission) {
+        this.audienceProvider.permission(permission)
+                .sendMessage(this.miniMessage.deserialize(message));
     }
 
-    public void sendTitle(Collection<? extends Player> players, String title, String subtitle) {
-        players.forEach(player ->
-                this.sendTitle(player, title, subtitle)
+    public void sendGlobalTitle(String title, String subTitle) {
+        Title titleMessage = Title.title(
+                this.miniMessage.deserialize(title),
+                this.miniMessage.deserialize(subTitle),
+                Title.DEFAULT_TIMES
         );
+
+        this.audienceProvider.all()
+                .showTitle(titleMessage);
     }
 
-    public void showBossBar(Collection<? extends Player> players, BossBar bossBar) {
-        players.forEach(player ->
-                this.showBossBar(player, bossBar)
-        );
+    public void showGlobalBossBar(BossBar bossBar) {
+        this.audienceProvider.all()
+                .showBossBar(bossBar);
     }
 
-    public void hideBossBar(Collection<? extends Player> players, BossBar bossBar) {
-        players.forEach(player ->
-                this.hideBossBar(player, bossBar)
-        );
+    public void hideGlobalBossBar(BossBar bossBar) {
+        this.audienceProvider.all()
+                .hideBossBar(bossBar);
     }
 
     /* Guild players */

@@ -14,7 +14,6 @@ import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.util.string.StringFormatter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Optional;
@@ -53,8 +52,7 @@ public class BanCommand {
                 p.kickPlayer(StringFormatter.formatBanMessage(punishment))
         );
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
                 "core.command.ban"
         );
@@ -80,8 +78,7 @@ public class BanCommand {
                 p.kickPlayer(StringFormatter.formatBanMessage(punishment))
         );
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + " <gray>za <red>" + reason + "<dark_gray>.",
                 "core.command.ban"
         );

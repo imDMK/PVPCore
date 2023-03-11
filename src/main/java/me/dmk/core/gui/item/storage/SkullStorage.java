@@ -3,9 +3,6 @@ package me.dmk.core.gui.item.storage;
 import dev.dbassett.skullcreator.SkullCreator;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import lombok.experimental.UtilityClass;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -18,13 +15,9 @@ import java.util.UUID;
 public class SkullStorage {
 
     public static ItemBuilder createPlayerHead(UUID uuid) {
-        return ItemBuilder.from(Material.PLAYER_HEAD)
-                .setSkullOwner(Bukkit.getOfflinePlayer(uuid));
-    }
-
-    public static ItemBuilder createPlayerHead(OfflinePlayer offlinePlayer) {
-        return ItemBuilder.from(Material.PLAYER_HEAD)
-                .setSkullOwner(offlinePlayer);
+        return ItemBuilder.from(
+                SkullCreator.itemFromUuid(uuid)
+        );
     }
 
     public static ItemStack getBlackArrowLeft() {

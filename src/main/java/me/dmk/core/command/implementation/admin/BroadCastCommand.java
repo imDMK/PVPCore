@@ -14,11 +14,7 @@ import me.dmk.core.task.BukkitTask;
 import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
 
 /**
  * Created by DMK on 29.12.2022
@@ -36,12 +32,10 @@ public class BroadCastCommand {
     @Async
     @Execute(min = 2)
     void execute(CommandSender sender, @Arg NotificationType notificationType, @Joiner @Name("message") String message) {
-        Collection<? extends Player> players = Bukkit.getServer().getOnlinePlayers();
-
         switch (notificationType) {
-            case CHAT -> this.notificationController.sendMessage(players, message);
-            case TITLE -> this.notificationController.sendTitle(players, message, "");
-            case SUBTITLE -> this.notificationController.sendTitle(players, "", message);
+            case CHAT -> this.notificationController.sendGlobalMessage(message);
+            case TITLE -> this.notificationController.sendGlobalTitle(message, "");
+            case SUBTITLE -> this.notificationController.sendGlobalTitle("", message);
             case BOSSBAR -> {
                 BossBar bossBar = BossBar.bossBar(
                         this.miniMessage.deserialize(message),
@@ -50,8 +44,8 @@ public class BroadCastCommand {
                         BossBar.Overlay.PROGRESS
                 );
 
-                this.notificationController.showBossBar(players, bossBar);
-                this.createBossBarTask(players, bossBar);
+                this.notificationController.showGlobalBossBar(bossBar);
+                this.createBossBarTask(bossBar);
             }
         }
 
@@ -60,7 +54,7 @@ public class BroadCastCommand {
         );
     }
 
-    private void createBossBarTask(Collection<? extends Player> players, BossBar bossBar) {
+    private void createBossBarTask(BossBar bossBar) {
         new BukkitTask(20L, 10L) {
             @Override
             public void onRun(long time) {
@@ -71,7 +65,7 @@ public class BroadCastCommand {
 
             @Override
             public void onFinish() {
-                notificationController.hideBossBar(players, bossBar);
+                notificationController.hideGlobalBossBar(bossBar);
             }
         };
     }

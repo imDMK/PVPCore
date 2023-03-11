@@ -64,7 +64,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(guildMember.getUuid());
             String guildMemberRank = this.guild.getMemberRank(guildMember.getUuid());
 
-            GuiItem memberItem = SkullStorage.createPlayerHead(offlinePlayer)
+            GuiItem memberItem = SkullStorage.createPlayerHead(offlinePlayer.getUniqueId())
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",

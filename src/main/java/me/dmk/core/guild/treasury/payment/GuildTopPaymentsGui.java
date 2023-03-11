@@ -50,7 +50,7 @@ public class GuildTopPaymentsGui extends PluginGui {
             GuildMember guildMember = guildMembers.get(i);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(guildMember.getUuid());
 
-            GuiItem item = SkullStorage.createPlayerHead(offlinePlayer)
+            GuiItem item = SkullStorage.createPlayerHead(offlinePlayer.getUniqueId())
                     .name(ComponentUtil.text((i + 1) + " <light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",

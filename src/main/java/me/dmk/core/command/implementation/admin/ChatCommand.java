@@ -30,8 +30,7 @@ public class ChatCommand {
     void execute(CommandSender sender) {
         this.globalChatCache.getGlobalChatSettings().switchStatus();
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Globalny czat został " + StringFormatter.formatBoolean(this.globalChatCache.getGlobalChatSettings().isEnabled()) + " <gray>przez <light_purple>" + sender.getName() + "<dark_gray>."
         );
     }
@@ -43,8 +42,7 @@ public class ChatCommand {
             Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(""));
         }
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Globalny czat został " + StringFormatter.formatPurpleGradient() + "wyczyszczony</gradient> <gray>przez <light_purple>" + sender.getName() + "<dark_gray>."
         );
     }
@@ -57,8 +55,7 @@ public class ChatCommand {
         }
 
         this.globalChatCache.getGlobalChatSettings().setDelay(seconds);
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Administrator <light_purple>" + sender.getName() + " <gray>zmienił opóźnienie wysyłania globalnych wiadomości na <light_purple>" + seconds + " <gray>sekund<dark_gray>.",
                 "core.command.chat"
         );

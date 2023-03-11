@@ -12,7 +12,6 @@ import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.util.string.StringFormatter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Date;
@@ -48,8 +47,7 @@ public class UnBanCommand {
 
         this.profileController.save(profile);
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <green>odbanowany <gray>przez <light_purple>" + sender.getName() + "<dark_gray>.",
                 "core.command.unban"
         );

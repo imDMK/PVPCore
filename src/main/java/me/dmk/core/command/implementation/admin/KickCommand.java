@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -33,8 +32,7 @@ public class KickCommand {
 
         other.kickPlayer(reason);
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + other.getName() + " <gray>został <red>wyrzucony <gray>przez <light_purple>" + player.getName() + "<dark_gray>.",
                 "core.command.kick"
         );
@@ -47,8 +45,7 @@ public class KickCommand {
                 StringUtil.colorLegacy("&c" + reason)
         );
 
-        this.notificationController.sendMessage(
-                Bukkit.getOnlinePlayers(),
+        this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + other.getName() + " <gray>został <red>wyrzucony <gray>przez <light_purple>" + player.getName() + " <gray>za <red>" + reason + "<dark_gray>.",
                 "core.command.kick"
         );

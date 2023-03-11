@@ -48,7 +48,7 @@ public class GuildForceDeleteCommand {
                             )
                     );
 
-                    this.notificationController.sendMessage(Bukkit.getOnlinePlayers(),
+                    this.notificationController.sendGlobalMessage(
                             StringFormatter.formatWarning() + " <gray>Administrator <red>" + player.getName() + " <red>usunął <gray>gildię <red>" + guild.getTag() + " <gray>za <red>" + reason + "<dark_gray>.",
                             "core.command.guild.forcedelete"
                     );
