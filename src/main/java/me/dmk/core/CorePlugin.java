@@ -15,6 +15,7 @@ import lombok.Getter;
 import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.NotificationType;
+import me.dmk.core.chat.waiting.ChatWaiterCache;
 import me.dmk.core.command.argument.guild.GuildArgument;
 import me.dmk.core.command.argument.guild.GuildMemberArgument;
 import me.dmk.core.command.argument.notification.NotificationTypeArgument;
@@ -111,6 +112,7 @@ public class CorePlugin extends JavaPlugin {
     private GuildCache guildCache;
     private GlobalChatCache globalChatCache;
     private MurderCache murderCache;
+    private ChatWaiterCache chatWaiterCache;
 
     private KitMap kitMap;
     private TeleportMap teleportMap;
@@ -173,6 +175,7 @@ public class CorePlugin extends JavaPlugin {
         this.guildCache = new GuildCache(this.guildController);
         this.globalChatCache = new GlobalChatCache();
         this.murderCache = new MurderCache();
+        this.chatWaiterCache = new ChatWaiterCache();
 
         /* Maps */
         this.kitMap = new KitMap(this.pluginConfiguration.getKitConfiguration());
@@ -197,7 +200,7 @@ public class CorePlugin extends JavaPlugin {
                 new PlayerLoginListener(this.profileCache),
                 new PlayerQuitListener(this.profileController, this.profileCache, this.taskExecutor),
 
-                new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileCache, this.guildCache, this.globalChatCache),
+                new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileCache, this.guildCache, this.globalChatCache, this.chatWaiterCache),
                 new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileCache, this.teleportMap),
                 new EntityResurrectListener(this.notificationController, this.profileCache),
                 new PlayerCommandPreprocessListener(this.pluginConfiguration, this.notificationController, this.profileCache),

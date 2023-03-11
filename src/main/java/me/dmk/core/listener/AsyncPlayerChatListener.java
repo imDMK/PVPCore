@@ -3,6 +3,7 @@ package me.dmk.core.listener;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
+import me.dmk.core.chat.waiting.ChatWaiterCache;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.luckperms.LuckPermsController;
@@ -39,6 +40,7 @@ public class AsyncPlayerChatListener implements Listener {
     private final ProfileCache profileCache;
     private final GuildCache guildCache;
     private final GlobalChatCache globalChatCache;
+    private final ChatWaiterCache chatWaiterCache;
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
@@ -53,6 +55,11 @@ public class AsyncPlayerChatListener implements Listener {
         Profile profile = this.profileCache.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
         ProfileStatistics profileStatistics = profile.getProfileStatistics();
+
+        if (this.chatWaiterCache.isWaitingForResponse(player)) {
+            this.chatWaiterCache.remove(player).execute(message);
+            return;
+        }
 
         Optional<Punishment> punishment = profile.getActivePunishment(PunishmentType.MUTE);
         if (punishment.isPresent()) {
