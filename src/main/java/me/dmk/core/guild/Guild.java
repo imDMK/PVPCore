@@ -7,16 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.dmk.core.database.data.entity.DataEntity;
 import me.dmk.core.guild.member.GuildMember;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Created by DMK on 07.01.2023
@@ -30,19 +31,20 @@ public class Guild {
 
     private String tag;
     private String name;
-    private UUID creator;
-    private Date createdAt = new Date();
 
+    private final Date createdAt = new Date();
     private Date expireAt = Date.from(Instant.now().plus(14, ChronoUnit.DAYS));
 
+    private UUID creator;
     private UUID leader;
-    private UUID coLeader = null;
 
+    private Map<UUID, GuildRank> guildRanks = Maps.newConcurrentMap();
     private Map<UUID, GuildMember> members = Maps.newConcurrentMap();
+
     private Set<String> alliances = new HashSet<>();
 
-    private GuildStatistics guildStatistics = new GuildStatistics();
-    private GuildTreasury guildTreasury = new GuildTreasury();
+    private final GuildStatistics guildStatistics = new GuildStatistics();
+    private final GuildTreasury guildTreasury = new GuildTreasury();
 
     private final transient Cache<UUID, Boolean> memberInvites = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES)
@@ -54,27 +56,21 @@ public class Guild {
     public Guild(String tag, String name, UUID creator) {
         this.tag = tag;
         this.name = name;
-        this.creator = creator;
 
+        this.creator = creator;
         this.leader = creator;
 
-        this.members.put(creator, new GuildMember(creator));
-    }
+        GuildRank defaultRank = new GuildRank("Członek", 2, Material.GRAY_BANNER, true);
+        GuildRank liderRank = new GuildRank("Lider", 1, Material.RED_BANNER, false, true, true, true, true);
 
-    public boolean isCreator(UUID uuid) {
-        return this.creator.equals(uuid);
+        this.guildRanks.put(defaultRank.getUuid(), defaultRank);
+        this.guildRanks.put(liderRank.getUuid(), liderRank);
+
+        this.members.put(creator, new GuildMember(creator, liderRank));
     }
 
     public boolean isLeader(UUID uuid) {
         return this.leader.equals(uuid);
-    }
-
-    public boolean isCoLeader(UUID uuid) {
-        return this.coLeader != null && this.coLeader.equals(uuid);
-    }
-
-    public boolean isLeaderOrCoLeader(UUID uuid) {
-        return this.isLeader(uuid) || this.isCoLeader(uuid);
     }
 
     public void extend(int days) {
@@ -83,58 +79,72 @@ public class Guild {
         );
     }
 
-    public void join(UUID uuid) {
-        this.members.put(uuid, new GuildMember(uuid));
+    public GuildRank getDefaultRank() {
+        Optional<GuildRank> defaultRank = this.guildRanks.values()
+                .stream()
+                .filter(GuildRank::isDefaultRank)
+                .findFirst();
+
+        return defaultRank.orElseGet(
+                () -> new GuildRank("Członek", 1, Material.RED_BANNER, true)
+        );
+    }
+
+    public GuildRank getGuildRank(UUID uuid) {
+        UUID guildRankUuid = this.members.get(uuid).getGuildRankUuid();
+
+        return Optional.ofNullable(this.guildRanks.get(guildRankUuid))
+                .orElseGet(this::getDefaultRank);
+    }
+
+    public void joinToMembership(UUID uuid) {
+        this.members.put(uuid, new GuildMember(uuid, this.getDefaultRank()));
     }
 
     public boolean isMember(UUID uuid) {
         return this.members.containsKey(uuid);
     }
 
-    public void leave(UUID uuid) {
+    public void leaveMembership(UUID uuid) {
         this.members.remove(uuid);
     }
 
     public List<Player> getOnlineMembers() {
         return this.members.values()
                 .stream()
-                .map(member -> Bukkit.getServer().getPlayer(member.getUuid()))
+                .map(member -> Bukkit.getPlayer(member.getUuid()))
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .filter(Player::isOnline)
+                .toList();
     }
 
-    public String getMemberRank(UUID uuid) {
-        if (this.creator.equals(uuid)) {
-            return "Założyciel";
-        } else if (this.leader.equals(uuid)) {
-            return "Właściciel";
-        } else if (this.coLeader.equals(uuid)) {
-            return "Zastępca lidera";
-        }
-
-        return "Członek";
-    }
-
-    public void invite(UUID uuid) {
+    public void inviteToMembership(UUID uuid) {
         this.memberInvites.put(uuid, Boolean.TRUE);
     }
 
-    public void acceptInvite(UUID uuid) {
-        this.memberInvites.asMap().remove(uuid);
-
-        this.join(uuid);
+    public boolean isInvitedToMembership(UUID uuid) {
+        return this.memberInvites.asMap().containsKey(uuid);
     }
 
-    public boolean isInvited(UUID uuid) {
-        return Optional.ofNullable(this.memberInvites.asMap().get(uuid)).isPresent();
+    public void cancelInviteToMembership(UUID uuid) {
+        this.memberInvites.asMap().remove(uuid);
     }
 
-    public void cancelInvite(UUID uuid) {
-        this.memberInvites.asMap().remove(uuid);
+    public void joinToAlliance(Guild guild) {
+        this.alliances.add(guild.getTag());
     }
 
     public boolean hasAlliance(Guild guild) {
         return this.alliances.contains(guild.getTag());
+    }
+
+    public void breakAlliance(Guild guild) {
+        this.alliances.remove(guild.getTag());
+    }
+
+    public void acceptInviteToAlliance(Guild guild) {
+        this.allianceInvites.asMap().remove(guild);
+        this.joinToAlliance(guild);
     }
 
     public void inviteToAlliance(Guild guild) {
@@ -147,15 +157,5 @@ public class Guild {
 
     public void cancelInviteToAlliance(Guild guild) {
         this.allianceInvites.asMap().remove(guild);
-    }
-
-    public void acceptAllianceInvite(Guild guild) {
-        this.allianceInvites.asMap().remove(guild);
-
-        this.alliances.add(guild.getTag());
-    }
-
-    public void breakAlliance(Guild guild) {
-        this.alliances.remove(guild.getTag());
     }
 }

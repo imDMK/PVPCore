@@ -9,6 +9,7 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,6 +30,15 @@ public class GuildAllianceCommand {
     @Execute(required = 1)
     @Route(name = "accept")
     void executeAccept(Player player, Guild guild, @Arg Guild otherGuild) {
+        GuildRank guildRank = guild.getGuildRank(player.getUniqueId());
+
+        if (!guild.isLeader(player.getUniqueId()) || !guildRank.isCanManageAlliances()) {
+            this.notificationController.sendMessage(player,
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
+            );
+            return;
+        }
+
         if (!otherGuild.isInvitedToAlliance(guild)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie otrzymano zaproszenia do sojuszu od tej gildii<dark_gray>."
@@ -36,8 +46,8 @@ public class GuildAllianceCommand {
             return;
         }
 
-        guild.acceptAllianceInvite(otherGuild);
-        otherGuild.acceptAllianceInvite(guild);
+        guild.acceptInviteToAlliance(otherGuild);
+        otherGuild.acceptInviteToAlliance(guild);
 
         this.guildController.save(guild);
         this.guildController.save(otherGuild);
@@ -52,6 +62,15 @@ public class GuildAllianceCommand {
     @Execute(required = 1)
     @Route(name = "break")
     void executeBreak(Player player, Guild guild, @Arg Guild otherGuild) {
+        GuildRank guildRank = guild.getGuildRank(player.getUniqueId());
+
+        if (!guild.isLeader(player.getUniqueId()) || !guildRank.isCanManageAlliances()) {
+            this.notificationController.sendMessage(player,
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
+            );
+            return;
+        }
+
         if (!guild.hasAlliance(otherGuild)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie posiadacie sojuszu gildyjnego<dark_gray>."
@@ -74,16 +93,18 @@ public class GuildAllianceCommand {
     @Execute(required = 1)
     @Route(name = "invite")
     void executeInvite(Player player, Guild guild, @Arg Guild otherGuild) {
-        if (guild.getTag().equals(otherGuild.getTag())) {
+        GuildRank guildRank = guild.getGuildRank(player.getUniqueId());
+
+        if (!guild.isLeader(player.getUniqueId()) || !guildRank.isCanManageAlliances()) {
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Zwariowałeś? Nie możesz zaprosić swojej gildii do sojuszu <dark_gray>damn..."
+                    StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
             );
             return;
         }
 
-        if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
+        if (guild.getTag().equals(otherGuild.getTag())) {
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
+                    StringFormatter.formatError() + " <red>Zwariowałeś? Nie możesz zaprosić swojej gildii do sojuszu <dark_gray>damn..."
             );
             return;
         }

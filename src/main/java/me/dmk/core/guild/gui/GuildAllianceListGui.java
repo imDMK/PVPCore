@@ -36,8 +36,6 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
 
     @Override
     public void build() {
-        boolean isLeaderOrCoLeader = this.guild.isLeaderOrCoLeader(this.player.getUniqueId());
-
         GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.player, this.profile, this.guild).open(),
@@ -50,6 +48,8 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
         this.gui.setItem(47, previousButton);
         this.gui.setItem(49, backButton);
         this.gui.setItem(51, nextButton);
+
+        boolean canManageAlliances = this.guild.getGuildRank(this.player.getUniqueId()).isCanManageAlliances();
 
         for (String guildTag : this.guild.getAlliances()) {
             Optional<Guild> allianceGuildOptional = this.guildCache.getOrElseLoad(guildTag);
@@ -66,7 +66,7 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
                     ""
             ));
 
-            if (isLeaderOrCoLeader) {
+            if (canManageAlliances) {
                 lore.addAll(Arrays.asList(
                         this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
                         this.warning + " <light_purple>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>."

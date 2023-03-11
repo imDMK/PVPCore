@@ -9,6 +9,7 @@ import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.task.executor.TaskExecutor;
@@ -33,14 +34,16 @@ public class GuildExtendCommand {
     @Async
     @Execute
     void execute(Player player, Profile profile, Guild guild) {
-        GuildTreasury guildTreasury = guild.getGuildTreasury();
+        GuildRank guildRank = guild.getGuildRank(player.getUniqueId());
 
-        if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
+        if (!guild.isLeader(player.getUniqueId()) || !guildRank.isCanExtend()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie posiadasz uprawnień gildyjnych<dark_gray>."
             );
             return;
         }
+
+        GuildTreasury guildTreasury = guild.getGuildTreasury();
 
         int coinsToExtendGuild = this.pluginConfiguration.getCoinsToExtendGuild();
 

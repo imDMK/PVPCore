@@ -10,6 +10,7 @@ import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.member.GuildMember;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
@@ -35,7 +36,9 @@ public class GuildKickCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, Guild guild, @Arg GuildMember guildMember) {
-        if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
+        GuildRank guildRank = guild.getGuildRank(player.getUniqueId());
+
+        if (!guild.isLeader(player.getUniqueId()) || !guildRank.isCanManageMembers()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
             );
@@ -44,7 +47,7 @@ public class GuildKickCommand {
 
         if (!guild.isMember(guildMember.getUuid())) {
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Ten gracz nie jest w twojej gildii<dark_gray>."
+                    StringFormatter.formatError() + " <red>Ten gracz nie jest członkiem twojej gildii<dark_gray>."
             );
             return;
         }
@@ -59,15 +62,16 @@ public class GuildKickCommand {
         Optional<Profile> memberProfileOptional = this.profileCache.getOrElseLoad(guildMember.getUuid());
         if (memberProfileOptional.isEmpty()) {
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Wystąpił błąd<dark_gray>."
+                    StringFormatter.formatError() + " <red>Wyrzucono gracza<dark_gray>."
             );
+
+            guild.leaveMembership(guildMember.getUuid());
             return;
         }
 
         Profile memberProfile = memberProfileOptional.get();
 
-        memberProfile.setGuildTag(null);
-        guild.leave(guildMember.getUuid());
+        guild.leaveMembership(guildMember.getUuid());
 
         this.guildController.save(guild);
         this.profileController.save(memberProfile);

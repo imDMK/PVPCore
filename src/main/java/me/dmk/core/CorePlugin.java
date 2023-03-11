@@ -41,6 +41,7 @@ import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.guild.task.GuildExpirationTimeTask;
+import me.dmk.core.guild.task.GuildSaveTask;
 import me.dmk.core.kit.KitMap;
 import me.dmk.core.listener.*;
 import me.dmk.core.listener.connection.PlayerJoinListener;
@@ -187,9 +188,10 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor = new TaskExecutorImpl();
 
         this.taskExecutor.runTimerAsync(new BoardTask(this.profileCache), 5L, TimeUnit.SECONDS);
-        this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new ProfileTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileCache, this.getTaskExecutor()), 1L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController, this.profileCache), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController, this.guildCache), 1L, TimeUnit.MINUTES);
+        this.taskExecutor.runTimerAsync(new GuildSaveTask(this.guildController, this.guildCache), 15L, TimeUnit.MINUTES);
 
         /* Commands */
         this.liteCommands = this.registerLiteCommands();
@@ -300,6 +302,7 @@ public class CorePlugin extends JavaPlugin {
                         new GuildAllianceCommand(this.notificationController, this.guildController),
 
                         new GuildCreateCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.guildCache),
+                        new GuildCreateRankCommand(this.notificationController, this.guildController),
                         new GuildDeleteCommand(this.notificationController, this.guildController, this.guildCache, this.taskExecutor),
                         new GuildDepositCommand(this.notificationController, this.profileController,this.guildController),
                         new GuildExtendCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.taskExecutor),

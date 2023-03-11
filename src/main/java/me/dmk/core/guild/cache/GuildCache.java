@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.controller.GuildController;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +36,10 @@ public class GuildCache {
         }
 
         return this.guildController.findByTag(tag);
+    }
+
+    public Collection<Guild> getGuilds() {
+        return this.stringGuildCache.asMap().values();
     }
 
     public void add(Guild guild) {

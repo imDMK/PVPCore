@@ -8,6 +8,7 @@ import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.guild.gui.GuildPanelGui;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.kit.Kit;
 import me.dmk.core.kit.KitMap;
 import me.dmk.core.kit.gui.KitPrewiewGui;
@@ -189,14 +190,13 @@ public class ProfilePanelGui extends PluginGui {
         }
 
         this.profile.getGuild().ifPresent(guild -> {
-            boolean isLeader = guild.isLeader(this.profile.getUuid());
-            boolean isCoLeader = guild.isCoLeader(this.profile.getUuid());
+            GuildRank guildRank = guild.getGuildRank(this.profile.getUuid());
 
             GuiItem guildItem = ItemBuilder.from(Material.BEACON)
                     .name(ComponentUtil.text(me.dmk.core.util.string.StringFormatter.formatPurpleGradient() + guild.getTag()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.circle + " <gray>Gracz <light_purple>" + this.profile.getName() + " <gray>jest " + (isLeader ? "<red>liderem" : isCoLeader ? "<yellow>zastępcą lidera" : "<light_purple>członkiem") + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",
+                            this.circle + " <gray>Gracz <light_purple>" + this.profile.getName() + " <gray>jest <light_purple>" + guildRank.getName() + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",
                             this.circle + " <light_purple>Kilknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
                             ""
                     ))

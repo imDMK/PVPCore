@@ -1,6 +1,7 @@
 package me.dmk.core.guild.member;
 
 import lombok.Data;
+import me.dmk.core.guild.rank.GuildRank;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,8 +16,15 @@ public class GuildMember implements Serializable {
 
     private final UUID uuid;
     private final Date joinDate = new Date();
-    
+
+    private UUID guildRankUuid;
+
     private int addedCoinsToTreasury = 0;
+
+    public GuildMember(UUID uuid, GuildRank guildRank) {
+        this.uuid = uuid;
+        this.guildRankUuid = guildRank.getUuid();
+    }
 
     public void addCoinsToTreasury(int coins) {
         this.addedCoinsToTreasury += coins;

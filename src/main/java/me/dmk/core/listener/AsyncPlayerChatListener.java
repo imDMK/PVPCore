@@ -1,6 +1,7 @@
 package me.dmk.core.listener;
 
 import lombok.AllArgsConstructor;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.waiter.ChatWaiterCache;
@@ -57,7 +58,10 @@ public class AsyncPlayerChatListener implements Listener {
         ProfileStatistics profileStatistics = profile.getProfileStatistics();
 
         if (this.chatWaiterCache.isWaitingForResponse(player)) {
-            this.chatWaiterCache.remove(player).execute(message);
+            Bukkit.getScheduler().runTask(
+                    CorePlugin.getCorePlugin(),
+                    () -> this.chatWaiterCache.remove(player).execute(message)
+            );
             return;
         }
 

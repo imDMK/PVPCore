@@ -59,7 +59,7 @@ public class ProfileManageGui extends PluginGui {
                                     .deletePlayerData(this.profile.getUuid());
 
                             this.profile.getGuild().ifPresent(guild ->
-                                    guild.leave(this.profile.getUuid())
+                                    guild.leaveMembership(this.profile.getUuid())
                             );
 
                             this.taskExecutor.runAsync(

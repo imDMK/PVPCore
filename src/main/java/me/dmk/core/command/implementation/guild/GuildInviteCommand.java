@@ -7,6 +7,7 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.guild.Guild;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
@@ -27,7 +28,9 @@ public class GuildInviteCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, Guild guild, @Arg Profile other) {
-        if (!guild.isLeaderOrCoLeader(player.getUniqueId())) {
+        GuildRank guildRank = guild.getGuildRank(player.getUniqueId());
+        
+        if (!guild.isLeader(player.getUniqueId()) || !guildRank.isCanManageMembers()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie posiadasz gildyjnych uprawnień<dark_gray>."
             );
@@ -41,8 +44,8 @@ public class GuildInviteCommand {
             return;
         }
 
-        if (guild.isInvited(other.getUuid())) {
-            guild.cancelInvite(other.getUuid());
+        if (guild.isInvitedToMembership(other.getUuid())) {
+            guild.cancelInviteToMembership(other.getUuid());
 
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Anulowano <gray>zaproszenie do gildii gracza <light_purple>" + other.getName() + "<dark_gray>."
@@ -61,6 +64,6 @@ public class GuildInviteCommand {
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zaproszono <gray>gracza <light_purple>" + other.getName() + " <gray>do gildii <dark_gray>(<red>zaproszenie wygaśnie za 30 minut<dark_gray>)."
         );
 
-        guild.invite(other.getUuid());
+        guild.inviteToMembership(other.getUuid());
     }
 }

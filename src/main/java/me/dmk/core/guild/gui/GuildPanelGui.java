@@ -6,6 +6,7 @@ import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.member.GuildMemberListGui;
+import me.dmk.core.guild.rank.gui.GuildRanksGui;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import me.dmk.core.guild.treasury.GuildTreasuryGui;
@@ -50,10 +51,6 @@ public class GuildPanelGui extends PluginGui {
                 .map(Player::getName)
                 .orElse("Brak");
 
-        String coLeader = Optional.ofNullable(Bukkit.getPlayer(this.guild.getCoLeader()))
-                .map(Player::getName)
-                .orElse("Brak");
-
         GuiItem beaconItem = ItemBuilder.from(Material.BEACON)
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + this.guild.getTag()))
                 .lore(ComponentUtil.asList(
@@ -63,7 +60,6 @@ public class GuildPanelGui extends PluginGui {
                         this.circle + " <gray>Data założenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(this.guild.getCreatedAt().toInstant()),
                         "",
                         this.circle + " <gray>Lider<dark_gray>: <light_purple>" + leader,
-                        this.circle + " <gray>Zastępca lidera<dark_gray>: <light_purple>" + coLeader,
                         ""
                 ))
                 .asGuiItem();
@@ -100,6 +96,17 @@ public class GuildPanelGui extends PluginGui {
                 ))
                 .asGuiItem(event ->
                         new GuildMemberListGui(this.player, this.profile, this.guild).open()
+                );
+
+        GuiItem ranksItem = ItemBuilder.from(Material.TURTLE_HELMET)
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Rangi"))
+                .lore(ComponentUtil.asList(
+                        "",
+                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy rang gildyjnych<dark_gray>.",
+                        ""
+                ))
+                .asGuiItem(event ->
+                        new GuildRanksGui(this.player, this.profile, this.guild).open()
                 );
 
         GuiItem coinsTrasureItem = ItemBuilder.from(Material.SUNFLOWER)
@@ -166,6 +173,7 @@ public class GuildPanelGui extends PluginGui {
         this.gui.setItem(22, expireItem);
         this.gui.setItem(23, membersItem);
 
+        this.gui.setItem(30, ranksItem);
         this.gui.setItem(31, coinsTrasureItem);
         this.gui.setItem(32, alliancesItem);
 

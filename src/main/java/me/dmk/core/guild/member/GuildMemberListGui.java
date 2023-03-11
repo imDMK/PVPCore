@@ -8,6 +8,7 @@ import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.gui.GuildPanelGui;
+import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.gui.ProfilePanelGui;
@@ -40,10 +41,10 @@ public class GuildMemberListGui extends PluginPaginatedGui {
     public void build() {
         Collection<GuildMember> guildMemberList = this.guild.getMembers().values()
                 .stream()
-                .sorted(Comparator.comparing(GuildMember::getJoinDate).reversed())
+                .sorted(Comparator.comparingInt(i -> this.guild.getGuildRank(i.getGuildRankUuid()).getPriority()))
                 .toList();
 
-        boolean isLeaderOrCoLeader = this.guild.isLeaderOrCoLeader(this.player.getUniqueId());
+        boolean canManageMembers = this.guild.getGuildRank(this.player.getUniqueId()).isCanManageMembers();
 
         GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
@@ -62,20 +63,20 @@ public class GuildMemberListGui extends PluginPaginatedGui {
             boolean isSelf = this.player.getUniqueId().equals(guildMember.getUuid());
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(guildMember.getUuid());
-            String guildMemberRank = this.guild.getMemberRank(guildMember.getUuid());
+            GuildRank guildRank = this.guild.getGuildRank(guildMember.getGuildRankUuid());
 
             GuiItem memberItem = SkullStorage.createPlayerHead(offlinePlayer.getUniqueId())
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.circle + " <gray>Ranga gildyjna<dark_gray>: <light_purple>" + guildMemberRank,
+                            this.circle + " <gray>Ranga gildyjna<dark_gray>: <light_purple>" + guildRank.getName(),
                             this.circle + " <gray>Data dołączenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(guildMember.getJoinDate().toInstant()),
                             "",
                             this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby otworzyć profil tego gracza<dark_gray>.",
-                            (isLeaderOrCoLeader ? "<!italic>" + this.warning + " <light_purple>Kilknij SHIFT + PPM<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>." : null),
+                            (canManageMembers ? "<!italic>" + this.warning + " <light_purple>Kilknij SHIFT + PPM<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>." : null),
                             ""
                     ))
-                    .glow(!guildMemberRank.equals("Członek"))
+                    .glow(guildRank.getPriority() > 1)
                     .asGuiItem(event -> {
                         if (event.isLeftClick()) {
                             this.profileCache.getOrElseLoad(guildMember.getUuid())
@@ -85,7 +86,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                             return;
                         }
 
-                        if (isLeaderOrCoLeader && event.isRightClick() && event.isRightClick()) {
+                        if (canManageMembers && event.isRightClick() && event.isRightClick()) {
                             if (isSelf) {
                                 new BarrierBuilder()
                                         .name("<red>Zwariowałeś? Nie możesz wyrzucić samego siebie<dark_gray>...")

@@ -30,7 +30,7 @@ public class GuildJoinCommand {
     @Async
     @Execute(required = 1)
     void execute(Player player, Profile profile, @Arg Guild guild) {
-        if (!guild.isInvited(player.getUniqueId())) {
+        if (!guild.isInvitedToMembership(player.getUniqueId())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie otrzymałeś/aś zaproszenia do tej gildii<dark_gray>."
             );
@@ -44,7 +44,7 @@ public class GuildJoinCommand {
             return;
         }
 
-        guild.acceptInvite(player.getUniqueId());
+        guild.joinToMembership(player.getUniqueId());
         profile.setGuildTag(guild.getTag());
 
         this.guildController.save(guild);

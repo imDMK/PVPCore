@@ -14,7 +14,6 @@ import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.util.string.StringFormatter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.time.Instant;

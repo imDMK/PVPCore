@@ -36,7 +36,7 @@ public class GuildLeaveCommand {
             return;
         }
 
-        guild.leave(player.getUniqueId());
+        guild.leaveMembership(player.getUniqueId());
         profile.setGuildTag(null);
 
         this.guildController.save(guild);

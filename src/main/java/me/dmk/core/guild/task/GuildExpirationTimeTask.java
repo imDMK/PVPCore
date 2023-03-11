@@ -10,11 +10,8 @@ import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.util.string.StringFormatter;
 import org.bson.conversions.Bson;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by DMK on 08.03.2023
@@ -39,13 +36,11 @@ public class GuildExpirationTimeTask implements Runnable {
             this.guildController.delete(guild);
             this.guildCache.remove(guild);
 
-            Optional.ofNullable(Bukkit.getPlayer(guild.getLeader()))
-                    .filter(Player::isOnline)
-                    .ifPresent(player ->
-                            this.notificationController.sendMessage(player,
-                                    StringFormatter.formatWarning() + " <red>Twoja gildia wygasła<dark_gray>."
-                            )
-                    );
+            guild.getOnlineMembers().forEach(guildPlayer ->
+                    this.notificationController.sendMessage(guildPlayer,
+                            StringFormatter.formatWarning() +  " <red>Twoja gildia została wygasła<dark_gray>."
+                    )
+            );
 
             this.notificationController.sendGlobalPluginMessage(PluginMessageType.GUILD,
                     StringFormatter.formatWarning() + " <gray>Gildia <light_purple>" + guild.getTag() + " <red>wygasła<dark_gray>."

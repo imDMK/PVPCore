@@ -40,8 +40,8 @@ public class GuildTreasuryGui extends PluginGui {
         int coinsToExtendGuild = this.pluginConfiguration.getCoinsToExtendGuild();
 
         boolean guildCanExtend = guildTreasury.getCoins() > coinsToExtendGuild;
+        boolean playerHasPermission = this.guild.getGuildRank(this.player.getUniqueId()).isCanExtend();
         boolean playerCanExtend = this.profile.getProfileStatistics().getCoins() > coinsToExtendGuild;
-        boolean isLeaderOrCoLeader = this.guild.isLeaderOrCoLeader(this.player.getUniqueId());
 
         GuiItem topsItem = ItemBuilder.from(Material.GLOW_ITEM_FRAME)
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Topka wpłaconych monet"))
@@ -66,11 +66,18 @@ public class GuildTreasuryGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualnie w skarbcu gildyjnym znajduje się <light_purple>" + guildTreasury.getCoins() + " <gray>monet<dark_gray>.",
-                        this.circle + " <gray>Możliwość przedłużenia gildii<dark_gray>: " + (guildCanExtend || playerCanExtend ? (isLeaderOrCoLeader ? "<green>Tak - Kliknij, aby przedłużyć" : "<green>Tak") : "<red>Nie"),
+                        this.circle + " <gray>Możliwość przedłużenia gildii<dark_gray>: " + (guildCanExtend || playerCanExtend ? (playerHasPermission ? "<green>Tak - Kliknij, aby przedłużyć" : "<green>Tak") : "<red>Nie"),
                         ""
                 ))
                 .asGuiItem(event -> {
-                    if (guildCanExtend || playerCanExtend && isLeaderOrCoLeader) {
+                    if (!playerHasPermission) {
+                        new BarrierBuilder()
+                                .name("<red>Nie posiadasz uprawnień gildyjnych.")
+                                .updateItem(this.gui, event.getSlot());
+                        return;
+                    }
+
+                    if (guildCanExtend || playerCanExtend) {
                         Bukkit.dispatchCommand(this.player, "guild extend");
                     }
                 });
