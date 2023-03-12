@@ -14,10 +14,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Created by DMK on 07.01.2023
@@ -27,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor
 
 @DataEntity(collection = "guilds")
-public class Guild {
+public class Guild implements Serializable {
 
     private String tag;
     private String name;
@@ -38,10 +40,10 @@ public class Guild {
     private UUID creator;
     private UUID leader;
 
-    private Map<UUID, GuildRank> guildRanks = Maps.newConcurrentMap();
-    private Map<UUID, GuildMember> members = Maps.newConcurrentMap();
+    private final Map<UUID, GuildRank> guildRanks = Maps.newConcurrentMap();
+    private final Map<UUID, GuildMember> members = Maps.newConcurrentMap();
 
-    private Set<String> alliances = new HashSet<>();
+    private final Set<String> alliances = new HashSet<>();
 
     private final GuildStatistics guildStatistics = new GuildStatistics();
     private final GuildTreasury guildTreasury = new GuildTreasury();
@@ -91,9 +93,9 @@ public class Guild {
     }
 
     public GuildRank getGuildRank(UUID uuid) {
-        UUID guildRankUuid = this.members.get(uuid).getGuildRankUuid();
+        GuildMember guildMember = this.members.get(uuid);
 
-        return Optional.ofNullable(this.guildRanks.get(guildRankUuid))
+        return Optional.ofNullable(this.guildRanks.get(guildMember.getGuildRankUuid()))
                 .orElseGet(this::getDefaultRank);
     }
 
@@ -110,12 +112,12 @@ public class Guild {
     }
 
     public List<Player> getOnlineMembers() {
-        return this.members.values()
+        return this.members.keySet()
                 .stream()
-                .map(member -> Bukkit.getPlayer(member.getUuid()))
+                .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(Player::isOnline)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public void inviteToMembership(UUID uuid) {
