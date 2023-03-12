@@ -121,6 +121,12 @@ public class Profile implements Serializable {
         Optional<Guild> guild = CorePlugin.getCorePlugin().getGuildCache().getOrElseLoad(this.guildTag);
         if (guild.isEmpty()) {
             this.guildTag = null;
+            return Optional.empty();
+        } else {
+            if (!guild.get().isMember(this.uuid)) {
+                this.guildTag = null;
+                return Optional.empty();
+            }
         }
 
         return guild;
