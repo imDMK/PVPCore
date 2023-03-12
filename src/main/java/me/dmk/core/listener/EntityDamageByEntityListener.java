@@ -55,11 +55,20 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
 
-        Optional<Guild> guild = playerProfile.getGuild();
-        if (guild.isPresent()) {
-            if (guild.get().isMember(damager.getUniqueId())) {
+        Optional<Guild> guildOptional = playerProfile.getGuild();
+        if (guildOptional.isPresent()) {
+            Guild guild = guildOptional.get();
+
+            if (guild.isMember(damager.getUniqueId())) {
                 event.setCancelled(true);
                 return;
+            }
+
+            if (damagerProfile.getGuild().isPresent()) {
+                if (guild.hasAlliance(damagerProfile.getGuild().get())) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 
