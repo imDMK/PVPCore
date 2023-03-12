@@ -82,7 +82,7 @@ public class AsyncPlayerChatListener implements Listener {
 
             if (isAllianceMessage || isGuildMessage) {
                 String guildMessage = (isAllianceMessage ? StringFormatter.formatAlliance() : StringFormatter.formatGuild())
-                        + " " + player.getName() + "<dark_gray>: <gold>"
+                        + " " + player.getName() + "<dark_gray>: " + (isAllianceMessage ? "<gold>" : "<green>")
                         + message.replaceFirst((isAllianceMessage ? "!!" : "!"), "");
 
                 if (isAllianceMessage) {
