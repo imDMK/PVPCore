@@ -26,7 +26,6 @@ public class SidebarCommand {
     @Execute
     void execute(Player player, Profile profile) {
         ProfileSettings profileSettings = profile.getProfileSettings();
-
         Board board = profileSettings.getBoard();
 
         if (board.isEnabled()) {

@@ -28,14 +28,14 @@ public class SpawnCommand {
     @Async
     @Execute(required = 0)
     void execute(Player player) {
-        Location spawn = player.getWorld().getSpawnLocation();
-
         if (this.teleportMap.isTeleporting(player)) {
             this.teleportMap.removeTeleporting(player);
 
             this.notificationController.sendActionBar(player, "<red>Anulowano teleportację.");
             return;
         }
+
+        Location spawn = player.getWorld().getSpawnLocation();
 
         this.notificationController.sendActionBar(player, "<green>Rozpoczynanie teleportacji...");
         new TeleportRequest(player, spawn);

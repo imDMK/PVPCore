@@ -14,7 +14,6 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
 import me.dmk.core.util.string.StringUtil;
-import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -43,7 +42,7 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Zmiana nazwy"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>nazwę rangi<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>nazwę rangi<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -74,7 +73,7 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Zmiana priorytetu"))
                 .lore(ComponentUtil.asList(
                         "",
-                        SymbolUtil.getCircle("<dark_gray>") + " <gray>Aktualnie<dark_gray>: <light_purple>" + this.guildRank.getPriority(),
+                        this.circle + " <gray>Aktualnie<dark_gray>: <light_purple>" + this.guildRank.getPriority(),
                         "",
                         StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>priorytet rangi<dark_gray>.",
                         StringFormatter.formatWarning() + " <gray>Jest on używany do sortowania listy członków <dark_gray>(<gray>niższy = wyższe pozycjonowanie członka<dark_gray>).",
@@ -82,7 +81,7 @@ public class GuildRankEditGui extends PluginGui {
                 ))
                 .asGuiItem(event -> {
                     this.notificationController.sendMessage(this.player,
-                            StringFormatter.formatWarning() + " <gold>Wprowadź priorytet (liczba)<dark_gray>."
+                            this.warning + " <gold>Wprowadź priorytet (liczba)<dark_gray>."
                     );
 
                     ChatWaiter chatWaiter = (message) -> {
@@ -117,7 +116,7 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Zmiana ikony"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>ikonę rangi<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>ikonę rangi<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -148,8 +147,8 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Zarządzanie członkami"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość zarządzania członkami gildii<dark_gray>.",
-                        StringFormatter.formatWarning() + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanManageMembers()) + "<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość zarządzania członkami gildii<dark_gray>.",
+                        this.warning + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanManageMembers()) + "<dark_gray>.",
                         ""
                 ))
                 .glow(this.guildRank.isCanManageMembers())
@@ -162,8 +161,8 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Zarządzanie sojuszami"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość zarządzania sojuszami gildii<dark_gray>.",
-                        StringFormatter.formatWarning() + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanManageAlliances()) + "<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość zarządzania sojuszami gildii<dark_gray>.",
+                        this.warning + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanManageAlliances()) + "<dark_gray>.",
                         ""
                 ))
                 .glow(this.guildRank.isCanManageAlliances())
@@ -176,8 +175,8 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Zarządzanie rangami"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość zarządzania rangami gildii<dark_gray>.",
-                        StringFormatter.formatWarning() + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanManageRanks()) + "<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość zarządzania rangami gildii<dark_gray>.",
+                        this.warning + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanManageRanks()) + "<dark_gray>.",
                         ""
                 ))
                 .glow(this.guildRank.isCanManageRanks())
@@ -190,8 +189,8 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Przedłużanie gildii"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość przedłużenia gildii<dark_gray>.",
-                        StringFormatter.formatWarning() + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanExtend()) + "<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <gold>zmienić <gray>możlwość przedłużenia gildii<dark_gray>.",
+                        this.warning + " <gray>Przyznano<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(this.guildRank.isCanExtend()) + "<dark_gray>.",
                         ""
                 ))
                 .glow(this.guildRank.isCanExtend())
@@ -204,7 +203,7 @@ public class GuildRankEditGui extends PluginGui {
                 .name(ComponentUtil.text("<light_purple>Usunięcie rangi"))
                 .lore(ComponentUtil.asList(
                         "",
-                        StringFormatter.formatWarning() + " <red>Kliknij<dark_gray>, <gray>aby <red>usunąć <gray>rangę<dark_gray>.",
+                        this.warning + " <red>Kliknij<dark_gray>, <gray>aby <red>usunąć <gray>rangę<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> new ConfirmationGui(this.player)

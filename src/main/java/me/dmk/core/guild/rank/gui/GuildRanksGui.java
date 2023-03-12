@@ -9,7 +9,6 @@ import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.SymbolUtil;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -49,11 +48,11 @@ public class GuildRanksGui extends PluginGui {
         for (GuildRank guildRank : guildMemberList) {
             List<String> lore = new ArrayList<>(Arrays.asList(
                     "",
-                    SymbolUtil.getCircle("<dark_gray>") + " <gray>Priorytet<dark_gray>: <light_purple>" + guildRank.getPriority(),
-                    SymbolUtil.getCircle("<dark_gray>") + " <gray>Może zarządzać członkami<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanManageMembers()),
-                    SymbolUtil.getCircle("<dark_gray>") + " <gray>Może zarządzać sojuszami<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanManageAlliances()),
-                    SymbolUtil.getCircle("<dark_gray>") + " <gray>Może zarządzać rangami<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanManageRanks()),
-                    SymbolUtil.getCircle("<dark_gray>") + " <gray>Może przedłużyć gildię<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanExtend()),
+                    this.circle + " <gray>Priorytet<dark_gray>: <light_purple>" + guildRank.getPriority(),
+                    this.circle + " <gray>Może zarządzać członkami<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanManageMembers()),
+                    this.circle + " <gray>Może zarządzać sojuszami<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanManageAlliances()),
+                    this.circle + " <gray>Może zarządzać rangami<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanManageRanks()),
+                    this.circle + " <gray>Może przedłużyć gildię<dark_gray>: " + StringFormatter.formatBooleanYesOrNo(guildRank.isCanExtend()),
                     ""
             ));
 
