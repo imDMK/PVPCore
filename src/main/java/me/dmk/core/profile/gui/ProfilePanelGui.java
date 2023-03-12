@@ -63,10 +63,10 @@ public class ProfilePanelGui extends PluginGui {
                 .name(ComponentUtil.text(this.profile.getColoredName() + " " + settings.getCustomSuffix().getFormat()))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.circle + "<gray>Online<dark_gray>: " + (this.profile.isOnline() ? "<green>Tak" : "<red>Nie <dark_gray>(<gray>Ostatnio widziany<dark_gray>: <red>" + TimeUtil.toDays(this.profile.getLastJoin().toInstant(), false) + " dni temu<dark_gray>)"),
-                        this.circle + "<gray>Grupa<dark_gray>: <light_purple>" + group,
-                        this.circle + "<gray>Założenie konta<dark_gray>: <light_purple>" + TimeUtil.formatDate(this.profile.getFirstJoin()),
-                        this.circle + "<gray>Karany<dark_gray>: " + (this.profile.wasPunished() ? "<red>Tak" : "<green>Nie"),
+                        this.circle + " <gray>Online<dark_gray>: " + (this.profile.isOnline() ? "<green>Tak" : "<red>Nie <dark_gray>(<gray>Ostatnio widziany<dark_gray>: <red>" + TimeUtil.toDays(this.profile.getLastJoin().toInstant(), false) + " dni temu<dark_gray>)"),
+                        this.circle + " <gray>Grupa<dark_gray>: <light_purple>" + group,
+                        this.circle + " <gray>Założenie konta<dark_gray>: <light_purple>" + TimeUtil.formatDate(this.profile.getFirstJoin()),
+                        this.circle + " <gray>Karany<dark_gray>: " + (this.profile.wasPunished() ? "<red>Tak" : "<green>Nie"),
                         ""
                 ))
                 .asGuiItem();
@@ -196,7 +196,7 @@ public class ProfilePanelGui extends PluginGui {
                     .name(ComponentUtil.text(me.dmk.core.util.string.StringFormatter.formatPurpleGradient() + guild.getTag()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.circle + " <gray>Gracz <light_purple>" + this.profile.getName() + " <gray>jest <light_purple>" + guildRank.getName() + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",
+                            this.circle + " <gray>Gracz <light_purple>" + this.profile.getName() + " <gray>posiada rangę <light_purple>" + guildRank.getName() + " <gray>w gildii <light_purple>" + guild.getTag() + "<dark_gray>.",
                             this.circle + " <light_purple>Kilknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
                             ""
                     ))
