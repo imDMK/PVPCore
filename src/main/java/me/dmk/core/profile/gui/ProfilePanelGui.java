@@ -42,12 +42,18 @@ public class ProfilePanelGui extends PluginGui {
     private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
     private final KitMap kitMap = CorePlugin.getCorePlugin().getKitMap();
 
+    private final Profile profile;
+
     public ProfilePanelGui(Player player, Profile profile) {
-        super(player, profile, "Panel gracza", 6, true, true);
+        super(player, "Panel gracza", 6, true, true);
+
+        this.profile = profile;
     }
 
     @Override
     public void build() {
+        boolean isSelf = this.player.getUniqueId().equals(this.profile.getUuid());
+
         ProfileSettings settings = this.profile.getProfileSettings();
         ProfileStatistics statistics = this.profile.getProfileStatistics();
 
@@ -56,7 +62,7 @@ public class ProfilePanelGui extends PluginGui {
                 .orElse("Brak");
 
         String timeSpent = TimeUtil.durationToString(
-                Duration.ofSeconds(this.isSelf() ? PlayerUtil.getSecondsPlayed(this.player) : statistics.getTimeSpent())
+                Duration.ofSeconds(isSelf ? PlayerUtil.getSecondsPlayed(this.player) : statistics.getTimeSpent())
         );
 
         GuiItem playerHead = SkullStorage.createPlayerHead(this.profile.getUuid())
@@ -85,10 +91,10 @@ public class ProfilePanelGui extends PluginGui {
                         SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
                         SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
                         SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
-                        "" + (this.isSelf() ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
+                        "" + (isSelf ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
                 ))
                 .asGuiItem(event -> {
-                    if (!this.isSelf()) {
+                    if (!isSelf) {
                         return;
                     }
 
@@ -159,7 +165,7 @@ public class ProfilePanelGui extends PluginGui {
                 });
 
         GuiItem settingsOrIgnoreItem;
-        if (this.isSelf()) {
+        if (isSelf) {
             settingsOrIgnoreItem = ItemBuilder.from(Material.REPEATER)
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Ustawienia"))
                     .lore(ComponentUtil.asList(

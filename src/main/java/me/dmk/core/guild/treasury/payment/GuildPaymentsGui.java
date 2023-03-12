@@ -20,11 +20,13 @@ import java.util.List;
 
 public class GuildPaymentsGui extends PluginPaginatedGui {
 
-    public final Guild guild;
+    private final Profile profile;
+    private final Guild guild;
 
     public GuildPaymentsGui(Player player, Profile profile, Guild guild) {
-        super(player, profile, "Historia wpłat do skarbca", 6, true, true);
+        super(player, "Historia wpłat do skarbca", 6, true, true);
 
+        this.profile = profile;
         this.guild = guild;
     }
 

@@ -26,12 +26,15 @@ public class GuildRankEditGui extends PluginGui {
     private final NotificationController notificationController = CorePlugin.getCorePlugin().getNotificationController();
     private final ChatWaiterCache chatWaiterCache = CorePlugin.getCorePlugin().getChatWaiterCache();
 
+
+    private final Profile profile;
     private final Guild guild;
     private final GuildRank guildRank;
 
     public GuildRankEditGui(Player player, Profile profile, Guild guild, GuildRank guildRank) {
-        super(player, profile, "Edytowanie rangi " + guildRank.getName(), 6, true, true);
+        super(player, "Edytowanie rangi " + guildRank.getName(), 6, true, true);
 
+        this.profile = profile;
         this.guild = guild;
         this.guildRank = guildRank;
     }

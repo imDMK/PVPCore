@@ -24,7 +24,7 @@ public class EntrancesTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public EntrancesTopsGui(Player player) {
-        super(player, null, "Topka wejść na serwer", 5, true, true);
+        super(player, "Topka wejść na serwer", 5, true, true);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class PointsTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public PointsTopsGui(Player player) {
-        super(player, null, "Topka punktów rankingowych", 5, true, true);
+        super(player, "Topka punktów rankingowych", 5, true, true);
     }
 
     @Override

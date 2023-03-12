@@ -15,8 +15,13 @@ import org.bukkit.entity.Player;
  */
 
 public class CustomSuffixGui extends PluginGui {
+
+    private final Profile profile;
+
     public CustomSuffixGui(Player player, Profile profile) {
-        super(player, profile, "Zmiana suffixu", 5, true, true);
+        super(player, "Zmiana suffixu", 5, true, true);
+
+        this.profile = profile;
     }
 
     @Override

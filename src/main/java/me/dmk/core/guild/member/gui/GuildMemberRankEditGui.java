@@ -1,41 +1,44 @@
-package me.dmk.core.guild.rank.gui;
+package me.dmk.core.guild.member.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.gui.GuildPanelGui;
+import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 /**
- * Created by DMK on 11.03.2023
+ * Created by DMK on 12.03.2023
  */
 
-public class GuildRankListGui extends PluginGui {
+public class GuildMemberRankEditGui extends PluginGui {
 
     private final Profile profile;
     private final Guild guild;
+    private final GuildMember guildMember;
 
-    public GuildRankListGui(Player player, Profile profile, Guild guild) {
-        super(player, "Rangi gildyjne", 6, true, true);
+    public GuildMemberRankEditGui(Player player, Profile profile, Guild guild, GuildMember guildMember, OfflinePlayer guildMemberPlayer) {
+        super(player, "Zmiana rangi " + guildMemberPlayer.getName(), 6, true, true);
 
         this.profile = profile;
         this.guild = guild;
+        this.guildMember = guildMember;
     }
 
     @Override
     public void build() {
         GuiItem backButton = this.createBackButton(event ->
-                        new GuildPanelGui(this.player, this.profile, this.guild).open(),
+                        new GuildMemberListGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do listy członków gildii<dark_gray>.",
                 ""
         );
 
@@ -61,7 +64,7 @@ public class GuildRankListGui extends PluginGui {
 
             if (canManageRanks) {
                 lore.addAll(Arrays.asList(
-                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>edytować rangę<dark_gray>.",
+                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby <gold>nadać rangę<dark_gray>.",
                         ""
                 ));
             }
@@ -77,7 +80,8 @@ public class GuildRankListGui extends PluginGui {
                             return;
                         }
 
-                        new GuildRankEditGui(this.player, this.profile, this.guild, guildRank).open();
+                        this.guildMember.setGuildRankUuid(guildRank.getUuid());
+                        new GuildMemberListGui(this.player, this.profile, this.guild).open();
                     });
 
             this.gui.addItem(guildRankItem);

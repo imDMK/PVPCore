@@ -15,8 +15,13 @@ import org.bukkit.entity.Player;
  */
 
 public class MessagesSettingsGui extends PluginGui {
+
+    private final Profile profile;
+
     public MessagesSettingsGui(Player player, Profile profile) {
-        super(player, profile, "Ustawienia wiadomości", 6, true, true);
+        super(player, "Ustawienia wiadomości", 6, true, true);
+
+        this.profile = profile;
     }
 
     @Override

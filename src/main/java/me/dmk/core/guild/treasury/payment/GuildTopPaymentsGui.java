@@ -21,11 +21,13 @@ import java.util.List;
 
 public class GuildTopPaymentsGui extends PluginGui {
 
-    public final Guild guild;
+    private final Profile profile;
+    private final Guild guild;
 
     public GuildTopPaymentsGui(Player player, Profile profile, Guild guild) {
-        super(player, profile, "Topka wpłaconych monet", 6, true, true);
+        super(player, "Topka wpłaconych monet", 6, true, true);
 
+        this.profile = profile;
         this.guild = guild;
     }
 

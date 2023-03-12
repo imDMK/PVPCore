@@ -27,10 +27,13 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
 
     private final GuildCache guildCache = CorePlugin.getCorePlugin().getGuildCache();
 
-    public final Guild guild;
+    private final Profile profile;
+    private final Guild guild;
 
     public GuildAllianceListGui(Player player, Profile profile, Guild guild) {
-        super(player, profile, "Lista sojuszy", 6, true, true);
+        super(player, "Lista sojuszy", 6, true, true);
+
+        this.profile = profile;
         this.guild = guild;
     }
 

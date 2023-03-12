@@ -2,11 +2,13 @@ package me.dmk.core.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.item.storage.ItemStorage;
-import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 /**
  * Created by DMK on 02.03.2023
@@ -15,13 +17,10 @@ import org.bukkit.entity.Player;
 public abstract class PluginGui extends ItemStorage {
 
     public final Player player;
-    public final Profile profile;
-
     public final Gui gui;
 
-    public PluginGui(Player player, Profile profile, String name, int rows, boolean disableAllInteractions, boolean fillBorder) {
+    public PluginGui(Player player, String name, int rows, boolean disableAllInteractions, boolean fillBorder) {
         this.player = player;
-        this.profile = profile;
 
         this.gui = Gui.gui()
                 .title(ComponentUtil.text(name))
@@ -39,8 +38,12 @@ public abstract class PluginGui extends ItemStorage {
         }
     }
 
-    public boolean isSelf() {
-        return this.player.getUniqueId().equals(this.profile.getUuid());
+    public void updateTitle(String title) {
+        this.gui.updateTitle(title);
+    }
+
+    public Collection<GuiItem> getItems() {
+        return this.gui.getGuiItems().values();
     }
 
     public abstract void build();

@@ -22,10 +22,14 @@ import java.util.Optional;
 
 public class KitGui extends PluginGui {
 
-    public final KitMap kitMap = CorePlugin.getCorePlugin().getKitMap();
+    private final KitMap kitMap = CorePlugin.getCorePlugin().getKitMap();
+
+    private final Profile profile;
 
     public KitGui(Player player, Profile profile) {
-        super(player, profile, "Zestawy", 3, true, true);
+        super(player, "Zestawy", 3, true, true);
+
+        this.profile = profile;
     }
 
     @Override

@@ -14,11 +14,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class KitPrewiewGui extends PluginGui {
 
-    public final Kit kit;
+    private final Profile profile;
+    private final Kit kit;
 
     public KitPrewiewGui(Player player, Profile profile, Kit kit) {
-        super(player, profile, "Zestaw " + kit.getName(), 6, true, true);
+        super(player, "Zestaw " + kit.getName(), 6, true, true);
 
+        this.profile = profile;
         this.kit = kit;
     }
 

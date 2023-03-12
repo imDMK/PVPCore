@@ -21,12 +21,19 @@ import java.util.List;
  */
 
 public class PunishmentHistoryGui extends PluginPaginatedGui {
+
+    private final Profile profile;
+
     public PunishmentHistoryGui(Player player, Profile profile) {
-        super(player, profile, "Historia kar " + profile.getName(), 6, true, true);
+        super(player, "Historia kar " + profile.getName(), 6, true, true);
+
+        this.profile = profile;
     }
 
     @Override
     public void build() {
+        boolean isSelf = this.player.getUniqueId().equals(this.profile.getUuid());
+
         GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
                         new ProfilePanelGui(this.player, this.profile).open(),
@@ -60,7 +67,7 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
                     ""
             ));
 
-            if (this.isSelf() || this.player.hasPermission("core.punishment.see.details")) {
+            if (isSelf || this.player.hasPermission("core.punishment.see.details")) {
                 lore.addAll(Arrays.asList(
                         this.circle + " <gray>Powód<dark_gray>: <light_purple>" + punishment.getReason(),
                         this.circle + " <gray>Wygasa<dark_gray>: <light_purple>" + (punishment.isPermanent() ? "nigdy" : punishment.isActive() ? "za " + TimeUtil.instantToString(punishment.getExpireAt().toInstant(), true) : "wygasł"),

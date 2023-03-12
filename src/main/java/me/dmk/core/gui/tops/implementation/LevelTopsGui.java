@@ -25,7 +25,7 @@ public class LevelTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public LevelTopsGui(Player player) {
-        super(player, null, "Topka doświadczenia", 5, true, true);
+        super(player, "Topka doświadczenia", 5, true, true);
     }
 
     @Override

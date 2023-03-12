@@ -26,7 +26,7 @@ public class HighestKillStreakTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public HighestKillStreakTopsGui(Player player) {
-        super(player, null, "Topka największych serii zabójstw", 5, true, true);
+        super(player, "Topka największych serii zabójstw", 5, true, true);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class TimeSpentTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public TimeSpentTopsGui(Player player) {
-        super(player, null, "Topka spędzonego czasu", 5, true, true);
+        super(player, "Topka spędzonego czasu", 5, true, true);
     }
 
     @Override

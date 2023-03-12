@@ -4,7 +4,6 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import me.dmk.core.gui.item.storage.ItemStorage;
-import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,13 +15,11 @@ import org.bukkit.entity.Player;
 public abstract class PluginPaginatedGui extends ItemStorage {
 
     public final Player player;
-    public final Profile profile;
 
     public final PaginatedGui gui;
 
-    public PluginPaginatedGui(Player player, Profile profile, String name, int rows, boolean disableAllInteractions, boolean fillBorder) {
+    public PluginPaginatedGui(Player player, String name, int rows, boolean disableAllInteractions, boolean fillBorder) {
         this.player = player;
-        this.profile = profile;
 
         this.gui = Gui.paginated()
                 .title(ComponentUtil.text(name))
@@ -38,10 +35,6 @@ public abstract class PluginPaginatedGui extends ItemStorage {
                     ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem()
             );
         }
-    }
-
-    public boolean isSelf() {
-        return this.player.getUniqueId().equals(this.profile.getUuid());
     }
 
     public abstract void build();

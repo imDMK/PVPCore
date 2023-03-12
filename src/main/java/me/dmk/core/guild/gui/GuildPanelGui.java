@@ -27,11 +27,13 @@ import java.util.Optional;
 
 public class GuildPanelGui extends PluginGui {
 
-    public final Guild guild;
+    private final Profile profile;
+    private final Guild guild;
 
     public GuildPanelGui(Player player, Profile profile, Guild guild) {
-        super(player, profile, "Panel gildyjny", 6, true, true);
+        super(player, "Panel gildyjny", 6, true, true);
 
+        this.profile = profile;
         this.guild = guild;
     }
 

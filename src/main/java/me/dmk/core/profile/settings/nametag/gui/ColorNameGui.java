@@ -15,8 +15,13 @@ import org.bukkit.entity.Player;
  */
 
 public class ColorNameGui extends PluginGui {
+
+    private final Profile profile;
+
     public ColorNameGui(Player player, Profile profile) {
-        super(player, profile, "Ustawienia koloru nicku", 6, true, true);
+        super(player, "Ustawienia koloru nicku", 6, true, true);
+
+        this.profile = profile;
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class TopsGui extends PluginGui {
     public TopsGui(Player player) {
-        super(player, null, "Topki serwerowe", 5, true, true);
+        super(player, "Topki serwerowe", 5, true, true);
     }
 
     @Override

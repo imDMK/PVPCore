@@ -25,11 +25,13 @@ public class GuildTreasuryGui extends PluginGui {
 
     private final PluginConfiguration pluginConfiguration = CorePlugin.getCorePlugin().getPluginConfiguration();
 
-    public final Guild guild;
+    private final Profile profile;
+    private final Guild guild;
 
     public GuildTreasuryGui(Player player, Profile profile, Guild guild) {
-        super(player, profile, "Skarbiec gildyjny", 3, true, true);
+        super(player, "Skarbiec gildyjny", 3, true, true);
 
+        this.profile = profile;
         this.guild = guild;
     }
 

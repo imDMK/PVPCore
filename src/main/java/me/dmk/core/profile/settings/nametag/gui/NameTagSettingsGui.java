@@ -19,8 +19,13 @@ import org.bukkit.entity.Player;
  */
 
 public class NameTagSettingsGui extends PluginGui {
+
+    private final Profile profile;
+
     public NameTagSettingsGui(Player player, Profile profile) {
-        super(player, profile, "Zmiana nametagu", 3, true, true);
+        super(player, "Zmiana nametagu", 3, true, true);
+
+        this.profile = profile;
     }
 
     @Override

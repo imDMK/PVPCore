@@ -26,7 +26,7 @@ public class KillsTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public KillsTopsGui(Player player) {
-        super(player, null, "Topka zabójstw", 5, true, true);
+        super(player, "Topka zabójstw", 5, true, true);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class CoinsTopsGui extends PluginGui {
     public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();;
 
     public CoinsTopsGui(Player player) {
-        super(player, null, "Topka monet", 5, true, true);
+        super(player, "Topka monet", 5, true, true);
     }
 
     @Override

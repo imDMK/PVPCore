@@ -24,8 +24,13 @@ import org.bukkit.entity.Player;
  */
 
 public class ProfileSettingsGui extends PluginPaginatedGui {
+
+    private final Profile profile;
+
     public ProfileSettingsGui(Player player, Profile profile) {
-        super(player, profile, "Ustawienia", 6, true, true);
+        super(player, "Ustawienia", 6, true, true);
+
+        this.profile = profile;
     }
 
     @Override

@@ -23,10 +23,10 @@ import java.util.List;
 
 public class GuildsTopsGui extends PluginGui {
 
-    public final GuildController guildController = CorePlugin.getCorePlugin().getGuildController();
+    private final GuildController guildController = CorePlugin.getCorePlugin().getGuildController();
 
     public GuildsTopsGui(Player player) {
-        super(player, null, "Topka gildii", 5, true, true);
+        super(player, "Topka gildii", 5, true, true);
     }
 
     @Override

@@ -20,8 +20,13 @@ import java.util.UUID;
  */
 
 public class IgnoredPlayersGui extends PluginPaginatedGui {
+
+    private final Profile profile;
+
     public IgnoredPlayersGui(Player player, Profile profile) {
-        super(player, profile, "Lista ignorowanych graczy", 6, true, true);
+        super(player, "Lista ignorowanych graczy", 6, true, true);
+
+        this.profile = profile;
     }
 
     @Override

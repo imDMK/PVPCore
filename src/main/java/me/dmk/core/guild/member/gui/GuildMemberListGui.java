@@ -10,7 +10,6 @@ import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.gui.GuildPanelGui;
 import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.guild.rank.GuildRank;
-import me.dmk.core.guild.rank.gui.GuildRankListGui;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.gui.ProfilePanelGui;
@@ -19,7 +18,6 @@ import me.dmk.core.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -31,11 +29,13 @@ public class GuildMemberListGui extends PluginPaginatedGui {
 
     private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
 
-    public final Guild guild;
+    private final Profile profile;
+    private final Guild guild;
 
     public GuildMemberListGui(Player player, Profile profile, Guild guild) {
-        super(player, profile, "Lista członków", 6, true, true);
+        super(player, "Lista członków", 6, true, true);
 
+        this.profile = profile;
         this.guild = guild;
     }
 
@@ -46,7 +46,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                 .sorted(Comparator.comparingInt(i -> this.guild.getGuildRank(i.getGuildRankUuid()).getPriority()))
                 .toList();
 
-        boolean canManageMembers = this.guild.getGuildRank(this.player.getUniqueId()).isCanManageMembers();
+        boolean canManageMembers = this.guild.isLeader(this.player.getUniqueId()) || this.guild.getGuildRank(this.player.getUniqueId()).isCanManageMembers();
 
         GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
@@ -64,8 +64,8 @@ public class GuildMemberListGui extends PluginPaginatedGui {
         for (GuildMember guildMember : guildMemberList) {
             boolean isSelf = this.player.getUniqueId().equals(guildMember.getUuid());
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(guildMember.getUuid());
-            GuildRank guildRank = this.guild.getGuildRank(guildMember.getGuildRankUuid());
+            OfflinePlayer guildMemberPlayer = Bukkit.getOfflinePlayer(guildMember.getUuid());
+            GuildRank guildRank = this.guild.getGuildRank(guildMember.getUuid());
 
             List<String> memberItemLore = new ArrayList<>(Arrays.asList(
                     "",
@@ -84,8 +84,8 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                 ));
             }
 
-            GuiItem memberItem = SkullStorage.createPlayerHead(offlinePlayer.getUniqueId())
-                    .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
+            GuiItem memberItem = SkullStorage.createPlayerHead(guildMemberPlayer.getUniqueId())
+                    .name(ComponentUtil.text("<light_purple>" + guildMemberPlayer.getName()))
                     .lore(ComponentUtil.asList(memberItemLore))
                     .asGuiItem(event -> {
                         if (event.isLeftClick() && !event.isShiftClick()) {
@@ -102,22 +102,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
 
                         if (event.isShiftClick()) {
                             if (event.isLeftClick()) {
-                                GuildRankListGui guildRankListGui = new GuildRankListGui(this.player, this.profile, this.guild);
-                                guildRankListGui.build();
-
-                                guildRankListGui.gui.setDefaultClickAction(e -> {
-                                    ItemStack itemStack = e.getCurrentItem();
-                                    if (itemStack == null) {
-                                        return;
-                                    }
-
-                                    if (itemStack.getItemMeta() instanceof GuiItem guiItem) {
-                                        System.out.println(1);
-                                        System.out.println(guiItem.getItemStack().getItemMeta().getDisplayName());
-                                    }
-                                });
-
-                                guildRankListGui.open(false);
+                                new GuildMemberRankEditGui(this.player, this.profile, this.guild, guildMember, guildMemberPlayer).open();
                                 return;
                             }
 
@@ -138,9 +123,9 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                                 }
 
                                 new ConfirmationGui(this.player)
-                                        .title("Potwierdź wyrzucenie " + offlinePlayer.getName())
+                                        .title("Potwierdź wyrzucenie " + guildMemberPlayer.getName())
                                         .afterConfirm(e -> {
-                                            Bukkit.dispatchCommand(this.player, "guild kick " + offlinePlayer.getName());
+                                            Bukkit.dispatchCommand(this.player, "guild kick " + guildMemberPlayer.getName());
                                             this.open();
                                         })
                                         .afterCancel(e -> this.open())

@@ -33,8 +33,12 @@ public class ProfileManageGui extends PluginGui {
     private final ChatWaiterCache chatWaiterCache = CorePlugin.getCorePlugin().getChatWaiterCache();
     private final TaskExecutor taskExecutor = CorePlugin.getCorePlugin().getTaskExecutor();
 
+    private final Profile profile;
+
     public ProfileManageGui(Player player, Profile profile) {
-        super(player, profile, "Zarządzanie profilem " + profile.getName(), 3, true, true);
+        super(player, "Zarządzanie profilem " + profile.getName(), 3, true, true);
+
+        this.profile = profile;
     }
 
     @Override
