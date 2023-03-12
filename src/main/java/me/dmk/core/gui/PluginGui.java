@@ -53,6 +53,7 @@ public abstract class PluginGui extends ItemStorage {
         if (build) {
             this.build();
         }
+
         this.gui.open(this.player);
     }
 
