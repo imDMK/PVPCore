@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 /**
  * Created by DMK on 08.01.2023
  */
-@Route(name = "guild info")
-public class GuildInformationCommand {
+@Route(name = "guild panel")
+public class GuildPanelCommand {
 
     @Execute(required = 0)
     void execute(Player player, Profile profile, Guild guild) {

@@ -17,11 +17,11 @@ import java.util.*;
  * Created by DMK on 11.03.2023
  */
 
-public class GuildRanksGui extends PluginGui {
+public class GuildRankListGui extends PluginGui {
 
     private final Guild guild;
 
-    public GuildRanksGui(Player player, Profile profile, Guild guild) {
+    public GuildRankListGui(Player player, Profile profile, Guild guild) {
         super(player, profile, "Rangi gildyjne", 6, true, true);
 
         this.guild = guild;

@@ -15,11 +15,10 @@ import java.util.UUID;
 public class GuildMember implements Serializable {
 
     private final UUID uuid;
-    private final Date joinDate = new Date();
-
     private UUID guildRankUuid;
-
     private int addedCoinsToTreasury = 0;
+
+    private final Date joinDate = new Date();
 
     public GuildMember(UUID uuid, GuildRank guildRank) {
         this.uuid = uuid;

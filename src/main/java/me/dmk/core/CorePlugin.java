@@ -307,7 +307,7 @@ public class CorePlugin extends JavaPlugin {
                         new GuildDepositCommand(this.notificationController, this.profileController,this.guildController),
                         new GuildExtendCommand(this.pluginConfiguration, this.notificationController, this.guildController, this.taskExecutor),
                         new GuildForceDeleteCommand(this.notificationController, this.guildController, this.guildCache, this.taskExecutor),
-                        new GuildInformationCommand(),
+                        new GuildPanelCommand(),
                         new GuildInviteCommand(this.notificationController),
                         new GuildJoinCommand(this.notificationController, this.profileController,this.guildController),
                         new GuildKickCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),

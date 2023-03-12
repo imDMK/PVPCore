@@ -5,8 +5,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.builder.BarrierBuilder;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.member.GuildMemberListGui;
-import me.dmk.core.guild.rank.gui.GuildRanksGui;
+import me.dmk.core.guild.member.gui.GuildMemberListGui;
+import me.dmk.core.guild.rank.gui.GuildRankListGui;
 import me.dmk.core.guild.statistics.GuildStatistics;
 import me.dmk.core.guild.treasury.GuildTreasury;
 import me.dmk.core.guild.treasury.GuildTreasuryGui;
@@ -106,7 +106,7 @@ public class GuildPanelGui extends PluginGui {
                         ""
                 ))
                 .asGuiItem(event ->
-                        new GuildRanksGui(this.player, this.profile, this.guild).open()
+                        new GuildRankListGui(this.player, this.profile, this.guild).open()
                 );
 
         GuiItem coinsTrasureItem = ItemBuilder.from(Material.SUNFLOWER)

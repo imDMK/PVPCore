@@ -22,7 +22,8 @@ public class GuildCache {
 
     @Getter
     private final Cache<String, Guild> stringGuildCache = Caffeine.newBuilder()
-            .expireAfterAccess(1, TimeUnit.DAYS)
+            .expireAfterWrite(1L, TimeUnit.DAYS)
+            .expireAfterAccess(1L, TimeUnit.DAYS)
             .build();
 
     public Optional<Guild> getByTag(String tag) {
