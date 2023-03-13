@@ -12,18 +12,18 @@ import java.util.Date;
 public class JsonDateAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {
 
     @Override
+    public JsonElement serialize(Date date, Type type, JsonSerializationContext jsonSerializationContext) {
+        return new JsonPrimitive(
+                String.valueOf(date.getTime())
+        );
+    }
+
+    @Override
     public Date deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         String jsonElementAsString = jsonElement.getAsString();
 
         return new Date(
                 Long.parseLong(jsonElementAsString)
-        );
-    }
-
-    @Override
-    public JsonElement serialize(Date date, Type type, JsonSerializationContext jsonSerializationContext) {
-        return new JsonPrimitive(
-                String.valueOf(date.getTime())
         );
     }
 }
