@@ -45,7 +45,7 @@ public class ProfilePanelGui extends PluginGui {
     private final Profile profile;
 
     public ProfilePanelGui(Player player, Profile profile) {
-        super(player, "Panel gracza", 6, true, true);
+        super(player, "Panel gracza " + profile.getName(), 6, true, true);
 
         this.profile = profile;
     }
@@ -141,6 +141,24 @@ public class ProfilePanelGui extends PluginGui {
                     kitPrewiewGui.open(false);
                 });
 
+        GuiItem friendListItem = ItemBuilder.from(Material.DRAGON_HEAD)
+                .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Przyjaciele"))
+                .lore(ComponentUtil.asList(
+                        "",
+                        this.circle + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy przyjaciół<dark_gray>.",
+                        ""
+                ))
+                .asGuiItem(event -> {
+                    if (this.profile.getFriends().isEmpty()) {
+                        new BarrierBuilder()
+                                .name("<red>Lista przyjaciół jest pusta...")
+                                .updateItem(this.gui, event.getSlot());
+                        return;
+                    }
+
+                    new ProfileFriendListGui(this.player, this.profile).open();
+                });
+
         GuiItem punishmentsItem = ItemBuilder.from(Material.TARGET)
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Historia kar"))
                 .lore(ComponentUtil.asList(
@@ -216,6 +234,7 @@ public class ProfilePanelGui extends PluginGui {
         this.gui.setItem(13, playerHead);
         this.gui.setItem(21, statisticsItem);
         this.gui.setItem(22, kitItem);
+        this.gui.setItem(23, friendListItem);
         this.gui.setItem(30, punishmentsItem);
         this.gui.setItem(31, settingsOrIgnoreItem);
     }

@@ -1,6 +1,9 @@
 package me.dmk.core.profile;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.dmk.core.CorePlugin;
@@ -15,10 +18,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by DMK on 28.12.2022
@@ -36,12 +37,17 @@ public class Profile implements Serializable {
     private final Date firstJoin = new Date();
     private Date lastJoin = new Date();
 
+    private final Map<UUID, Date> friends = Maps.newConcurrentMap();
     private List<Punishment> punishments = Lists.newCopyOnWriteArrayList();
 
     private final ProfileSettings profileSettings = new ProfileSettings();
     private final ProfileStatistics profileStatistics = new ProfileStatistics();
 
     private String guildTag = null;
+
+    private final transient Cache<UUID, Boolean> friendInvitations = Caffeine.newBuilder()
+            .expireAfterWrite(5L, TimeUnit.MINUTES)
+            .build();
 
     private final transient Fight fight = new Fight();
 
@@ -60,6 +66,18 @@ public class Profile implements Serializable {
 
     public String getColoredName() {
         return this.profileSettings.getColorName().getFormat() + this.name;
+    }
+
+    public void addFriend(UUID uuid) {
+        this.friends.put(uuid, new Date());
+    }
+
+    public boolean isFriend(UUID uuid) {
+        return this.friends.containsKey(uuid);
+    }
+
+    public void removeFriend(UUID uuid) {
+        this.friends.remove(uuid);
     }
 
     public Optional<Punishment> getActivePunishment(PunishmentType type) {
@@ -121,7 +139,6 @@ public class Profile implements Serializable {
         Optional<Guild> guild = CorePlugin.getCorePlugin().getGuildCache().getOrElseLoad(this.guildTag);
         if (guild.isEmpty()) {
             this.guildTag = null;
-            return Optional.empty();
         } else {
             if (!guild.get().isMember(this.uuid)) {
                 this.guildTag = null;
@@ -130,5 +147,22 @@ public class Profile implements Serializable {
         }
 
         return guild;
+    }
+
+    public void receiveInviteToFriends(UUID uuid) {
+        this.friendInvitations.put(uuid, Boolean.TRUE);
+    }
+
+    public boolean hasInviteToFriendsFrom(UUID uuid) {
+        return this.friendInvitations.asMap().containsKey(uuid);
+    }
+
+    public void acceptInviteToFriends(UUID uuid) {
+        this.friendInvitations.asMap().remove(uuid);
+        this.addFriend(uuid);
+    }
+
+    public void removeInviteToFriends(UUID uuid) {
+        this.friendInvitations.asMap().remove(uuid);
     }
 }

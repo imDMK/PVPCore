@@ -313,6 +313,7 @@ public class CorePlugin extends JavaPlugin {
                         new GuildKickCommand(this.notificationController, this.profileController, this.guildController, this.profileCache),
                         new GuildLeaveCommand(this.notificationController, this.profileController, this.guildController),
 
+                        new FriendCommand(this.notificationController),
                         new GroupsCommand(this.luckPermsController, this.notificationController),
                         new IgnoreCommand(this.notificationController, this.profileCache),
                         new IncognitoCommand(this.notificationController, this.profileController, this.incognitoController),
