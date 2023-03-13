@@ -16,7 +16,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import panda.std.Result;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -86,10 +85,9 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
         }
 
         Guild guild = guildOptional.get();
-        Collection<GuildMember> guildMembers = guild.getMembers().values();
 
-        return guildMembers.stream()
-                .map(m -> Bukkit.getOfflinePlayer(m.getUuid()))
+        return guild.getMembers().keySet().stream()
+                .map(Bukkit::getOfflinePlayer)
                 .map(OfflinePlayer::getName)
                 .map(Suggestion::of)
                 .collect(Collectors.toList());
