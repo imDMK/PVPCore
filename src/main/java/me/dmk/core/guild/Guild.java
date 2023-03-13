@@ -48,10 +48,10 @@ public class Guild implements Serializable {
     private final GuildStatistics guildStatistics = new GuildStatistics();
     private final GuildTreasury guildTreasury = new GuildTreasury();
 
-    private final transient Cache<UUID, Boolean> memberInvites = Caffeine.newBuilder()
+    private final transient Cache<UUID, Boolean> memberInvitations = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES)
             .build();
-    private final transient Cache<Guild, Boolean> allianceInvites = Caffeine.newBuilder()
+    private final transient Cache<Guild, Boolean> allianceInvitations = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES)
             .build();
 
@@ -121,15 +121,15 @@ public class Guild implements Serializable {
     }
 
     public void inviteToMembership(UUID uuid) {
-        this.memberInvites.put(uuid, Boolean.TRUE);
+        this.memberInvitations.put(uuid, Boolean.TRUE);
     }
 
     public boolean isInvitedToMembership(UUID uuid) {
-        return this.memberInvites.asMap().containsKey(uuid);
+        return this.memberInvitations.asMap().containsKey(uuid);
     }
 
-    public void cancelInviteToMembership(UUID uuid) {
-        this.memberInvites.asMap().remove(uuid);
+    public void declineInviteToMembership(UUID uuid) {
+        this.memberInvitations.asMap().remove(uuid);
     }
 
     public void joinToAlliance(Guild guild) {
@@ -145,19 +145,19 @@ public class Guild implements Serializable {
     }
 
     public void acceptInviteToAlliance(Guild guild) {
-        this.allianceInvites.asMap().remove(guild);
+        this.allianceInvitations.asMap().remove(guild);
         this.joinToAlliance(guild);
     }
 
     public void inviteToAlliance(Guild guild) {
-        this.allianceInvites.put(guild, Boolean.TRUE);
+        this.allianceInvitations.put(guild, Boolean.TRUE);
     }
 
     public boolean isInvitedToAlliance(Guild guild) {
-        return this.allianceInvites.asMap().containsKey(guild);
+        return this.allianceInvitations.asMap().containsKey(guild);
     }
 
-    public void cancelInviteToAlliance(Guild guild) {
-        this.allianceInvites.asMap().remove(guild);
+    public void declineInviteToAlliance(Guild guild) {
+        this.allianceInvitations.asMap().remove(guild);
     }
 }
