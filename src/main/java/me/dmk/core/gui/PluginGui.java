@@ -2,13 +2,10 @@ package me.dmk.core.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
 import me.dmk.core.gui.item.storage.ItemStorage;
 import me.dmk.core.util.ComponentUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
-import java.util.Collection;
 
 /**
  * Created by DMK on 02.03.2023
@@ -36,14 +33,6 @@ public abstract class PluginGui extends ItemStorage {
                     ItemBuilder.from(Material.GRAY_STAINED_GLASS_PANE).asGuiItem()
             );
         }
-    }
-
-    public void updateTitle(String title) {
-        this.gui.updateTitle(title);
-    }
-
-    public Collection<GuiItem> getItems() {
-        return this.gui.getGuiItems().values();
     }
 
     public abstract void build();
