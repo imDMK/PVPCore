@@ -31,7 +31,7 @@ public class GuildPanelGui extends PluginGui {
     private final Guild guild;
 
     public GuildPanelGui(Player player, Profile profile, Guild guild) {
-        super(player, "Panel gildyjny", 6, true, true);
+        super(player, "Panel gildyjny " + guild.getTag(), 6, true, true);
 
         this.profile = profile;
         this.guild = guild;
