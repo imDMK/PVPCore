@@ -51,7 +51,7 @@ public class Guild implements Serializable {
     private final transient Cache<UUID, Boolean> memberInvitations = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES)
             .build();
-    private final transient Cache<Guild, Boolean> allianceInvitations = Caffeine.newBuilder()
+    private final transient Cache<String, Boolean> allianceInvitations = Caffeine.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES)
             .build();
 
@@ -144,20 +144,20 @@ public class Guild implements Serializable {
         this.alliances.remove(guild.getTag());
     }
 
+    public void receiveInviteToAlliance(Guild guild) {
+        this.allianceInvitations.put(guild.getTag(), Boolean.TRUE);
+    }
+
+    public boolean hasInviteToAllianceFrom(Guild guild) {
+        return this.allianceInvitations.asMap().containsKey(guild.getTag());
+    }
+
     public void acceptInviteToAlliance(Guild guild) {
-        this.allianceInvitations.asMap().remove(guild);
+        this.allianceInvitations.asMap().remove(guild.getTag());
         this.joinToAlliance(guild);
     }
 
-    public void inviteToAlliance(Guild guild) {
-        this.allianceInvitations.put(guild, Boolean.TRUE);
-    }
-
-    public boolean isInvitedToAlliance(Guild guild) {
-        return this.allianceInvitations.asMap().containsKey(guild);
-    }
-
-    public void declineInviteToAlliance(Guild guild) {
-        this.allianceInvitations.asMap().remove(guild);
+    public void removeInviteToAlliance(Guild guild) {
+        this.allianceInvitations.asMap().remove(guild.getTag());
     }
 }

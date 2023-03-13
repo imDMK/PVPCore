@@ -39,7 +39,7 @@ public class GuildAllianceCommand {
             return;
         }
 
-        if (!otherGuild.isInvitedToAlliance(guild)) {
+        if (!guild.hasInviteToAllianceFrom(otherGuild)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie otrzymano zaproszenia do sojuszu od tej gildii<dark_gray>."
             );
@@ -47,7 +47,7 @@ public class GuildAllianceCommand {
         }
 
         guild.acceptInviteToAlliance(otherGuild);
-        otherGuild.acceptInviteToAlliance(guild);
+        otherGuild.joinToAlliance(guild);
 
         this.guildController.save(guild);
         this.guildController.save(otherGuild);
@@ -116,13 +116,13 @@ public class GuildAllianceCommand {
             return;
         }
 
-        if (otherGuild.isInvitedToAlliance(guild)) {
+        if (guild.hasInviteToAllianceFrom(otherGuild)) {
             Bukkit.getServer().dispatchCommand(player, "guild alliance accept " + otherGuild.getTag());
             return;
         }
 
-        if (guild.isInvitedToAlliance(otherGuild)) {
-            guild.cancelInviteToAlliance(otherGuild);
+        if (otherGuild.hasInviteToAllianceFrom(guild)) {
+            otherGuild.removeInviteToAlliance(guild);
 
             this.notificationController.sendMessage(otherGuild,
                     StringFormatter.formatGuild() + " <gray>Gildia <light_purple>" + otherGuild.getTag() + " <red>anulowała <gray>zaproszenie do sojuszu<dark_gray>."
@@ -134,7 +134,7 @@ public class GuildAllianceCommand {
             return;
         }
 
-        guild.inviteToAlliance(otherGuild);
+        otherGuild.receiveInviteToAlliance(guild);
 
         this.notificationController.sendMessage(otherGuild,
                 StringFormatter.formatGuild() + " <gray>Otrzymaliście zaproszenie sojuszu od gildii <light_purple>" + guild.getTag() + "<dark_gray>."

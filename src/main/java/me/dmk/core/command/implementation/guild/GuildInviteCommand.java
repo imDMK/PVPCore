@@ -45,7 +45,7 @@ public class GuildInviteCommand {
         }
 
         if (guild.isInvitedToMembership(other.getUuid())) {
-            guild.cancelInviteToMembership(other.getUuid());
+            guild.declineInviteToMembership(other.getUuid());
 
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Anulowano <gray>zaproszenie do gildii gracza <light_purple>" + other.getName() + "<dark_gray>."
