@@ -1,7 +1,7 @@
 package me.dmk.core.listener;
 
 import lombok.AllArgsConstructor;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 @AllArgsConstructor
 public class PlayerItemConsumeListener implements Listener {
 
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerConsume(PlayerItemConsumeEvent event) {
@@ -27,10 +27,10 @@ public class PlayerItemConsumeListener implements Listener {
         Material material = item.getType();
 
         switch (material) {
-            case GOLDEN_APPLE -> this.profileCache.get(player.getUniqueId())
+            case GOLDEN_APPLE -> this.profileController.get(player.getUniqueId())
                     .ifPresent(profile -> profile.getProfileStatistics().increaseEatenGoldenApples());
 
-            case ENCHANTED_GOLDEN_APPLE -> this.profileCache.get(player.getUniqueId())
+            case ENCHANTED_GOLDEN_APPLE -> this.profileController.get(player.getUniqueId())
                     .ifPresent(profile -> profile.getProfileStatistics().increaseEatenEnchantedGoldenApples());
         }
     }

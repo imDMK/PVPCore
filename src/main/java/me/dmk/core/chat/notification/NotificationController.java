@@ -5,7 +5,7 @@ import lombok.Getter;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.text.TextComponent;
@@ -117,10 +117,10 @@ public class NotificationController {
 
     /* Plugin messages */
     public void sendGlobalPluginMessage(PluginMessageType messageType, String message) {
-        ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
+        ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
         switch (messageType) {
-            case ACHIEVEMENT -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+            case ACHIEVEMENT -> Bukkit.getOnlinePlayers().forEach(player -> profileController.get(player.getUniqueId())
                             .map(Profile::getProfileSettings)
                             .ifPresent(profileSettings -> {
                                 if (profileSettings.isAchievementsMessages()) {
@@ -129,7 +129,7 @@ public class NotificationController {
                             })
             );
 
-            case DEATH -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+            case DEATH -> Bukkit.getOnlinePlayers().forEach(player -> profileController.get(player.getUniqueId())
                     .map(Profile::getProfileSettings)
                     .ifPresent(profileSettings -> {
                         if (profileSettings.isDeathMessages()) {
@@ -138,7 +138,7 @@ public class NotificationController {
                     })
             );
 
-            case SYSTEM -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+            case SYSTEM -> Bukkit.getOnlinePlayers().forEach(player -> profileController.get(player.getUniqueId())
                     .map(Profile::getProfileSettings)
                     .ifPresent(profileSettings -> {
                         if (profileSettings.isSystemMessages()) {
@@ -147,7 +147,7 @@ public class NotificationController {
                     })
             );
 
-            case GUILD -> Bukkit.getOnlinePlayers().forEach(player -> profileCache.get(player.getUniqueId())
+            case GUILD -> Bukkit.getOnlinePlayers().forEach(player -> profileController.get(player.getUniqueId())
                     .map(Profile::getProfileSettings)
                     .ifPresent(profileSettings -> {
                         if (profileSettings.isGuildMessages()) {

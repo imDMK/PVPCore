@@ -6,7 +6,7 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
@@ -25,7 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 public class VanishCommand {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @Execute
     void execute(Player player, Profile profile) {
@@ -42,7 +42,7 @@ public class VanishCommand {
             player.addPotionEffect(potionEffect);
         }
 
-        Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
+        Bukkit.getOnlinePlayers().forEach(online -> this.profileController.get(online.getUniqueId())
                 .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile))
         );
 

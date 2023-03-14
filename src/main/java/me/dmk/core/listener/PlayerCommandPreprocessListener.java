@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,12 +21,12 @@ public class PlayerCommandPreprocessListener implements Listener {
 
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile profile = this.profileController.getOrElseThrow(player);
 
         String command = event.getMessage().toLowerCase();
 

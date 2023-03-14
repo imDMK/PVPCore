@@ -10,7 +10,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.statistics.ProfileStatistics;
@@ -31,7 +30,6 @@ public class GuildCreateCommand {
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final GuildCache guildCache;
 
     @Async
     @Execute(required = 2)
@@ -73,7 +71,7 @@ public class GuildCreateCommand {
             return;
         }
 
-        if (this.guildCache.getOrElseLoad(tag).isPresent()) {
+        if (this.guildController.getOrElseLoad(tag).isPresent()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Gildia o podanym tagu już istnieje<dark_gray>, <red>wymyśl coś innego<dark_gray>..."
             );
@@ -89,7 +87,7 @@ public class GuildCreateCommand {
         profile.setGuildTag(guild.getTag());
 
         this.guildController.create(guild);
-        this.guildCache.add(guild);
+        this.guildController.add(guild);
 
         this.notificationController.sendGlobalPluginMessage(
                 PluginMessageType.GUILD,

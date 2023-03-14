@@ -2,7 +2,6 @@ package me.dmk.core.guild.task;
 
 import lombok.AllArgsConstructor;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 
 /**
@@ -13,11 +12,10 @@ import me.dmk.core.guild.controller.GuildController;
 public class GuildSaveTask implements Runnable {
 
     private final GuildController guildController;
-    private final GuildCache guildCache;
 
     @Override
     public void run() {
-        for (Guild guild : this.guildCache.getGuilds()) {
+        for (Guild guild : this.guildController.getGuilds()) {
             this.guildController.save(guild);
         }
     }

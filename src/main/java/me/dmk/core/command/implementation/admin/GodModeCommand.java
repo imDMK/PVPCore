@@ -8,7 +8,7 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 public class GodModeCommand {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @Execute(required = 0)
     void execute(Player player, Profile profile) {
@@ -40,7 +40,7 @@ public class GodModeCommand {
     @Execute(required = 1)
     @Permission("core.command.godmode.other")
     void executeOther(Player player, @Arg @Name("player") Player other) {
-        Profile profile = this.profileCache.getOrElseThrow(other);
+        Profile profile = this.profileController.getOrElseThrow(other);
         ProfileSettings settings = profile.getProfileSettings();
 
         settings.setGod(!settings.isGod());

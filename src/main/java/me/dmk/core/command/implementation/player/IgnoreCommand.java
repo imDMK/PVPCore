@@ -6,7 +6,7 @@ import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 public class IgnoreCommand {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @Execute(required = 0)
     void execute(Player player, Profile profile) {
@@ -37,7 +37,7 @@ public class IgnoreCommand {
 
     @Execute(required = 1)
     void executeIgnoreOther(Player player, @Arg Profile otherProfile) {
-        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile profile = this.profileController.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
 
         if (player.getUniqueId().equals(otherProfile.getUuid())) {

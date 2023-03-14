@@ -5,7 +5,7 @@ import me.dmk.core.CorePlugin;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.item.storage.SkullStorage;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.TimeUtil;
 import me.dmk.core.util.string.StringFormatter;
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class ProfileFriendListGui extends PluginGui {
 
-    private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     private final Profile profile;
 
@@ -48,7 +48,7 @@ public class ProfileFriendListGui extends PluginGui {
         this.gui.setItem(49, backButton);
 
         this.profile.getFriends().forEach((uuid, date) -> {
-            Optional<Profile> friendProfileOptional = this.profileCache.getOrElseLoad(uuid);
+            Optional<Profile> friendProfileOptional = this.profileController.getOrElseLoad(uuid);
             if (friendProfileOptional.isEmpty()) {
                 this.profile.getFriends().remove(uuid);
                 return;

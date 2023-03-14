@@ -3,7 +3,7 @@ package me.dmk.core.listener;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerLevelChangeEvent;
 public class PlayerLevelChangeListener implements Listener {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLevelChange(PlayerLevelChangeEvent event) {
@@ -27,7 +27,7 @@ public class PlayerLevelChangeListener implements Listener {
 
         int newLevel = event.getNewLevel();
 
-        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile profile = this.profileController.getOrElseThrow(player);
 
         profile.getProfileStatistics().setLevel(newLevel);
 

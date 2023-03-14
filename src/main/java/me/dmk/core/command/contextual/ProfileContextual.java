@@ -4,7 +4,7 @@ import dev.rollczi.litecommands.command.Invocation;
 import dev.rollczi.litecommands.contextual.Contextual;
 import lombok.AllArgsConstructor;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import panda.std.Result;
@@ -16,12 +16,12 @@ import panda.std.Result;
 @AllArgsConstructor
 public class ProfileContextual implements Contextual<CommandSender, Profile> {
 
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @Override
     public Result<Profile, ?> extract(CommandSender commandSender, Invocation<CommandSender> invocation) {
         if (commandSender instanceof Player player) {
-            Profile profile = this.profileCache.getOrElseThrow(player);
+            Profile profile = this.profileController.getOrElseThrow(player);
             return Result.ok(profile);
         }
 

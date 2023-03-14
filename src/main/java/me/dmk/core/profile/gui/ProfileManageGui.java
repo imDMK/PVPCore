@@ -9,7 +9,6 @@ import me.dmk.core.chat.waiter.ChatWaiterCache;
 import me.dmk.core.gui.PluginGui;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.task.executor.TaskExecutor;
@@ -29,7 +28,6 @@ public class ProfileManageGui extends PluginGui {
 
     private final NotificationController notificationController = CorePlugin.getCorePlugin().getNotificationController();
     private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
-    private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
     private final ChatWaiterCache chatWaiterCache = CorePlugin.getCorePlugin().getChatWaiterCache();
     private final TaskExecutor taskExecutor = CorePlugin.getCorePlugin().getTaskExecutor();
 
@@ -69,8 +67,6 @@ public class ProfileManageGui extends PluginGui {
                             this.taskExecutor.runAsync(
                                     () -> this.profileController.delete(this.profile)
                             );
-
-                            this.profileCache.remove(this.profile);
 
                             this.profile.getPlayer().ifPresent(p ->
                                     p.kickPlayer(StringUtil.colorLegacy("&cTwój profil został usunięty.\nAdministrator: " + this.player.getName()))

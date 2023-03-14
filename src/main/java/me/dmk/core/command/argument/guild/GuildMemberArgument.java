@@ -7,7 +7,7 @@ import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -28,14 +28,14 @@ import java.util.stream.Collectors;
 @ArgumentName("guildMember")
 public class GuildMemberArgument implements OneArgument<GuildMember> {
 
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     private final Component noGuildError;
     private final Component profileNoPresent;
     private final Component noMemberPresent;
 
-    public GuildMemberArgument(ProfileCache profileCache, MiniMessage miniMessage) {
-        this.profileCache = profileCache;
+    public GuildMemberArgument(ProfileController profileController, MiniMessage miniMessage) {
+        this.profileController = profileController;
 
         this.noGuildError = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie posiadasz gildii<dark_gray>.");
         this.profileNoPresent = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie znaleziono profilu o podanej nazwie<dark_gray>.");
@@ -48,7 +48,7 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
             return Result.error("&cNie możesz użyć tej komendy&8.");
         }
 
-        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile profile = this.profileController.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {
@@ -57,7 +57,7 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
 
         Guild guild = guildOptional.get();
 
-        Optional<Profile> otherProfileOptional = this.profileCache.getOrElseLoad(argument);
+        Optional<Profile> otherProfileOptional = this.profileController.getOrElseLoad(argument);
         if (otherProfileOptional.isEmpty()) {
             return Result.error(this.profileNoPresent);
         }
@@ -77,7 +77,7 @@ public class GuildMemberArgument implements OneArgument<GuildMember> {
             return Collections.emptyList();
         }
 
-        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile profile = this.profileController.getOrElseThrow(player);
 
         Optional<Guild> guildOptional = profile.getGuild();
         if (guildOptional.isEmpty()) {

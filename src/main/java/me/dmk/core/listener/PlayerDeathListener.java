@@ -9,7 +9,7 @@ import me.dmk.core.kit.KitMap;
 import me.dmk.core.murder.MurderCache;
 import me.dmk.core.murder.MurderType;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.fight.Fight;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.incognito.IncognitoSettings;
@@ -35,7 +35,7 @@ import java.util.UUID;
 public class PlayerDeathListener implements Listener {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
     private final MurderCache murderCache;
     private final KitMap kitMap;
 
@@ -47,7 +47,7 @@ public class PlayerDeathListener implements Listener {
 
         Player victim = event.getEntity();
 
-        Profile victimProfile = this.profileCache.getOrElseThrow(victim);
+        Profile victimProfile = this.profileController.getOrElseThrow(victim);
         ProfileStatistics victimStatistics = victimProfile.getProfileStatistics();
         ProfileSettings victimSettings = victimProfile.getProfileSettings();
         IncognitoSettings victimIncognitoSettings = victimSettings.getIncognitoSettings();
@@ -64,7 +64,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        Profile killerProfile = this.profileCache.getOrElseThrow(killer);
+        Profile killerProfile = this.profileController.getOrElseThrow(killer);
         ProfileStatistics killerStatistics = killerProfile.getProfileStatistics();
         ProfileSettings killerSettings = killerProfile.getProfileSettings();
         IncognitoSettings killerIncognitoSettings = killerSettings.getIncognitoSettings();

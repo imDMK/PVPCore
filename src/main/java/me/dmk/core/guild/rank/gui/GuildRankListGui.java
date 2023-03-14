@@ -46,7 +46,9 @@ public class GuildRankListGui extends PluginGui {
                 .sorted(Comparator.comparingInt(GuildRank::getPriority))
                 .toList();
 
-        boolean canManageRanks = this.guild.isLeader(this.player.getUniqueId()) || this.guild.getGuildRank(this.player.getUniqueId()).isCanManageRanks();
+        boolean isMember = this.guild.isMember(this.player.getUniqueId());
+        boolean canManageRanks = this.guild.isLeader(this.player.getUniqueId())
+                || isMember && this.guild.getGuildRank(this.player.getUniqueId()).isCanManageRanks();
 
         for (GuildRank guildRank : guildMemberList) {
             List<String> lore = new ArrayList<>(Arrays.asList(
@@ -70,6 +72,10 @@ public class GuildRankListGui extends PluginGui {
                     .name(ComponentUtil.text(guildRank.getName()))
                     .lore(ComponentUtil.asList(lore))
                     .asGuiItem(event -> {
+                        if (!isMember) {
+                            return;
+                        }
+
                         if (!canManageRanks) {
                             new BarrierBuilder()
                                     .name("<red>Nie posiadasz uprawnień")

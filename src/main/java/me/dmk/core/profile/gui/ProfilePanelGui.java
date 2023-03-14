@@ -14,7 +14,7 @@ import me.dmk.core.kit.KitMap;
 import me.dmk.core.kit.gui.KitPrewiewGui;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.PunishmentHistoryGui;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.gui.ProfileSettingsGui;
@@ -39,7 +39,7 @@ public class ProfilePanelGui extends PluginGui {
 
     private final PluginConfiguration pluginConfiguration = CorePlugin.getCorePlugin().getPluginConfiguration();
     private final LuckPermsController luckPermsController = CorePlugin.getCorePlugin().getLuckPermsController();
-    private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
     private final KitMap kitMap = CorePlugin.getCorePlugin().getKitMap();
 
     private final Profile profile;
@@ -195,7 +195,7 @@ public class ProfilePanelGui extends PluginGui {
                             new ProfileSettingsGui(this.player, this.profile).open()
                     );
         } else {
-            boolean playerIgnoredProfile = this.profileCache.get(this.player.getUniqueId())
+            boolean playerIgnoredProfile = this.profileController.get(this.player.getUniqueId())
                     .map(Profile::getProfileSettings)
                     .map(profileSettings -> profileSettings.getIgnoredPlayers().contains(this.profile.getUuid()))
                     .orElse(false);

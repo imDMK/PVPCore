@@ -11,7 +11,7 @@ import me.dmk.core.guild.gui.GuildPanelGui;
 import me.dmk.core.guild.member.GuildMember;
 import me.dmk.core.guild.rank.GuildRank;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.TimeUtil;
@@ -27,7 +27,7 @@ import java.util.*;
 
 public class GuildMemberListGui extends PluginPaginatedGui {
 
-    private final ProfileCache profileCache = CorePlugin.getCorePlugin().getProfileCache();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     private final Profile profile;
     private final Guild guild;
@@ -46,7 +46,8 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                 .sorted(Comparator.comparingInt(i -> this.guild.getGuildRank(i.getGuildRankUuid()).getPriority()))
                 .toList();
 
-        boolean canManageMembers = this.guild.isLeader(this.player.getUniqueId()) || this.guild.getGuildRank(this.player.getUniqueId()).isCanManageMembers();
+        boolean canManageMembers = this.guild.isLeader(this.player.getUniqueId())
+                || this.guild.isMember(this.player.getUniqueId()) && this.guild.getGuildRank(this.player.getUniqueId()).isCanManageMembers();
 
         GuiItem previousButton = this.createPreviousPageButton(this.gui);
         GuiItem backButton = this.createBackButton(event ->
@@ -89,7 +90,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                     .lore(ComponentUtil.asList(memberItemLore))
                     .asGuiItem(event -> {
                         if (event.isLeftClick() && !event.isShiftClick()) {
-                            this.profileCache.getOrElseLoad(guildMember.getUuid())
+                            this.profileController.getOrElseLoad(guildMember.getUuid())
                                     .ifPresent(memberProfile ->
                                             new ProfilePanelGui(this.player, memberProfile).open()
                                     );

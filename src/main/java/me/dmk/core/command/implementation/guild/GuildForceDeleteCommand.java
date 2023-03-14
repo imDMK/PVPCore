@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.util.string.StringFormatter;
@@ -29,7 +28,6 @@ public class GuildForceDeleteCommand {
 
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final GuildCache guildCache;
     private final TaskExecutor taskExecutor;
 
     @Async
@@ -38,10 +36,9 @@ public class GuildForceDeleteCommand {
         new ConfirmationGui(player)
                 .title("Usunięcie gildii " + guild.getTag())
                 .afterConfirm(event -> {
-                    this.taskExecutor.runAsync(() -> {
-                        this.guildCache.remove(guild);
-                        this.guildController.delete(guild);
-                    });
+                    this.taskExecutor.runAsync(
+                            () -> this.guildController.delete(guild)
+                    );
 
                     guild.getOnlineMembers().forEach(guildPlayer ->
                             this.notificationController.sendMessage(guildPlayer,

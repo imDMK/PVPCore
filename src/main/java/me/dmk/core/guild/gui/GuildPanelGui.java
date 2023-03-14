@@ -144,9 +144,8 @@ public class GuildPanelGui extends PluginGui {
                     new GuildAllianceListGui(this.player, this.profile, this.guild).open();
                 });
 
-        GuiItem leaveOrDeleteGuildItem;
         if (isLeader) {
-            leaveOrDeleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
+            GuiItem deleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Usuń gildię"))
                     .lore(ComponentUtil.asList(
                             "",
@@ -154,10 +153,12 @@ public class GuildPanelGui extends PluginGui {
                             ""
                     ))
                     .asGuiItem(event ->
-                            Bukkit.dispatchCommand(player, "guild delete")
+                            Bukkit.dispatchCommand(this.player, "guild delete")
                     );
-        } else {
-            leaveOrDeleteGuildItem = ItemBuilder.from(Material.OAK_DOOR)
+
+            this.gui.setItem(40, deleteGuildItem);
+        } else if (isMember) {
+            GuiItem leaveGuildItem = ItemBuilder.from(Material.OAK_DOOR)
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Opuść gildię"))
                     .lore(ComponentUtil.asList(
                             "",
@@ -167,6 +168,8 @@ public class GuildPanelGui extends PluginGui {
                     .asGuiItem(event ->
                             Bukkit.dispatchCommand(this.player, "guild leave")
                     );
+
+            this.gui.setItem(40, leaveGuildItem);
         }
 
         this.gui.setItem(13, beaconItem);
@@ -178,7 +181,5 @@ public class GuildPanelGui extends PluginGui {
         this.gui.setItem(30, ranksItem);
         this.gui.setItem(31, coinsTrasureItem);
         this.gui.setItem(32, alliancesItem);
-
-        this.gui.setItem(40, leaveOrDeleteGuildItem);
     }
 }

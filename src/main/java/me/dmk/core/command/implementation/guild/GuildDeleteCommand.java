@@ -8,7 +8,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.task.executor.TaskExecutor;
@@ -26,7 +25,6 @@ public class GuildDeleteCommand {
 
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final GuildCache guildCache;
     private final TaskExecutor taskExecutor;
 
     @Async
@@ -42,10 +40,9 @@ public class GuildDeleteCommand {
         new ConfirmationGui(player)
                 .title("Usunięcie gildii")
                 .afterConfirm(event -> {
-                    this.taskExecutor.runAsync(() -> {
-                        this.guildController.delete(guild);
-                        this.guildCache.remove(guild);
-                    });
+                    this.taskExecutor.runAsync(
+                            () -> this.guildController.delete(guild)
+                    );
 
                     this.notificationController.sendGlobalPluginMessage(
                                     PluginMessageType.GUILD,

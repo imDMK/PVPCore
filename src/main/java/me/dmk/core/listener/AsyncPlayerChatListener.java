@@ -6,10 +6,10 @@ import me.dmk.core.chat.GlobalChatCache;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.waiter.ChatWaiterCache;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
+import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.profile.settings.ProfileSettings;
@@ -38,8 +38,8 @@ public class AsyncPlayerChatListener implements Listener {
     private final MiniMessage miniMessage;
     private final LuckPermsController luckPermsController;
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+    private final ProfileController profileController;
+    private final GuildController guildController;
     private final GlobalChatCache globalChatCache;
     private final ChatWaiterCache chatWaiterCache;
 
@@ -53,7 +53,7 @@ public class AsyncPlayerChatListener implements Listener {
         String message = (player.hasPermission("core.chat.message.color") ? event.getMessage() : this.miniMessage.escapeTags(event.getMessage()))
                 .replace("<3", SymbolUtil.getHeart("<red>"));
 
-        Profile profile = this.profileCache.getOrElseThrow(player);
+        Profile profile = this.profileController.getOrElseThrow(player);
         ProfileSettings profileSettings = profile.getProfileSettings();
         ProfileStatistics profileStatistics = profile.getProfileStatistics();
 
@@ -86,7 +86,7 @@ public class AsyncPlayerChatListener implements Listener {
                         + message.replaceFirst((isAllianceMessage ? "!!" : "!"), "");
 
                 if (isAllianceMessage) {
-                    guild.getAlliances().forEach(guildTag -> this.guildCache.getByTag(guildTag).ifPresent(allianceGuild ->
+                    guild.getAlliances().forEach(guildTag -> this.guildController.getByTag(guildTag).ifPresent(allianceGuild ->
                             this.notificationController.sendMessage(allianceGuild, guildMessage))
                     );
                 }
@@ -137,7 +137,7 @@ public class AsyncPlayerChatListener implements Listener {
         String format = (useAdminFormat ? group : level + " " + points + " " + "<guild>" + group) + nameAndMessage;
 
         for (Player online : Bukkit.getOnlinePlayers()) {
-            this.profileCache.get(online.getUniqueId()).ifPresent(onlineProfile -> {
+            this.profileController.get(online.getUniqueId()).ifPresent(onlineProfile -> {
                 ProfileSettings onlineSettings = onlineProfile.getProfileSettings();
 
                 if (!onlineSettings.isGlobalMessages()) {

@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.event.PrivateMessageEvent;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.Bukkit;
@@ -26,7 +26,7 @@ import java.util.UUID;
 public class ReplyCommand {
 
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @Execute(min = 1)
     void execute(Player player, Profile profile, @Joiner @Name("message") String message) {
@@ -48,7 +48,7 @@ public class ReplyCommand {
             return;
         }
 
-        Profile otherProfile = this.profileCache.getOrElseThrow(other);
+        Profile otherProfile = this.profileController.getOrElseThrow(other);
 
         PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(player, profile, other, otherProfile, message);
         Bukkit.getPluginManager().callEvent(privateMessageEvent);

@@ -3,10 +3,10 @@ package me.dmk.core.listener.connection;
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
-import me.dmk.core.guild.cache.GuildCache;
+import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.kit.KitMap;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
@@ -31,8 +31,8 @@ public class PlayerJoinListener implements Listener {
 
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
-    private final GuildCache guildCache;
+    private final ProfileController profileController;
+    private final GuildController guildController;
     private final KitMap kitMap;
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -43,7 +43,7 @@ public class PlayerJoinListener implements Listener {
         UUID uuid = player.getUniqueId();
         String name = player.getName();
 
-        Profile profile = this.profileCache.getOrElseCreate(uuid, name);
+        Profile profile = this.profileController.findByUUIDOrElseCreate(uuid, name);
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         profile.setLastJoin(new Date());
@@ -63,12 +63,11 @@ public class PlayerJoinListener implements Listener {
         this.checkPermissions(player, profile);
         this.kitMap.addPlayerKit(player, statistics);
 
-        this.profileCache.add(profile);
-        profile.getGuild().ifPresent(this.guildCache::add);
+        profile.getGuild().ifPresent(this.guildController::add);
     }
 
     private void refreshVanish(Player player, Profile profile) {
-        Bukkit.getOnlinePlayers().forEach(online -> this.profileCache.get(online.getUniqueId())
+        Bukkit.getOnlinePlayers().forEach(online -> this.profileController.get(online.getUniqueId())
                 .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile))
         );
     }

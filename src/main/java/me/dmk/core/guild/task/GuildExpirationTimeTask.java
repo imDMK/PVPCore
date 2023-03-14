@@ -6,7 +6,6 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.chat.notification.PluginMessageType;
 import me.dmk.core.database.data.MongoDataService;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.util.string.StringFormatter;
 import org.bson.conversions.Bson;
@@ -23,7 +22,6 @@ public class GuildExpirationTimeTask implements Runnable {
     private final MongoDataService mongoDataService;
     private final NotificationController notificationController;
     private final GuildController guildController;
-    private final GuildCache guildCache;
 
     @Override
     public void run() {
@@ -34,7 +32,6 @@ public class GuildExpirationTimeTask implements Runnable {
 
         for (Guild guild : expiredGuilds) {
             this.guildController.delete(guild);
-            this.guildCache.remove(guild);
 
             guild.getOnlineMembers().forEach(guildPlayer ->
                     this.notificationController.sendMessage(guildPlayer,

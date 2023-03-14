@@ -49,7 +49,8 @@ public class GuildMemberRankEditGui extends PluginGui {
                 .sorted(Comparator.comparingInt(GuildRank::getPriority))
                 .toList();
 
-        boolean canManageRanks = this.guild.isLeader(this.player.getUniqueId()) || this.guild.getGuildRank(this.player.getUniqueId()).isCanManageRanks();
+        boolean canManageRanks = this.guild.isLeader(this.player.getUniqueId())
+                || this.guild.isMember(this.player.getUniqueId()) && this.guild.getGuildRank(this.player.getUniqueId()).isCanManageRanks();
 
         for (GuildRank guildRank : guildMemberList) {
             List<String> lore = new ArrayList<>(Arrays.asList(

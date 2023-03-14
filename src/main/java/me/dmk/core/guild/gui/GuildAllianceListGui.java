@@ -6,7 +6,7 @@ import me.dmk.core.CorePlugin;
 import me.dmk.core.gui.PluginPaginatedGui;
 import me.dmk.core.gui.confirmation.ConfirmationGui;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
+import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class GuildAllianceListGui extends PluginPaginatedGui {
 
-    private final GuildCache guildCache = CorePlugin.getCorePlugin().getGuildCache();
+    private final GuildController guildController = CorePlugin.getCorePlugin().getGuildController();
 
     private final Profile profile;
     private final Guild guild;
@@ -52,10 +52,12 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
         this.gui.setItem(49, backButton);
         this.gui.setItem(51, nextButton);
 
-        boolean canManageAlliances = this.guild.getGuildRank(this.player.getUniqueId()).isCanManageAlliances();
+        boolean isMember = this.guild.isMember(this.player.getUniqueId());
+        boolean canManageAlliances = this.guild.isLeader(this.player.getUniqueId())
+                || isMember && this.guild.getGuildRank(this.player.getUniqueId()).isCanManageAlliances();
 
         for (String guildTag : this.guild.getAlliances()) {
-            Optional<Guild> allianceGuildOptional = this.guildCache.getOrElseLoad(guildTag);
+            Optional<Guild> allianceGuildOptional = this.guildController.getOrElseLoad(guildTag);
             if (allianceGuildOptional.isEmpty()) {
                 this.guild.getAlliances().remove(guildTag);
                 continue;
@@ -80,14 +82,22 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + allianceGuild.getTag()))
                     .lore(ComponentUtil.asList(lore))
                     .asGuiItem(event -> {
+                        if (!isMember) {
+                            return;
+                        }
+
+                        if (!canManageAlliances) {
+                            return;
+                        }
+
                         if (event.isLeftClick()) {
                             new GuildPanelGui(this.player, this.profile, allianceGuild).open();
 
                         } else if (event.isRightClick() && event.isShiftClick()) {
                             new ConfirmationGui(this.player)
-                                    .title("Potwierdź zerwanie sojuszu z " + allianceGuild.getTag())
+                                    .title("Zerwanie sojuszu z " + allianceGuild.getTag())
                                     .afterConfirm(e -> {
-                                        Bukkit.dispatchCommand(player, "guild alliance break " + allianceGuild.getTag());
+                                        Bukkit.dispatchCommand(this.player, "guild alliance break " + allianceGuild.getTag());
                                         this.open();
                                     })
                                     .afterCancel(e -> this.open())

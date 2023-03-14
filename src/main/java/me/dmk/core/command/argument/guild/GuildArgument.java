@@ -5,7 +5,7 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.guild.Guild;
-import me.dmk.core.guild.cache.GuildCache;
+import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -21,18 +21,18 @@ import java.util.Optional;
 @ArgumentName("guildTag")
 public class GuildArgument implements OneArgument<Guild> {
 
-    private final GuildCache guildCache;
+    private final GuildController guildController;
     private final Component noGuildFound;
 
-    public GuildArgument(GuildCache guildCache, MiniMessage miniMessage) {
-        this.guildCache = guildCache;
+    public GuildArgument(GuildController guildController, MiniMessage miniMessage) {
+        this.guildController = guildController;
 
         this.noGuildFound = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie znaleziono gildii o podanej nazwie<dark_gray>.");
     }
 
     @Override
     public Result<Guild, ?> parse(LiteInvocation liteInvocation, String argument) {
-        Optional<Guild> guild = this.guildCache.getOrElseLoad(argument);
+        Optional<Guild> guild = this.guildController.getOrElseLoad(argument);
         if (guild.isPresent()) {
             return Result.ok(guild.get());
         }
@@ -43,7 +43,7 @@ public class GuildArgument implements OneArgument<Guild> {
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
         return Suggestion.of(
-                this.guildCache.getStringGuildCache().asMap().keySet()
+                this.guildController.getStringGuildCache().asMap().keySet()
         );
     }
 }

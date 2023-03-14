@@ -3,7 +3,7 @@ package me.dmk.core.profile.settings.board;
 import fr.mrmicky.fastboard.FastBoard;
 import lombok.AllArgsConstructor;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,12 +17,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BoardTask implements Runnable {
 
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
 
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Optional<Profile> profileOptional = this.profileCache.get(player.getUniqueId());
+            Optional<Profile> profileOptional = this.profileController.get(player.getUniqueId());
             if (profileOptional.isEmpty()) {
                 return;
             }

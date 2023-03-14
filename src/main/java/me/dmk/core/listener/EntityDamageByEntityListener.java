@@ -5,7 +5,7 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.guild.Guild;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.fight.Fight;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.teleport.TeleportMap;
@@ -28,7 +28,7 @@ public class EntityDamageByEntityListener implements Listener {
 
     private final PluginConfiguration pluginConfiguration;
     private final NotificationController notificationController;
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
     private final TeleportMap teleportMap;
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -45,10 +45,10 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
 
-        Profile playerProfile = this.profileCache.getOrElseThrow(player);
+        Profile playerProfile = this.profileController.getOrElseThrow(player);
         ProfileSettings playerSettings = playerProfile.getProfileSettings();
 
-        Profile damagerProfile = this.profileCache.getOrElseThrow(damager);
+        Profile damagerProfile = this.profileController.getOrElseThrow(damager);
 
         if (playerSettings.isGod()) {
             event.setCancelled(true);

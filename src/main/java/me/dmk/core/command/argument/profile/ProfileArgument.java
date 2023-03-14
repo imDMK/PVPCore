@@ -5,7 +5,7 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.profile.Profile;
-import me.dmk.core.profile.cache.ProfileCache;
+import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -21,17 +21,17 @@ import java.util.Optional;
 @ArgumentName("profile")
 public class ProfileArgument implements OneArgument<Profile> {
 
-    private final ProfileCache profileCache;
+    private final ProfileController profileController;
     private final Component profileNotFound;
 
-    public ProfileArgument(ProfileCache profileCache, MiniMessage miniMessage) {
-        this.profileCache = profileCache;
+    public ProfileArgument(ProfileController profileController, MiniMessage miniMessage) {
+        this.profileController = profileController;
         this.profileNotFound = miniMessage.deserialize(StringFormatter.formatError() + " <red>Nie znaleziono profilu o podanej nazwie<dark_gray>.");
     }
 
     @Override
     public Result<Profile, ?> parse(LiteInvocation liteInvocation, String argument) {
-        Optional<Profile> profileOptional = this.profileCache.getOrElseLoad(argument);
+        Optional<Profile> profileOptional = this.profileController.getOrElseLoad(argument);
         if (profileOptional.isPresent()) {
             return Result.ok(profileOptional.get());
         }
@@ -42,7 +42,7 @@ public class ProfileArgument implements OneArgument<Profile> {
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
         return Suggestion.of(
-                this.profileCache.getStringProfileCache().asMap().keySet()
+                this.profileController.getNameProfileCache().asMap().keySet()
         );
     }
 }
