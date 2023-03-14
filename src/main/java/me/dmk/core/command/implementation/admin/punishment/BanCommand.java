@@ -8,13 +8,16 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.util.string.StringFormatter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
@@ -48,8 +51,8 @@ public class BanCommand {
         profile.getPunishments().add(punishment);
         this.profileController.save(profile);
         
-        profile.getPlayer().ifPresent(p -> 
-                p.kickPlayer(StringFormatter.formatBanMessage(punishment))
+        profile.getPlayer().ifPresent(p ->
+                this.kickPlayer(p, punishment)
         );
 
         this.notificationController.sendGlobalMessage(
@@ -75,12 +78,20 @@ public class BanCommand {
         this.profileController.save(profile);
 
         profile.getPlayer().ifPresent(p ->
-                p.kickPlayer(StringFormatter.formatBanMessage(punishment))
+                this.kickPlayer(p, punishment)
         );
 
         this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + profile.getName() + " <gray>został <red>permanentnie zbanowany <gray>przez <light_purple>" + sender.getName() + " <gray>za <red>" + reason + "<dark_gray>.",
                 "core.command.ban"
+        );
+    }
+
+    private void kickPlayer(Player player, Punishment punishment) {
+        Bukkit.getScheduler().runTaskLater(
+                CorePlugin.getCorePlugin(),
+                () -> player.kickPlayer(StringFormatter.formatBanMessage(punishment)),
+                2L
         );
     }
 }
