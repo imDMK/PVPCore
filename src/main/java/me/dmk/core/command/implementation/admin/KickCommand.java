@@ -3,7 +3,6 @@ package me.dmk.core.command.implementation.admin;
 import dev.rollczi.litecommands.argument.Arg;
 import dev.rollczi.litecommands.argument.Name;
 import dev.rollczi.litecommands.argument.joiner.Joiner;
-import dev.rollczi.litecommands.command.async.Async;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
@@ -25,7 +24,6 @@ public class KickCommand {
 
     private final NotificationController notificationController;
 
-    @Async
     @Execute(required = 1)
     void execute(Player player, @Arg @Name("player") Player other) {
         String reason = StringUtil.colorLegacy("&cNie podano powodu.");
@@ -38,7 +36,6 @@ public class KickCommand {
         );
     }
 
-    @Async
     @Execute(min = 2)
     void execute(Player player, @Arg @Name("player") Player other, @Joiner @Name("reason") String reason) {
         other.kickPlayer(
