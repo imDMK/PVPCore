@@ -179,7 +179,7 @@ public class ProfilePanelGui extends PluginGui {
                         return;
                     }
 
-                    new PunishmentHistoryGui(this.player, this.profile).open();
+                    new PunishmentHistoryGui(this.player, this.profile, null).open();
                 });
 
         GuiItem settingsOrIgnoreItem;

@@ -7,6 +7,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.gui.ProfilePanelGui;
 import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.TimeUtil;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,10 +25,13 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
 
     private final Profile profile;
 
-    public PunishmentHistoryGui(Player player, Profile profile) {
+    private final PunishmentType punishmentType;
+
+    public PunishmentHistoryGui(Player player, Profile profile, PunishmentType punishmentType) {
         super(player, "Historia kar " + profile.getName(), 6, true, true);
 
         this.profile = profile;
+        this.punishmentType = punishmentType;
     }
 
     @Override
@@ -43,12 +47,43 @@ public class PunishmentHistoryGui extends PluginPaginatedGui {
         );
         GuiItem nextButton = this.createNextPageButton(this.gui);
 
+        GuiItem sortItem = ItemBuilder.from(
+                (this.punishmentType == null ? Material.REDSTONE_BLOCK :
+                        (this.punishmentType == PunishmentType.BAN ? Material.RED_GLAZED_TERRACOTTA : Material.YELLOW_GLAZED_TERRACOTTA)
+                ))
+                .name(ComponentUtil.text("<gray>Sortowanie<dark_gray>: <light_purple>" +
+                        (this.punishmentType == null ? "Wszystkie" : (this.punishmentType == PunishmentType.BAN ? "Bany" : "Wyciszenia"))
+                ))
+                .lore(ComponentUtil.asList(
+                        "",
+                        StringFormatter.formatWarning() + " <gold>Kliknij<dark_gray>, <gray>aby zmienić sortowanie<dark_gray>.",
+                        ""
+                ))
+                .asGuiItem(event -> {
+                    if (this.punishmentType == null) {
+                        new PunishmentHistoryGui(this.player, this.profile, PunishmentType.BAN).open();
+                    } else if (this.punishmentType == PunishmentType.BAN) {
+                        new PunishmentHistoryGui(this.player, this.profile, PunishmentType.MUTE).open();
+                    } else {
+                        new PunishmentHistoryGui(this.player, this.profile, null).open();
+                    }
+                });
+
         this.gui.setItem(47, previousButton);
+        this.gui.setItem(48, sortItem);
         this.gui.setItem(49, backButton);
+        this.gui.setItem(50, sortItem);
         this.gui.setItem(51, nextButton);
 
         List<Punishment> punishments = this.profile.getPunishments()
                 .stream()
+                .filter(p -> {
+                    if (this.punishmentType == null) {
+                        return true;
+                    }
+
+                    return p.getType().equals(this.punishmentType);
+                })
                 .sorted(Comparator.comparing(Punishment::getCreatedAt).reversed())
                 .toList();
 
