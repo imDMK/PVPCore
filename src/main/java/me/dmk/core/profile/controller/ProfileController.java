@@ -2,11 +2,13 @@ package me.dmk.core.profile.controller;
 
 import com.mongodb.client.model.Filters;
 import lombok.RequiredArgsConstructor;
+import me.dmk.core.CorePlugin;
 import me.dmk.core.database.data.MongoDataService;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.cache.ProfileCache;
 import me.dmk.core.util.string.StringUtil;
 import org.bson.conversions.Bson;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -34,8 +36,10 @@ public class ProfileController extends ProfileCache {
         Optional<Profile> profileOptional = this.get(player.getUniqueId());
 
         if (profileOptional.isEmpty() && player.isOnline()) {
-            player.kickPlayer(
-                    StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego proflu&8.")
+            Bukkit.getScheduler().runTaskLater( //Player kick cannot be asynchronous.
+                    CorePlugin.getCorePlugin(),
+                    () -> player.kickPlayer(StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego proflu&8.")),
+                    1L
             );
         }
 
