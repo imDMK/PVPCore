@@ -98,7 +98,7 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
                                     .title("Zerwanie sojuszu z " + allianceGuild.getTag())
                                     .afterConfirm(e -> {
                                         Bukkit.dispatchCommand(this.player, "guild alliance break " + allianceGuild.getTag());
-                                        this.open();
+                                        this.close();
                                     })
                                     .afterCancel(e -> this.open())
                                     .open();

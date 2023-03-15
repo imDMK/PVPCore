@@ -129,7 +129,7 @@ public class GuildAllianceCommand {
             );
 
             this.notificationController.sendMessage(player,
-                    StringFormatter.formatError() + " <red>Anulowano <gray>zaproszenie do sojuszu gildii <light_purple>" + guild.getTag() + "<dark_gray>."
+                    StringFormatter.formatError() + " <red>Anulowano <gray>zaproszenie do sojuszu gildii <light_purple>" + otherGuild.getTag() + "<dark_gray>."
             );
             return;
         }

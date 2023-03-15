@@ -1,6 +1,7 @@
 package me.dmk.core.command.implementation.player;
 
 import dev.rollczi.litecommands.argument.Arg;
+import dev.rollczi.litecommands.command.async.Async;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.route.Route;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class IgnoreCommand {
     private final NotificationController notificationController;
     private final ProfileController profileController;
 
+    @Async
     @Execute(required = 0)
     void execute(Player player, Profile profile) {
         ProfileSettings profileSettings = profile.getProfileSettings();
