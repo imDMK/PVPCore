@@ -54,7 +54,7 @@ import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.board.BoardTask;
 import me.dmk.core.profile.settings.incognito.IncognitoController;
-import me.dmk.core.profile.task.ProfileTask;
+import me.dmk.core.profile.task.ProfileRefreshTask;
 import me.dmk.core.profile.task.SaveProfileTask;
 import me.dmk.core.task.executor.TaskExecutor;
 import me.dmk.core.task.executor.TaskExecutorImpl;
@@ -182,7 +182,7 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor = new TaskExecutorImpl();
 
         this.taskExecutor.runTimerAsync(new BoardTask(this.profileController), 5L, TimeUnit.SECONDS);
-        this.taskExecutor.runTimerAsync(new ProfileTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileController, this.taskExecutor), 1L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new ProfileRefreshTask(this.pluginConfiguration, this.miniMessage, this.notificationController, this.profileController, this.taskExecutor), 1L, TimeUnit.SECONDS);
         this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController), 1L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildSaveTask(this.guildController), 15L, TimeUnit.MINUTES);

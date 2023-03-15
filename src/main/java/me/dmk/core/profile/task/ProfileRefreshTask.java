@@ -1,6 +1,5 @@
 package me.dmk.core.profile.task;
 
-import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.profile.Profile;
@@ -18,14 +17,19 @@ import org.bukkit.entity.Player;
  * Created by DMK on 08.03.2023
  */
 
-@AllArgsConstructor
-public class ProfileTask implements Runnable {
+public class ProfileRefreshTask implements Runnable {
 
-    private final PluginConfiguration pluginConfiguration;
-    private final MiniMessage miniMessage;
-    private final NotificationController notificationController;
     private final ProfileController profileController;
-    private final TaskExecutor taskExecutor;
+
+    private final VanishRefresher vanishRefresher;
+    private final FightRefresher fightRefresher;
+
+    public ProfileRefreshTask(PluginConfiguration pluginConfiguration, MiniMessage miniMessage, NotificationController notificationController, ProfileController profileController, TaskExecutor taskExecutor) {
+        this.profileController = profileController;
+
+        this.vanishRefresher = new VanishRefresher(notificationController);
+        this.fightRefresher = new FightRefresher(pluginConfiguration, miniMessage, notificationController, taskExecutor);
+    }
 
     @Override
     public void run() {
@@ -35,13 +39,11 @@ public class ProfileTask implements Runnable {
             Fight fight = profile.getFight();
 
             if (settings.isVanish()) {
-                new VanishRefresher(this.notificationController)
-                        .refresh(player, profile);
+                this.vanishRefresher.refresh(player, profile);
             }
 
             if (fight.hasFight() || fight.hadFight()) {
-                new FightRefresher(this.pluginConfiguration, this.miniMessage,  this.notificationController, this.taskExecutor)
-                        .refresh(player, profile);
+                this.fightRefresher.refresh(player, profile);
             }
         }
     }
