@@ -11,6 +11,7 @@ import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.settings.nametag.ColorNameType;
 import me.dmk.core.profile.settings.nametag.CustomSuffixType;
 import me.dmk.core.profile.statistics.ProfileStatistics;
+import me.dmk.core.util.string.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -20,7 +21,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by DMK on 29.12.2022
@@ -40,17 +40,25 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
 
         Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
-        String name = player.getName();
 
-        Profile profile = this.profileController.findByUUIDOrElseCreate(uuid, name);
+        try {
+            this.onProfileJoin(player);
+        } catch (Exception exception) {
+            player.kickPlayer(
+                    StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego profilu<dark_gray>.")
+            );
+        }
+    }
+
+    private void onProfileJoin(Player player) {
+        Profile profile = this.profileController.findByUUIDOrElseCreate(player.getUniqueId(), player.getName());
         ProfileStatistics statistics = profile.getProfileStatistics();
 
         profile.setLastJoin(new Date());
         statistics.increaseEntrances();
 
-        if (!name.equals(profile.getName())) {
-            profile.setName(name);
+        if (!player.getName().equals(profile.getName())) {
+            profile.setName(player.getName());
         }
 
         if (statistics.getLevel() != player.getLevel()) {
