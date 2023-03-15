@@ -1,4 +1,4 @@
-package me.dmk.core.listener.connection;
+package me.dmk.core.listener.player.connection;
 
 import lombok.AllArgsConstructor;
 import me.dmk.core.chat.notification.NotificationController;
@@ -67,8 +67,10 @@ public class PlayerJoinListener implements Listener {
     }
 
     private void refreshVanish(Player player, Profile profile) {
-        Bukkit.getOnlinePlayers().forEach(online -> this.profileController.get(online.getUniqueId())
-                .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile))
+        Bukkit.getOnlinePlayers().forEach(online ->
+                this.profileController.get(online.getUniqueId()).ifPresent(onlineProfile ->
+                        profile.refreshVanish(player, online, onlineProfile)
+                )
         );
     }
 

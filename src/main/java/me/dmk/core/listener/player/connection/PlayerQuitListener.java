@@ -1,4 +1,4 @@
-package me.dmk.core.listener.connection;
+package me.dmk.core.listener.player.connection;
 
 import lombok.AllArgsConstructor;
 import me.dmk.core.profile.Profile;

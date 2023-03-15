@@ -38,12 +38,14 @@ public class KitGui extends PluginGui {
 
         int profileKitLevel = statistics.getKitLevel();
 
-        for (Kit kit : this.kitMap.getIntegerKitMap().values()) {
+        for (Kit kit : this.kitMap.getKits()) {
             GuiItem kitItem = ItemBuilder.from(kit.getIcon())
                     .name(ComponentUtil.text(kit.getName()))
                     .lore(ComponentUtil.asList(kit.getLore()))
                     .glow(kit.getLevel() == profileKitLevel)
-                    .asGuiItem(event -> new KitPrewiewGui(this.player, this.profile, kit).open());
+                    .asGuiItem(event ->
+                            new KitPrewiewGui(this.player, this.profile, kit).open()
+                    );
 
             this.gui.addItem(kitItem);
         }

@@ -1,5 +1,6 @@
 package me.dmk.core.kit;
 
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.dmk.core.configuration.KitConfiguration;
@@ -7,9 +8,9 @@ import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.PlayerUtil;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by DMK on 21.02.2023
@@ -21,7 +22,7 @@ public class KitMap {
     private final KitConfiguration kitConfiguration;
 
     @Getter
-    private final Map<Integer, Kit> integerKitMap = new ConcurrentHashMap<>();
+    private final Map<Integer, Kit> integerKitMap = Maps.newConcurrentMap();
 
     public void loadKitsFromConfiguration() {
         this.kitConfiguration.getKitList().forEach(kit ->
@@ -42,5 +43,9 @@ public class KitMap {
 
     public Optional<Kit> get(int level) {
         return Optional.ofNullable(this.integerKitMap.get(level));
+    }
+
+    public Collection<Kit> getKits() {
+        return this.integerKitMap.values();
     }
 }

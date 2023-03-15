@@ -1,4 +1,4 @@
-package me.dmk.core.listener;
+package me.dmk.core.listener.player;
 
 import lombok.AllArgsConstructor;
 import me.dmk.core.CorePlugin;
