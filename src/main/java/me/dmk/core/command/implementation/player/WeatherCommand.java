@@ -4,6 +4,7 @@ import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
 import me.dmk.core.gui.weather.WeatherGui;
+import me.dmk.core.profile.Profile;
 import org.bukkit.entity.Player;
 
 /**
@@ -15,7 +16,7 @@ import org.bukkit.entity.Player;
 public class WeatherCommand {
 
     @Execute
-    void execute(Player player) {
-        new WeatherGui(player).open();
+    void execute(Player player, Profile profile) {
+        new WeatherGui(player, profile).open();
     }
 }

@@ -61,6 +61,14 @@ public class PlayerJoinListener implements Listener {
             profile.setName(player.getName());
         }
 
+        if (profile.getPlayerTime() != 0L) {
+            player.setPlayerTime(profile.getPlayerTime(), false);
+        }
+
+        if (profile.getWeatherType() != null) {
+            player.setPlayerWeather(profile.getWeatherType());
+        }
+
         if (statistics.getLevel() != player.getLevel()) {
             player.setLevel(statistics.getLevel());
         }

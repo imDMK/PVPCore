@@ -15,6 +15,7 @@ import me.dmk.core.profile.punishment.PunishmentType;
 import me.dmk.core.profile.settings.ProfileSettings;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import org.bukkit.Bukkit;
+import org.bukkit.WeatherType;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
@@ -45,8 +46,12 @@ public class Profile implements Serializable {
 
     private String guildTag = null;
 
+    private long playerTime;
+    private WeatherType weatherType;
+
     private final transient Cache<UUID, Boolean> friendInvitations = Caffeine.newBuilder()
             .expireAfterWrite(5L, TimeUnit.MINUTES)
+            .expireAfterAccess(5L, TimeUnit.MINUTES)
             .build();
 
     private final transient Fight fight = new Fight();
