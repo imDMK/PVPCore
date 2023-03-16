@@ -52,9 +52,9 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
         this.gui.setItem(49, backButton);
         this.gui.setItem(51, nextButton);
 
-        boolean isMember = this.guild.isMember(this.player.getUniqueId());
         boolean canManageAlliances = this.guild.isLeader(this.player.getUniqueId())
-                || isMember && this.guild.getGuildRank(this.player.getUniqueId()).isCanManageAlliances();
+                || this.guild.isMember(this.player.getUniqueId())
+                && this.guild.getGuildRank(this.player.getUniqueId()).isCanManageAlliances();
 
         for (String guildTag : this.guild.getAlliances()) {
             Optional<Guild> allianceGuildOptional = this.guildController.getOrElseLoad(guildTag);
@@ -82,10 +82,6 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + allianceGuild.getTag()))
                     .lore(ComponentUtil.asList(lore))
                     .asGuiItem(event -> {
-                        if (!isMember) {
-                            return;
-                        }
-
                         if (!canManageAlliances) {
                             return;
                         }
