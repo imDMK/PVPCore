@@ -321,7 +321,8 @@ public class CorePlugin extends JavaPlugin {
                         new ResetStatisticsCommand(this.pluginConfiguration,  this.notificationController,  this.profileController, this.taskExecutor),
                         new SidebarCommand(this.notificationController),
                         new SpawnCommand(this.notificationController, this.teleportMap),
-                        new TopsCommand()
+                        new TopsCommand(),
+                        new WeatherCommand()
                 )
                 .register();
     }
