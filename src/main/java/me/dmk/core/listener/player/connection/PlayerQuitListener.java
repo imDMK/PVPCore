@@ -28,14 +28,16 @@ public class PlayerQuitListener implements Listener {
 
         Player player = event.getPlayer();
 
-        this.profileController.get(player.getUniqueId()).ifPresent(profile -> this.onProfileQuit(player, profile));
+        this.profileController.get(player.getUniqueId())
+                .ifPresent(profile -> this.onProfileQuit(player, profile));
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerKick(PlayerKickEvent event) {
         Player player = event.getPlayer();
 
-        this.profileController.get(player.getUniqueId()).ifPresent(profile -> this.onProfileQuit(player, profile));
+        this.profileController.get(player.getUniqueId())
+                .ifPresent(profile -> this.onProfileQuit(player, profile));
     }
 
     private void onProfileQuit(Player player, Profile profile) {

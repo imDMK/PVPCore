@@ -45,8 +45,10 @@ public class PlayerJoinListener implements Listener {
             this.onProfileJoin(player);
         } catch (Exception exception) {
             player.kickPlayer(
-                    StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego profilu<dark_gray>.")
+                    StringUtil.colorLegacy("&cWystąpił błąd podczas ładowania twojego profilu&8.")
             );
+
+            exception.printStackTrace();
         }
     }
 
