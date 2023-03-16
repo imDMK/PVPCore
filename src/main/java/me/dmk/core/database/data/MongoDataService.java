@@ -1,7 +1,6 @@
 package me.dmk.core.database.data;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.DeleteOptions;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.RequiredArgsConstructor;
 import me.dmk.core.database.MongoClientService;
@@ -82,7 +81,7 @@ public class MongoDataService {
             return;
         }
 
-        mongoCollection.deleteOne(filters, new DeleteOptions());
+        mongoCollection.deleteOne(filters);
     }
 
     public <V> Optional<V> find(Bson filters, Class<V> vClass) {
@@ -120,8 +119,8 @@ public class MongoDataService {
         MongoCollection<Document> mongoCollection = this.getCollection(vClass);
 
         return mongoCollection.find()
-                .sort(sort)
                 .limit(limit)
+                .sort(sort)
                 .map(document -> this.gsonSerializer.deserialize(document.toJson(), vClass))
                 .into(new ArrayList<>());
     }
