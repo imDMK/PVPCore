@@ -47,7 +47,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(board.isEnabled()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(board.isEnabled())
@@ -61,7 +61,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isSounds()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isSounds())
@@ -74,7 +74,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zmiana nametagu"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu zmiany nametagu<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do menu zmiany nametagu<dark_gray>.",
                         ""
                 ))
                 .glow(colorNameType != ColorNameType.DEAFULT || customSuffixType != CustomSuffixType.NONE)
@@ -91,7 +91,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(incognitoSettings.isEnabled()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -109,7 +109,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Wiadomości"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu ustawień wiadomości<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do menu ustawień wiadomości<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event ->
@@ -120,7 +120,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Zablokowani gracze"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu listy ignorowanych graczy<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do menu listy ignorowanych graczy<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -137,7 +137,7 @@ public class ProfileSettingsGui extends PluginPaginatedGui {
         GuiItem backButton = this.createBackButton(event ->
                         new ProfilePanelGui(this.player, this.profile).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do panelu gracza<dark_gray>.",
                 ""
         );
 

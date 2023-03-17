@@ -36,7 +36,7 @@ public class GuildTopPaymentsGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new GuildTreasuryGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildii<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildii<dark_gray>.",
                 ""
         );
 

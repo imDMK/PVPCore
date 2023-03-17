@@ -33,7 +33,7 @@ public class MessagesSettingsGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isPrivateMessages()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isPrivateMessages())
@@ -47,7 +47,7 @@ public class MessagesSettingsGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isAchievementsMessages()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isAchievementsMessages())
@@ -61,7 +61,7 @@ public class MessagesSettingsGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isDeathMessages()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isDeathMessages())
@@ -75,7 +75,7 @@ public class MessagesSettingsGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isSystemMessages()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isSystemMessages())
@@ -89,7 +89,7 @@ public class MessagesSettingsGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isGuildMessages()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isGuildMessages())
@@ -103,7 +103,7 @@ public class MessagesSettingsGui extends PluginGui {
                 .lore(ComponentUtil.asList(
                         "",
                         this.circle + " <gray>Aktualny status<dark_gray>: " + StringFormatter.formatBoolean(profileSettings.isGlobalMessages()),
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić status<dark_gray>.",
                         ""
                 ))
                 .glow(profileSettings.isGlobalMessages())
@@ -115,7 +115,7 @@ public class MessagesSettingsGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new ProfileSettingsGui(this.player, this.profile).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień profilu<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do ustawień profilu<dark_gray>.",
                 ""
         );
 

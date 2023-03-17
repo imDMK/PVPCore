@@ -49,7 +49,7 @@ public class GuildTreasuryGui extends PluginGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Topka wpłaconych monet"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -88,7 +88,7 @@ public class GuildTreasuryGui extends PluginGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Historia wpłaconych monet"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do topki wpłaconych monet<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -105,7 +105,7 @@ public class GuildTreasuryGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
 

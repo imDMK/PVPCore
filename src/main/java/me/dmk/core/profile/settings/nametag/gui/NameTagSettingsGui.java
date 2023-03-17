@@ -42,7 +42,7 @@ public class NameTagSettingsGui extends PluginGui {
                         this.circle + " <gray>Aktualny kolor nicku<dark_gray>:",
                         this.circle + " " + colorNameType.getFormat() + this.profile.getName(),
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić kolor nicku",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić kolor nicku",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -68,7 +68,7 @@ public class NameTagSettingsGui extends PluginGui {
                         this.circle + " <gray>Aktualny suffix<dark_gray>:",
                         this.circle + " " + profileSettings.getColorName().getFormat() + profile.getName() + " " + customSuffixType.getFormat(),
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby zmienić suffix",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby zmienić suffix",
                         ""
                 ))
                 .asGuiItem(event -> {

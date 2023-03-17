@@ -93,7 +93,7 @@ public class GuildPanelGui extends PluginGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Członkowie"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy członków gildii<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do listy członków gildii<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event ->
@@ -104,7 +104,7 @@ public class GuildPanelGui extends PluginGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Rangi"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy rang gildyjnych<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do listy rang gildyjnych<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event ->
@@ -115,7 +115,7 @@ public class GuildPanelGui extends PluginGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Skarbiec gildijny"))
                 .lore(ComponentUtil.asList(
                         "",
-                        isMember ? this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do menu skarbca gildyjnego<dark_gray>." : this.circle + " <gray>Gildia posiada <light_purple>" + guildTreasury.getCoins() + " <gray>monet w skarbcu<dark_gray>.",
+                        isMember ? this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do menu skarbca gildyjnego<dark_gray>." : this.circle + " <gray>Gildia posiada <light_purple>" + guildTreasury.getCoins() + " <gray>monet w skarbcu<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -130,7 +130,7 @@ public class GuildPanelGui extends PluginGui {
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Sojusznicy"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść do listy sojuszów gildii<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść do listy sojuszów gildii<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> {
@@ -149,7 +149,7 @@ public class GuildPanelGui extends PluginGui {
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Usuń gildię"))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>usunąć gildię<dark_gray>.",
+                            this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <red>usunąć gildię<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event ->
@@ -162,7 +162,7 @@ public class GuildPanelGui extends PluginGui {
                     .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + "Opuść gildię"))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <red>opuścić gildię<dark_gray>.",
+                            this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <red>opuścić gildię<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event ->

@@ -35,7 +35,7 @@ public class KitPrewiewGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new KitGui(this.player, this.profile).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do listy zestawów<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do listy zestawów<dark_gray>.",
                 ""
         );
 

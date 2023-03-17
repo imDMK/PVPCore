@@ -35,7 +35,7 @@ public class TimeSpentTopsGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new TopsGui(this.player).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""
         );
 

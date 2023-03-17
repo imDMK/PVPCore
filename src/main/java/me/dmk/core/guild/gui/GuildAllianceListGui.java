@@ -43,7 +43,7 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
         GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
         GuiItem nextButton = this.createNextPageButton(this.gui);
@@ -73,8 +73,8 @@ public class GuildAllianceListGui extends PluginPaginatedGui {
 
             if (canManageAlliances) {
                 lore.addAll(Arrays.asList(
-                        this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
-                        this.warning + " <light_purple>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>."
+                        this.warning + " <gold>Kliknij LPM<dark_gray>, <gray>aby przejść do panelu tej gildii<dark_gray>.",
+                        this.warning + " <gold>Kliknij SHIFT + PPM<dark_gray>, <gray>aby <red>zerwać sojusz<dark_gray>."
                 ));
             }
 

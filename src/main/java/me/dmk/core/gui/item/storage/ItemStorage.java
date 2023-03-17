@@ -23,7 +23,7 @@ public class ItemStorage {
                 .name(ComponentUtil.text("<light_purple>Następna strona"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść na następną stronę<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść na następną stronę<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> gui.next());
@@ -34,7 +34,7 @@ public class ItemStorage {
                 .name(ComponentUtil.text("<light_purple>Poprzednia strona"))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby przejść na poprzednią stronę<dark_gray>.",
+                        this.warning + " <gold>Kliknij<dark_gray>, <gray>aby przejść na poprzednią stronę<dark_gray>.",
                         ""
                 ))
                 .asGuiItem(event -> gui.previous());

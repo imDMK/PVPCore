@@ -36,7 +36,7 @@ public class GuildPaymentsGui extends PluginPaginatedGui {
         GuiItem backButton = this.createBackButton(event ->
                         new GuildTreasuryGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildyjnego<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do menu skarbca gildyjnego<dark_gray>.",
                 ""
         );
         GuiItem nextButton = this.createNextPageButton(this.gui);

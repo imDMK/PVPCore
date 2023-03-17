@@ -91,7 +91,7 @@ public class ProfilePanelGui extends PluginGui {
                         SymbolUtil.getSword("<red>") + " <gray>Aktualna seria zabójstw<dark_gray>: <red>" + statistics.getKillStreak(),
                         SymbolUtil.getSword("<red>") + " <gray>Najwyższa seria zabójstw<dark_gray>: <red>" + statistics.getHighestKillStreak(),
                         SymbolUtil.getDeath("<gray>") + " <gray>Śmierci<dark_gray>: <gray>" + statistics.getDeaths(),
-                        "" + (isSelf ? "<!italic>" + this.warning + " <light_purple>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
+                        "" + (isSelf ? "<!italic>" + this.warning + " <gold>Kilknij<dark_gray>, <gray>aby <light_purple>zresetować <gray>swoje statystyki<dark_gray>." : "")
                 ))
                 .asGuiItem(event -> {
                     if (!isSelf) {

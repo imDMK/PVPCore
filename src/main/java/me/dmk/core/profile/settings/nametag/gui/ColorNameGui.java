@@ -197,7 +197,7 @@ public class ColorNameGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new NameTagSettingsGui(this.player, this.profile).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do ustawień nametagu<dark_gray>.",
                 ""
         );
 

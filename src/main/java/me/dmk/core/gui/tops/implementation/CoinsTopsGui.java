@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CoinsTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();;
+    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public CoinsTopsGui(Player player) {
         super(player, "Topka monet", 5, true, true);
@@ -33,7 +33,7 @@ public class CoinsTopsGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new TopsGui(this.player).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do menu topek<dark_gray>.",
                 ""
         );
 

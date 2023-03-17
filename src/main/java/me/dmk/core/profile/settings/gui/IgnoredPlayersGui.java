@@ -37,7 +37,7 @@ public class IgnoredPlayersGui extends PluginPaginatedGui {
         GuiItem backButton = this.createBackButton(event ->
                         new ProfileSettingsGui(this.player, this.profile).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do ustawień<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do ustawień<dark_gray>.",
                 ""
         );
         GuiItem nextButton = this.createNextPageButton(this.gui);
@@ -53,7 +53,7 @@ public class IgnoredPlayersGui extends PluginPaginatedGui {
                     .name(ComponentUtil.text("<light_purple>" + offlinePlayer.getName()))
                     .lore(ComponentUtil.asList(
                             "",
-                            this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby <green>odblokować <gray>tego gracza<dark_gray>.",
+                            this.warning + " <gold>Kliknij<dark_gray>, <gray>aby <green>odblokować <gray>tego gracza<dark_gray>.",
                             ""
                     ))
                     .asGuiItem(event -> {

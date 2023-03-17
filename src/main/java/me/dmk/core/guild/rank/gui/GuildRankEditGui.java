@@ -231,7 +231,7 @@ public class GuildRankEditGui extends PluginGui {
         GuiItem backButton = this.createBackButton(event ->
                         new GuildRankListGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do listy rang<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do listy rang<dark_gray>.",
                 ""
         );
 

@@ -53,7 +53,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
         GuiItem backButton = this.createBackButton(event ->
                         new GuildPanelGui(this.player, this.profile, this.guild).open(),
                 "",
-                this.warning + " <light_purple>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
+                this.warning + " <gold>Kliknij<dark_gray>, <gray>aby powrócić do panelu gildii<dark_gray>.",
                 ""
         );
         GuiItem nextButton = this.createNextPageButton(this.gui);
@@ -73,14 +73,14 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                     this.circle + " <gray>Ranga gildyjna<dark_gray>: <light_purple>" + guildRank.getName(),
                     this.circle + " <gray>Data dołączenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(guildMember.getJoinDate().toInstant()),
                     "",
-                    this.warning + " <light_purple>Kliknij LPM<dark_gray>, <gray>aby otworzyć profil tego gracza<dark_gray>.",
+                    this.warning + " <gold>Kliknij LPM<dark_gray>, <gray>aby otworzyć profil tego gracza<dark_gray>.",
                     ""
             ));
 
             if (canManageMembers) {
                 memberItemLore.addAll(Arrays.asList(
-                        this.warning + " <light_purple>Kilknij LPM + SHIFT<dark_gray>, <gray>aby <red>zarządzać rangami <gray>gracza gildii<dark_gray>.",
-                        this.warning + " <light_purple>Kilknij PPM + SHIFT<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>.",
+                        this.warning + " <gold>Kilknij LPM + SHIFT<dark_gray>, <gray>aby <red>zarządzać rangami <gray>gracza gildii<dark_gray>.",
+                        this.warning + " <gold>Kilknij PPM + SHIFT<dark_gray>, <gray>aby <red>wyrzucić <gray>gracza z gildii<dark_gray>.",
                         ""
                 ));
             }
@@ -111,7 +111,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                                 if (isSelf) {
                                     new BarrierBuilder()
                                             .name("<red>Zwariowałeś? Nie możesz wyrzucić samego siebie<dark_gray>...")
-                                            .lore(this.warning + " <green>Aby opuścić gildię, użyj komendy /guild leave")
+                                            .lore(this.warning + " <gray>Aby opuścić gildię, użyj komendy /guild leave")
                                             .updateItem(this.gui, event.getSlot());
                                     return;
                                 }
@@ -124,7 +124,7 @@ public class GuildMemberListGui extends PluginPaginatedGui {
                                 }
 
                                 new ConfirmationGui(this.player)
-                                        .title("Potwierdź wyrzucenie " + guildMemberPlayer.getName())
+                                        .title("Wyrzucenie " + guildMemberPlayer.getName())
                                         .afterConfirm(e -> {
                                             Bukkit.dispatchCommand(this.player, "guild kick " + guildMemberPlayer.getName());
                                             this.open();

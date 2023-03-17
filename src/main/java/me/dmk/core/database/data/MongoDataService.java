@@ -28,7 +28,8 @@ public class MongoDataService {
 
     public MongoCollection<Document> getCollection(Class<?> clazz) {
         String collection = this.collections.computeIfAbsent(
-                clazz, c -> clazz.isAnnotationPresent(DataEntity.class) ? clazz.getAnnotation(DataEntity.class).collection() : clazz.getSimpleName()
+                clazz,
+                c -> clazz.isAnnotationPresent(DataEntity.class) ? clazz.getAnnotation(DataEntity.class).collection() : clazz.getSimpleName()
         );
 
         return this.mongoClientService.getMongoDatabase().getCollection(collection);
