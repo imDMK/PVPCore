@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CoinsTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public CoinsTopsGui(Player player) {
         super(player, "Topka monet", 5, true, true);

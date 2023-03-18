@@ -22,7 +22,7 @@ import java.util.List;
 
 public class PointsTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public PointsTopsGui(Player player) {
         super(player, "Topka punktów rankingowych", 5, true, true);

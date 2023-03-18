@@ -24,7 +24,7 @@ import java.util.List;
 
 public class TimeSpentTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public TimeSpentTopsGui(Player player) {
         super(player, "Topka spędzonego czasu", 5, true, true);

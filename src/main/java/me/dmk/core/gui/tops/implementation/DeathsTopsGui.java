@@ -22,7 +22,7 @@ import java.util.List;
 
 public class DeathsTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public DeathsTopsGui(Player player) {
         super(player, "Topka śmierci", 5, true, true);

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class EntrancesTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public EntrancesTopsGui(Player player) {
         super(player, "Topka wejść na serwer", 5, true, true);

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class HighestKillStreakTopsGui extends PluginGui {
 
-    public final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
+    private final ProfileController profileController = CorePlugin.getCorePlugin().getProfileController();
 
     public HighestKillStreakTopsGui(Player player) {
         super(player, "Topka największych serii zabójstw", 5, true, true);
