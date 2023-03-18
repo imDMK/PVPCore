@@ -1,5 +1,6 @@
 package me.dmk.core.task;
 
+import lombok.Getter;
 import lombok.Setter;
 import me.dmk.core.CorePlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,9 +11,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by DMK on 09.02.2023
  */
 
-@Setter
 public abstract class BukkitTask {
 
+    @Getter @Setter
     private boolean canceled;
 
     public BukkitTask(long initialDelay, long time) {
@@ -36,7 +37,11 @@ public abstract class BukkitTask {
             }
         };
 
-        bukkitRunnable.runTaskTimerAsynchronously(CorePlugin.getCorePlugin(), initialDelay, 20L);
+        bukkitRunnable.runTaskTimerAsynchronously(
+                CorePlugin.getCorePlugin(),
+                initialDelay,
+                20L
+        );
     }
 
     public abstract void onRun(long time);
