@@ -5,6 +5,7 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.chat.notification.NotificationType;
+import me.dmk.core.util.string.StringFormatter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import panda.std.Result;
@@ -23,7 +24,7 @@ public class NotificationTypeArgument implements OneArgument<NotificationType> {
     private final Component errorMessage;
 
     public NotificationTypeArgument(MiniMessage miniMessage) {
-        this.errorMessage = miniMessage.deserialize("");
+        this.errorMessage = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłowy typ wiadomości<dark_gray>.");
     }
 
     @Override
