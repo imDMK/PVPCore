@@ -43,7 +43,7 @@ public class GuildArgument implements OneArgument<Guild> {
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
         return Suggestion.of(
-                this.guildController.gettagCache().asMap().keySet()
+                this.guildController.getTagCache().asMap().keySet()
         );
     }
 }
