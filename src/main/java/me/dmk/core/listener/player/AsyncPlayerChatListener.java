@@ -86,9 +86,12 @@ public class AsyncPlayerChatListener implements Listener {
                         + message.replaceFirst((isAllianceMessage ? "!!" : "!"), "");
 
                 if (isAllianceMessage) {
-                    guild.getAlliances().forEach(guildTag -> this.guildController.getByTag(guildTag).ifPresent(allianceGuild ->
-                            this.notificationController.sendMessage(allianceGuild, guildMessage))
-                    );
+                    for (String allianceTag : guild.getAlliances()) {
+                        this.guildController.getByTag(allianceTag)
+                                .ifPresent(allianceGuild ->
+                                        this.notificationController.sendMessage(allianceGuild, guildMessage)
+                                );
+                    }
                 }
 
                 this.notificationController.sendMessage(guild, guildMessage);
