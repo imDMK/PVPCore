@@ -16,35 +16,35 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class ProfileCache {
 
-    private final Cache<UUID, Profile> uuidProfileCache = Caffeine.newBuilder()
+    private final Cache<UUID, Profile> uuidCache = Caffeine.newBuilder()
             .expireAfterAccess(1L, TimeUnit.DAYS)
             .expireAfterWrite(1L, TimeUnit.DAYS)
             .build();
 
-    private final Cache<String, Profile> nameProfileCache = Caffeine.newBuilder()
+    private final Cache<String, Profile> nameCache = Caffeine.newBuilder()
             .expireAfterAccess(1L, TimeUnit.DAYS)
             .expireAfterWrite(1L, TimeUnit.DAYS)
             .build();
 
     public Optional<Profile> get(UUID uuid) {
         return Optional.ofNullable(
-                this.uuidProfileCache.asMap().get(uuid)
+                this.uuidCache.asMap().get(uuid)
         );
     }
 
     public Optional<Profile> get(String name) {
         return Optional.ofNullable(
-                this.nameProfileCache.asMap().get(name)
+                this.nameCache.asMap().get(name)
         );
     }
 
     public void add(Profile profile) {
-        this.uuidProfileCache.put(profile.getUuid(), profile);
-        this.nameProfileCache.put(profile.getName(), profile);
+        this.uuidCache.put(profile.getUuid(), profile);
+        this.nameCache.put(profile.getName(), profile);
     }
 
     public void remove(Profile profile) {
-        this.uuidProfileCache.asMap().remove(profile.getUuid());
-        this.nameProfileCache.asMap().remove(profile.getName());
+        this.uuidCache.asMap().remove(profile.getUuid());
+        this.nameCache.asMap().remove(profile.getName());
     }
 }

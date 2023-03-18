@@ -16,26 +16,26 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class GuildCache {
 
-    private final Cache<String, Guild> tagGuildCache = Caffeine.newBuilder()
+    private final Cache<String, Guild> tagCache = Caffeine.newBuilder()
             .expireAfterWrite(1L, TimeUnit.DAYS)
             .expireAfterAccess(1L, TimeUnit.DAYS)
             .build();
 
     public Optional<Guild> getByTag(String tag) {
         return Optional.ofNullable(
-                this.tagGuildCache.asMap().get(tag)
+                this.tagCache.asMap().get(tag)
         );
     }
 
     public void add(Guild guild) {
-        this.tagGuildCache.put(guild.getTag(), guild);
+        this.tagCache.put(guild.getTag(), guild);
     }
 
     public void remove(Guild guild) {
-        this.tagGuildCache.asMap().remove(guild.getTag());
+        this.tagCache.asMap().remove(guild.getTag());
     }
 
     public Collection<Guild> getGuilds() {
-        return this.tagGuildCache.asMap().values();
+        return this.tagCache.asMap().values();
     }
 }

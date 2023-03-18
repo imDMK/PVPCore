@@ -42,7 +42,7 @@ public class ProfileArgument implements OneArgument<Profile> {
     @Override
     public List<Suggestion> suggest(LiteInvocation invocation) {
         return Suggestion.of(
-                this.profileController.getNameProfileCache().asMap().keySet()
+                this.profileController.getnameCache().asMap().keySet()
         );
     }
 }

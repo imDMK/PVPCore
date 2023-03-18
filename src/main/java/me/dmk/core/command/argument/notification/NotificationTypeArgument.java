@@ -29,9 +29,8 @@ public class NotificationTypeArgument implements OneArgument<NotificationType> {
 
     @Override
     public Result<NotificationType, ?> parse(LiteInvocation liteInvocation, String argument) {
-        return Result.supplyThrowing(IllegalArgumentException.class,
-                        () -> NotificationType.valueOf(argument)
-                )
+        return Result
+                .supplyThrowing(IllegalArgumentException.class, () -> NotificationType.valueOf(argument))
                 .mapErr(error -> this.errorMessage);
     }
 
