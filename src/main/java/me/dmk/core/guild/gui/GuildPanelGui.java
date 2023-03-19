@@ -45,23 +45,24 @@ public class GuildPanelGui extends PluginGui {
         boolean isLeader = this.guild.isLeader(this.player.getUniqueId());
         boolean isMember = this.guild.isMember(this.player.getUniqueId());
 
-        String creatorName = Optional.ofNullable(Bukkit.getPlayer(this.guild.getCreator()))
-                .map(Player::getName)
+        String creatorName = Optional.ofNullable(
+                    Bukkit.getOfflinePlayer(this.guild.getCreator()).getName()
+                )
                 .orElse("Brak");
 
-        String leader = Optional.ofNullable(Bukkit.getPlayer(this.guild.getLeader()))
-                .map(Player::getName)
+        String leader = Optional.ofNullable(
+                    Bukkit.getOfflinePlayer(this.guild.getLeader()).getName()
+                )
                 .orElse("Brak");
 
         GuiItem beaconItem = ItemBuilder.from(Material.BEACON)
                 .name(ComponentUtil.text(StringFormatter.formatPurpleGradient() + this.guild.getTag()))
                 .lore(ComponentUtil.asList(
                         "",
-                        this.circle + " <gray>Nazwa<dark_gray><dark_gray>: <light_purple>" + guild.getName(),
+                        this.circle + " <gray>Nazwa<dark_gray><dark_gray>: <light_purple>" + this.guild.getName(),
                         this.circle + " <gray>Założyciel<dark_gray>: <light_purple>" + creatorName,
-                        this.circle + " <gray>Data założenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(this.guild.getCreatedAt().toInstant()),
-                        "",
                         this.circle + " <gray>Lider<dark_gray>: <light_purple>" + leader,
+                        this.circle + " <gray>Data założenia<dark_gray>: <light_purple>" + TimeUtil.formatDate(this.guild.getCreatedAt().toInstant()),
                         ""
                 ))
                 .asGuiItem();

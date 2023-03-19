@@ -88,7 +88,11 @@ public class ConfirmationGui {
         this.gui.setItem(32, cancelItem);
 
         if (async) { //opening inventory cannot be async
-            Bukkit.getScheduler().runTaskLater(CorePlugin.getCorePlugin(), () -> this.gui.open(this.player), 1L);
+            Bukkit.getScheduler().runTaskLater(
+                    CorePlugin.getCorePlugin(),
+                    () -> this.gui.open(this.player),
+                    1L
+            );
         } else {
             this.gui.open(this.player);
         }

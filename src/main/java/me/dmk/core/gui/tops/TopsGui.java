@@ -21,7 +21,9 @@ public class TopsGui extends PluginGui {
     public void build() {
         GuiItem entrancesItem = ItemBuilder.from(Material.DARK_OAK_DOOR)
                 .name(ComponentUtil.text("<light_purple>Topka wejść na serwer"))
-                .asGuiItem(event -> new EntrancesTopsGui(this.player).open());
+                .asGuiItem(event ->
+                        new EntrancesTopsGui(this.player).open()
+                );
 
         GuiItem timeSpentItem = ItemBuilder.from(Material.CLOCK)
                 .name(ComponentUtil.text("<gold>Topka spędzonego czasu"))
