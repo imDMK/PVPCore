@@ -31,20 +31,20 @@ public class LuckPermsListener {
         User user = (User) event.getTarget();
         Node node = event.getNode();
 
-        this.taskExecutor.runAsync(() -> {
-            Player player = Bukkit.getServer().getPlayer(user.getUniqueId());
-            if (player == null) {
-                return;
-            }
+        if (node instanceof InheritanceNode) {
+            this.taskExecutor.runAsync(() -> {
+                Player player = Bukkit.getServer().getPlayer(user.getUniqueId());
+                if (player == null) {
+                    return;
+                }
 
-            if (node instanceof InheritanceNode) {
                 String group = ((InheritanceNode) node).getGroupName();
 
                 this.notificationController.sendMessage(player,
-                        StringFormatter.formatWarning() + " <gray>Twój profil otrzymał nową grupę <light_purple>" + group.toUpperCase() + " <gray>na czas " +  StringFormatter.formatGreenGradient()  + (node.hasExpiry() ? TimeUtil.instantToString(node.getExpiry(), true) : "permanentny") + "</gradient><dark_gray>."
+                        StringFormatter.formatWarning() + " <gray>Twój profil otrzymał nową grupę <light_purple>" + group.toUpperCase() + " <gray>na czas " + StringFormatter.formatGreenGradient() + (node.hasExpiry() ? TimeUtil.instantToString(node.getExpiry(), true) : "permanentny") + "</gradient><dark_gray>."
                 );
-            }
-        });
+            });
+        }
     }
 
     public void onNodeRemove(NodeRemoveEvent event) {
@@ -55,14 +55,14 @@ public class LuckPermsListener {
         User user = (User) event.getTarget();
         Node node = event.getNode();
 
-        this.taskExecutor.runAsync(() -> {
-            Player player = Bukkit.getServer().getPlayer(user.getUniqueId());
-            if (player == null) {
+        if (node instanceof InheritanceNode) {
+            if (!node.hasExpired()) {
                 return;
             }
 
-            if (node instanceof InheritanceNode) {
-                if (!node.hasExpired()) {
+            this.taskExecutor.runAsync(() -> {
+                Player player = Bukkit.getServer().getPlayer(user.getUniqueId());
+                if (player == null) {
                     return;
                 }
 
@@ -71,7 +71,7 @@ public class LuckPermsListener {
                 this.notificationController.sendMessage(player,
                         StringFormatter.formatWarning() + " <gray>Twoja grupa <light_purple>" + group.toUpperCase() + " " + StringFormatter.formatRedGradient() + "wygasła</gradient><dark_gray>."
                 );
-            }
-        });
+            });
+        }
     }
 }
