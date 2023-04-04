@@ -151,7 +151,7 @@ public class AsyncPlayerChatListener implements Listener {
                     return;
                 }
 
-                String formatGuildTag = StringFormatter.formatGuildTag(online, guildOptional.orElse(null), onlineProfile.getGuild().orElse(null))
+                String formatGuildTag = StringFormatter.formatGuildTag(guildOptional.orElse(null), online, onlineProfile.getGuild().orElse(null))
                         .map(g -> g + " ")
                         .orElse("");
 

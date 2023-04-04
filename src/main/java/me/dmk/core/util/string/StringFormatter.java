@@ -6,7 +6,6 @@ import me.dmk.core.profile.punishment.Punishment;
 import me.dmk.core.util.TimeUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -84,13 +83,13 @@ public class StringFormatter {
         return StringFormatter.formatOpeningSquareBracket() + "<gold>SOJUSZNICY" + StringFormatter.formatClosingSquareBracket();
     }
 
-    public static Optional<String> formatGuildTag(Player player, @Nullable Guild guild, @Nullable Guild otherGuild) {
+    public static Optional<String> formatGuildTag(Guild guild, Player other, Guild otherGuild) {
         if (guild == null) {
             return Optional.empty();
         }
 
         String color;
-        if (guild.isMember(player.getUniqueId())) {
+        if (guild.isMember(other.getUniqueId())) {
             color = "<green>";
         } else if (otherGuild != null && guild.getAlliances().contains(otherGuild.getTag())) {
             color = "<gold>";
