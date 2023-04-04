@@ -115,6 +115,7 @@ public class Profile implements Serializable {
 
     public void refreshVanish(Player player, Player other, Profile otherProfile) {
         boolean isVanish = this.getProfileSettings().isVanish();
+        boolean isAdmin = player.hasPermission("core.command.vanish");
 
         boolean isOtherAdmin = other.hasPermission("core.command.vanish");
         boolean isOtherVanish = otherProfile.getProfileSettings().isVanish();
@@ -130,7 +131,7 @@ public class Profile implements Serializable {
                 other.showPlayer(corePlugin, player);
             }
 
-            if (player.canSee(other) && isOtherVanish) {
+            if (player.canSee(other) && !isAdmin && isOtherVanish) {
                 player.hidePlayer(corePlugin, other);
             }
         }
