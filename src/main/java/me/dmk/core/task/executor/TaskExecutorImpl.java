@@ -30,7 +30,7 @@ public class TaskExecutorImpl implements TaskExecutor {
 
     @Override
     public void runTimerAsync(Runnable runnable, long time, TimeUnit unit) {
-        this.scheduledExecutorService.scheduleWithFixedDelay(runnable, 0, time, unit);
+        this.scheduledExecutorService.scheduleWithFixedDelay(runnable, 0L, time, unit);
     }
 
     @Override
