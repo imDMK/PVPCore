@@ -53,6 +53,9 @@ import me.dmk.core.listener.player.connection.PlayerLoginListener;
 import me.dmk.core.listener.player.connection.PlayerQuitListener;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.murder.MurderCache;
+import me.dmk.core.nametag.map.NametagMap;
+import me.dmk.core.nametag.task.NametagUpdateTask;
+import me.dmk.core.nametag.updater.NametagUpdater;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.board.BoardTask;
@@ -116,6 +119,9 @@ public class CorePlugin extends JavaPlugin {
 
     private KitMap kitMap;
     private TeleportMap teleportMap;
+    private NametagMap nametagMap;
+
+    private NametagUpdater nametagUpdater;
 
     private TaskExecutor taskExecutor;
 
@@ -180,6 +186,10 @@ public class CorePlugin extends JavaPlugin {
         this.kitMap.loadKitsFromConfiguration();
 
         this.teleportMap = new TeleportMap();
+        this.nametagMap = new NametagMap();
+
+        /* Updaters */
+        this.nametagUpdater = new NametagUpdater(this.luckPermsController, this.profileController, this.nametagMap);
 
         /* Tasks */
         this.taskExecutor = new TaskExecutorImpl();
@@ -189,15 +199,16 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController), 1L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildSaveTask(this.guildController), 15L, TimeUnit.MINUTES);
+        this.taskExecutor.runTimerAsync(new NametagUpdateTask(this.nametagUpdater), 5L, TimeUnit.SECONDS);
 
         /* Commands */
         this.liteCommands = this.registerLiteCommands();
 
         /* Listeners */
         Stream.of(
-                new PlayerJoinListener(this.pluginConfiguration, this.notificationController, this.profileController, this.guildController, this.kitMap),
+                new PlayerJoinListener(this.pluginConfiguration, this.notificationController, this.profileController, this.guildController, this.kitMap, this.nametagMap),
                 new PlayerLoginListener(this.profileController),
-                new PlayerQuitListener(this.profileController, this.taskExecutor),
+                new PlayerQuitListener(this.profileController, this.nametagMap, this.taskExecutor),
 
                 new AsyncPlayerChatListener(this.miniMessage, this.luckPermsController, this.notificationController, this.profileController, this.guildController, this.globalChatCache, this.chatWaiterCache),
                 new EntityDamageByEntityListener(this.pluginConfiguration, this.notificationController, this.profileController, this.teleportMap),
@@ -215,7 +226,7 @@ public class CorePlugin extends JavaPlugin {
         new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager, this.miniMessage);
         LuckPermsListener luckPermsListener = new LuckPermsListener(this.notificationController, this.taskExecutor);
 
-        EventBus eventBus = luckPerms.getEventBus();
+        EventBus eventBus = this.luckPerms.getEventBus();
         eventBus.subscribe(this, NodeAddEvent.class, luckPermsListener::onNodeAdd);
         eventBus.subscribe(this, NodeRemoveEvent.class, luckPermsListener::onNodeRemove);
 

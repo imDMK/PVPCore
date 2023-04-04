@@ -5,6 +5,8 @@ import me.dmk.core.chat.notification.NotificationController;
 import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.guild.controller.GuildController;
 import me.dmk.core.kit.KitMap;
+import me.dmk.core.nametag.Nametag;
+import me.dmk.core.nametag.map.NametagMap;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
@@ -34,6 +36,7 @@ public class PlayerJoinListener implements Listener {
     private final ProfileController profileController;
     private final GuildController guildController;
     private final KitMap kitMap;
+    private final NametagMap nametagMap;
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -77,9 +80,11 @@ public class PlayerJoinListener implements Listener {
 
         this.notificationController.sendMessage(player, this.pluginConfiguration.getWelcomeMessage());
 
-        this.refreshVanish(player, profile);
         this.checkPermissions(player, profile);
+        this.refreshVanish(player, profile);
+
         this.kitMap.addPlayerKit(player, statistics);
+        this.nametagMap.put(player.getUniqueId(), new Nametag(player));
 
         profile.getGuild().ifPresent(this.guildController::add);
     }
