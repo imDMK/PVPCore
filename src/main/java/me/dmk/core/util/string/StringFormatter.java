@@ -48,23 +48,23 @@ public class StringFormatter {
     }
 
     public static String formatSuccess() {
-        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getCheckMark("<green>") + StringFormatter.formatClosingSquareBracket();
+        return formatOpeningSquareBracket() + SymbolUtil.getCheckMark("<green>") + formatClosingSquareBracket();
     }
 
     public static String formatError() {
-        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getCrossMark("<red>") + StringFormatter.formatClosingSquareBracket();
+        return formatOpeningSquareBracket() + SymbolUtil.getCrossMark("<red>") + formatClosingSquareBracket();
     }
 
     public static String formatWarning() {
-        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getExclamationMark("<gold>") + StringFormatter.formatClosingSquareBracket();
+        return formatOpeningSquareBracket() + SymbolUtil.getExclamationMark("<gold>") + formatClosingSquareBracket();
     }
 
     public static String formatBoolean(boolean status) {
-        return (status ? StringFormatter.formatGreenGradient() + "włączony" : StringFormatter.formatRedGradient() + "wyłączony") + "</gradient>";
+        return (status ? formatGreenGradient() + "włączony" : formatRedGradient() + "wyłączony") + "</gradient>";
     }
 
     public static String formatBoolean(boolean status, char symbol) {
-        return (status ? StringFormatter.formatGreenGradient() + "włączon" : StringFormatter.formatRedGradient() + "wyłączon") + symbol + "</gradient>";
+        return (status ? formatGreenGradient() + "włączon" : formatRedGradient() + "wyłączon") + symbol + "</gradient>";
     }
 
     public static String formatBooleanYesOrNo(boolean status) {
@@ -72,15 +72,20 @@ public class StringFormatter {
     }
 
     public static String formatIncognito(String incognitoIdentifier) {
-        return "Anonimowy" + StringFormatter.formatOpeningSquareBracket() + "<red>" + incognitoIdentifier + StringFormatter.formatClosingSquareBracket();
+        return "Anonimowy" + formatOpeningSquareBracket() + "<red>" + incognitoIdentifier + formatClosingSquareBracket();
     }
 
     public static String formatGuild() {
-        return StringFormatter.formatOpeningSquareBracket() + "<green>GILDIA" + StringFormatter.formatClosingSquareBracket();
+        return formatOpeningSquareBracket() + "<green>GILDIA" + formatClosingSquareBracket();
     }
 
     public static String formatAlliance() {
-        return StringFormatter.formatOpeningSquareBracket() + "<gold>SOJUSZNICY" + StringFormatter.formatClosingSquareBracket();
+        return formatOpeningSquareBracket() + "<gold>SOJUSZNICY" + formatClosingSquareBracket();
+    }
+
+
+    public static String formatVanish() {
+        return formatOpeningSquareBracket() + "<light_purple>V" + formatClosingSquareBracket();
     }
 
     public static Optional<String> formatGuildTag(Guild guild, Player other, Guild otherGuild) {
@@ -98,7 +103,7 @@ public class StringFormatter {
         }
 
         return Optional.of(
-                StringFormatter.formatOpeningSquareBracket() + color + guild.getTag() + StringFormatter.formatClosingSquareBracket()
+                formatOpeningSquareBracket() + color + guild.getTag() + formatClosingSquareBracket()
         );
     }
 
@@ -118,7 +123,7 @@ public class StringFormatter {
     }
 
     public static String formatPrivateMessage(String senderName, String receivingName, String message) {
-        return StringFormatter.formatOpeningSquareBracket() + SymbolUtil.getEnvelope("<light_purple>") + StringFormatter.formatClosingSquareBracket()
+        return formatOpeningSquareBracket() + SymbolUtil.getEnvelope("<light_purple>") + formatClosingSquareBracket()
                 + " " + senderName + " <dark_gray>-> " + receivingName + "<dark_gray>: <white>" + message;
     }
 }
