@@ -34,6 +34,7 @@ public class NametagUpdater {
             }
         }
     }
+
     public void update(Player player, Nametag nametag, Player other) {
         Profile playerProfile = this.profileController.getOrElseThrow(player);
         Profile otherProfile = this.profileController.getOrElseThrow(other);
