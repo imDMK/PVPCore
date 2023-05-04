@@ -68,9 +68,6 @@ import me.dmk.core.teleport.TeleportMap;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.event.EventBus;
-import net.luckperms.api.event.node.NodeAddEvent;
-import net.luckperms.api.event.node.NodeRemoveEvent;
 import net.skinsrestorer.api.SkinsRestorerAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -82,7 +79,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -123,9 +119,9 @@ public class CorePlugin extends JavaPlugin {
 
     private NametagUpdater nametagUpdater;
 
-    private TaskExecutor taskExecutor;
-
     private LiteCommands<CommandSender> liteCommands;
+
+    private TaskExecutor taskExecutor;
 
     @Override
     public void onEnable() {
@@ -181,6 +177,8 @@ public class CorePlugin extends JavaPlugin {
         this.murderCache = new MurderCache();
         this.chatWaiterCache = new ChatWaiterCache();
 
+        Bukkit.getScheduler().runTask(this, this::addOnlinePlayersToCache);
+
         /* Maps */
         this.kitMap = new KitMap(this.pluginConfiguration.getKitConfiguration());
         this.kitMap.loadKitsFromConfiguration();
@@ -191,6 +189,9 @@ public class CorePlugin extends JavaPlugin {
         /* Updaters */
         this.nametagUpdater = new NametagUpdater(this.luckPermsController, this.profileController, this.nametagMap);
 
+        /* Commands */
+        this.liteCommands = this.registerLiteCommands();
+
         /* Tasks */
         this.taskExecutor = new TaskExecutorImpl();
 
@@ -200,9 +201,6 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController), 1L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildSaveTask(this.guildController), 15L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new NametagUpdateTask(this.nametagUpdater), 5L, TimeUnit.SECONDS);
-
-        /* Commands */
-        this.liteCommands = this.registerLiteCommands();
 
         /* Listeners */
         Stream.of(
@@ -224,23 +222,7 @@ public class CorePlugin extends JavaPlugin {
         ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
 
         new MotdPacketListener(this, this.pluginConfiguration.getMotdConfiguration(), protocolManager, this.miniMessage);
-        LuckPermsListener luckPermsListener = new LuckPermsListener(this.notificationController, this.taskExecutor);
-
-        EventBus eventBus = this.luckPerms.getEventBus();
-        eventBus.subscribe(this, NodeAddEvent.class, luckPermsListener::onNodeAdd);
-        eventBus.subscribe(this, NodeRemoveEvent.class, luckPermsListener::onNodeRemove);
-
-        Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-        if (!onlinePlayers.isEmpty()) {
-            for (Player player : onlinePlayers) {
-                Profile profile = this.profileController.findByUUIDOrElseCreate(player.getUniqueId(), player.getName());
-
-                profile.getGuild().ifPresent(guildController::add);
-            }
-
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "chat clear");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "broadcast SUBTITLE <green>Serwer został przeładowany.");
-        }
+        new LuckPermsListener(this.notificationController, this.taskExecutor, this.luckPerms);
 
         this.getLogger().info("Loaded plugin in " + (System.currentTimeMillis() - start) + " ms.");
     }
@@ -336,5 +318,12 @@ public class CorePlugin extends JavaPlugin {
                         new WeatherCommand()
                 )
                 .register();
+    }
+
+    private void addOnlinePlayersToCache() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.profileController.findByUUIDOrElseCreate(player.getUniqueId(), player.getName())
+                    .getGuild().ifPresent(guildController::add);
+        }
     }
 }

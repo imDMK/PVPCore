@@ -26,7 +26,7 @@ public class FriendCommand {
 
     @Async
     @Execute(route = "invite", required = 1)
-    void execute(Player player, Profile profile, @Arg Profile otherProfile) {
+    void executeInvite(Player player, Profile profile, @Arg Profile otherProfile) {
         if (profile.getUuid().equals(otherProfile.getUuid())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie możesz zaprosić samego siebie do przyjaciół<dark_gray>...serio?"
@@ -71,7 +71,7 @@ public class FriendCommand {
 
     @Async
     @Execute(route = "accept", required = 1)
-    void exeucte(Player player, Profile profile, @Arg Profile otherProfile) {
+    void executeAccept(Player player, Profile profile, @Arg Profile otherProfile) {
         if (profile.isFriend(otherProfile.getUuid())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Jesteście już przyjaciółmi<dark_gray>."
@@ -102,7 +102,7 @@ public class FriendCommand {
 
     @Async
     @Execute(route = "break", required = 1)
-    void exeucteBreak(Player player, Profile profile, @Arg Profile otherProfile) {
+    void executeBreak(Player player, Profile profile, @Arg Profile otherProfile) {
         if (!profile.isFriend(otherProfile.getUuid())) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Nie jesteście przyjaciółmi<dark_gray>."
