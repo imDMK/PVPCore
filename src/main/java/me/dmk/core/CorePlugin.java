@@ -128,6 +128,7 @@ public class CorePlugin extends JavaPlugin {
         corePlugin = this;
         long start = System.currentTimeMillis();
 
+        /* Configuration */
         this.pluginConfiguration = ConfigManager.create(PluginConfiguration.class, (it) -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit());
             it.withBindFile(new File(this.getDataFolder(), "configuration.yml"));
@@ -136,6 +137,7 @@ public class CorePlugin extends JavaPlugin {
             it.load(true);
         });
 
+        /* Libraries */
         RegisteredServiceProvider<LuckPerms> luckPermsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (luckPermsProvider == null) {
             this.getLogger().severe("LuckPerms not found! Plugin will be disabled.");
@@ -189,9 +191,6 @@ public class CorePlugin extends JavaPlugin {
         /* Updaters */
         this.nametagUpdater = new NametagUpdater(this.luckPermsController, this.profileController, this.nametagMap);
 
-        /* Commands */
-        this.liteCommands = this.registerLiteCommands();
-
         /* Tasks */
         this.taskExecutor = new TaskExecutorImpl();
 
@@ -201,6 +200,9 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController), 1L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildSaveTask(this.guildController), 15L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new NametagUpdateTask(this.nametagUpdater), 5L, TimeUnit.SECONDS);
+
+        /* Commands */
+        this.liteCommands = this.registerLiteCommands();
 
         /* Listeners */
         Stream.of(
@@ -231,9 +233,9 @@ public class CorePlugin extends JavaPlugin {
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            this.profileController.get(player.getUniqueId()).ifPresent(profileController::save);
-        }
+        Bukkit.getOnlinePlayers().forEach(player ->
+            this.profileController.get(player.getUniqueId()).ifPresent(profileController::save)
+        );
 
         this.guildController.getGuilds().forEach(guildController::save);
 
