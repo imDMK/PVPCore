@@ -55,7 +55,7 @@ public class EntityDamageByEntityListener implements Listener {
             return;
         }
 
-        if (playerProfile.getFriends().containsKey(damagerProfile.getUuid())) {
+        if (playerProfile.isFriend(damager.getUniqueId())) {
             event.setCancelled(true);
             return;
         }
