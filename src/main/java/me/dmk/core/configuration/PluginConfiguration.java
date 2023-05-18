@@ -46,23 +46,23 @@ public class PluginConfiguration extends OkaeriConfig {
     @Comment("# Time in seconds at which the player can change the incognito ID")
     public long timeToResetIdentifier = 20;
 
-    @Comment("# Sidebar (no support for HEX colors)")
-    public String sidebarName = "&d&lPVP&f&lCORE.PL";
+    @Comment("# Sidebar name")
+    public String sidebarName = "<rainbow>PVPCORE.PL";
 
-    @Comment("# Sidebar lines (mo support for HEX colors)")
-    public List<String> sidebarList = Arrays.asList(
-            "&a",
-            "&7Ranga&8: &d<rank>",
-            "&7Monety&8: &d<coins>",
-            "&7Ping&8: &d<ping>",
-            "&b",
-            "&7Gildia&8: &d<guild>",
-            "&7Punkty&8: &d<points>",
-            "&7Zabójstwa&8: &d<kills>",
-            "&7Śmierci&8: &d<deaths>",
-            "&7KillStreak&8: &d<killstreak>",
-            "&7KDR&8: &d<kdr>",
-            "&c"
+    @Comment("# Sidebar lines")
+    public List<String> sidebarLines = Arrays.asList(
+            " ",
+            "<gray>Ranga<dark_gray>: <light_purple><group>",
+            "<gray>Monety<dark_gray>: <light_purple><coins>",
+            "<gray>Ping<dark_gray>: <light_purple><ping>",
+            " ",
+            "<gray>Gildia<dark_gray>: <light_purple><guild>",
+            "<gray>Punkty<dark_gray>: <light_purple><points>",
+            "<gray>Zabójstwa<dark_gray>: <light_purple><kills>",
+            "<gray>Śmierci<dark_gray>: <light_purple><deaths>",
+            "<gray>KillStreak<dark_gray>: <light_purple><killstreak>",
+            "<gray>KDR<dark_gray>: <light_purple><kdr>",
+            " "
     );
 
     @Comment("# Welcome message when player join to server")

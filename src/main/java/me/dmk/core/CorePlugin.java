@@ -234,12 +234,14 @@ public class CorePlugin extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
 
         Bukkit.getOnlinePlayers().forEach(player ->
-            this.profileController.get(player.getUniqueId()).ifPresent(profileController::save)
+                this.profileController.get(player.getUniqueId()).ifPresent(profile -> {
+                    this.profileController.save(profile);
+                    profile.getGuild().ifPresent(guildController::save);
+                })
         );
 
-        this.guildController.getGuilds().forEach(guildController::save);
-
         this.mongoClientService.close();
+        this.bukkitAudiences.close();
         this.taskExecutor.shutdownNow();
         this.liteCommands.getPlatform().unregisterAll();
 

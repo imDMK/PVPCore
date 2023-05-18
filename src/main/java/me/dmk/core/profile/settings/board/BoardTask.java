@@ -1,6 +1,6 @@
 package me.dmk.core.profile.settings.board;
 
-import fr.mrmicky.fastboard.FastBoard;
+import fr.mrmicky.fastboard.adventure.FastBoard;
 import lombok.AllArgsConstructor;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;

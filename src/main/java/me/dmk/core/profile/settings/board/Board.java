@@ -1,6 +1,6 @@
 package me.dmk.core.profile.settings.board;
 
-import fr.mrmicky.fastboard.FastBoard;
+import fr.mrmicky.fastboard.adventure.FastBoard;
 import lombok.Data;
 import me.dmk.core.CorePlugin;
 import me.dmk.core.configuration.PluginConfiguration;
@@ -9,13 +9,15 @@ import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.statistics.ProfileStatistics;
 import me.dmk.core.util.PlayerUtil;
-import me.dmk.core.util.string.StringUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by DMK on 05.01.2023
@@ -35,41 +37,45 @@ public class Board implements Serializable {
     public void update(Player player, Profile profile) {
         PluginConfiguration pluginConfiguration = CorePlugin.getCorePlugin().getPluginConfiguration();
         LuckPermsController luckPermsController = CorePlugin.getCorePlugin().getLuckPermsController();
+        MiniMessage miniMessage = CorePlugin.getCorePlugin().getMiniMessage();
 
         ProfileStatistics statistics = profile.getProfileStatistics();
-        Optional<String> group = luckPermsController.getHighestGroupDisplayNameOrName(player.getUniqueId());
-        Optional<Guild> guild = profile.getGuild();
 
-        String coins = String.valueOf(statistics.getCoins());
-        String ping = String.valueOf(player.getPing());
-        String points = String.valueOf(statistics.getPoints());
-        String kills = String.valueOf(statistics.getKills());
-        String deaths = String.valueOf(statistics.getDeaths());
-        String killStreak = String.valueOf(statistics.getKills());
-        String kdr = String.valueOf(
-                PlayerUtil.getKDR(statistics.getKills(), statistics.getDeaths())
+        String group = luckPermsController.getHighestGroupDisplayNameOrName(player.getUniqueId()).orElse("Brak");
+        String guild = profile.getGuild().map(Guild::getTag).orElse("Brak");
+
+        int coins = statistics.getCoins();
+        int ping = player.getPing();
+        int points = statistics.getPoints();
+        int kills = statistics.getKills();
+        int deaths = statistics.getDeaths();
+        int killStreak = statistics.getKillStreak();
+        double kdr = PlayerUtil.getKDR(kills, deaths);
+
+        TagResolver tagResolver = TagResolver.resolver(
+                Placeholder.unparsed("group", group),
+                Placeholder.unparsed("coins", String.valueOf(coins)),
+                Placeholder.unparsed("ping", String.valueOf(ping)),
+                Placeholder.unparsed("guild", guild),
+                Placeholder.unparsed("points", String.valueOf(points)),
+                Placeholder.unparsed("kills", String.valueOf(kills)),
+                Placeholder.unparsed("deaths", String.valueOf(deaths)),
+                Placeholder.unparsed("killstreak", String.valueOf(killStreak)),
+                Placeholder.unparsed("kdr", String.valueOf(kdr))
         );
 
-        List<String> boardList = new ArrayList<>();
+        List<Component> boardLines = new ArrayList<>();
 
-        pluginConfiguration.getSidebarList().forEach(string ->
-                boardList.add(
-                        StringUtil.colorLegacy(string
-                                .replace("<rank>", group.orElse("Brak"))
-                                .replace("<coins>", coins)
-                                .replace("<ping>", ping)
-                                .replace("<guild>", guild.map(Guild::getTag).orElse("Brak"))
-                                .replace("<points>", points)
-                                .replace("<kills>", kills)
-                                .replace("<deaths>", deaths)
-                                .replace("<killstreak>", killStreak)
-                                .replace("<kdr>", kdr)
-                        )
+        pluginConfiguration.getSidebarLines().forEach(string ->
+                boardLines.add(
+                        miniMessage.deserialize(string, tagResolver)
                 )
         );
 
-        this.fastBoard.updateLines(boardList);
-        this.fastBoard.updateTitle(StringUtil.colorLegacy(pluginConfiguration.getSidebarName()));
+        this.fastBoard.updateLines(boardLines);
+        this.fastBoard.updateTitle(
+                miniMessage.deserialize(pluginConfiguration.getSidebarName())
+        );
     }
 
     public void remove() {
