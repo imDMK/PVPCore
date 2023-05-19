@@ -42,9 +42,10 @@ public class VanishCommand {
             player.addPotionEffect(potionEffect);
         }
 
-        Bukkit.getOnlinePlayers().forEach(online -> this.profileController.get(online.getUniqueId())
-                .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile))
-        );
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            this.profileController.get(online.getUniqueId())
+                    .ifPresent(onlineProfile -> profile.refreshVanish(player, online, onlineProfile));
+        }
 
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + " <gray>Twój tryb niewidzialności został " + StringFormatter.formatBoolean(profileSettings.isVanish()) + "<dark_gray>."

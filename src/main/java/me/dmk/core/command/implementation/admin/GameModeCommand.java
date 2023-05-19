@@ -25,7 +25,7 @@ public class GameModeCommand {
 
     @Execute(required = 1)
     void execute(Player player, @Arg GameMode gameMode) {
-        if (player.getGameMode() == gameMode) {
+        if (player.getGameMode().equals(gameMode)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Posiadasz już ten tryb gry<dark_gray>."
             );
@@ -33,6 +33,7 @@ public class GameModeCommand {
         }
 
         player.setGameMode(gameMode);
+
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>twój tryb gry na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
         );
@@ -41,7 +42,7 @@ public class GameModeCommand {
     @Execute(required = 2)
     @Permission("core.command.gamemode.other")
     void execute(Player player, @Arg GameMode gameMode, @Arg @Name("player") Player other) {
-        if (other.getGameMode() == gameMode) {
+        if (other.getGameMode().equals(gameMode)) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Gracz posiada już ten tryb gry<dark_gray>."
             );
@@ -49,6 +50,7 @@ public class GameModeCommand {
         }
 
         other.setGameMode(gameMode);
+
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>tryb gry gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + gameMode.name().toUpperCase() + "<dark_gray>."
         );

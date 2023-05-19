@@ -24,24 +24,26 @@ public class HealCommand {
 
     @Execute(required = 0)
     void execute(Player player) {
-        player.setHealth(20.D);
-        player.setFireTicks(0);
-        player.setFoodLevel(20);
+        this.heal(player);
 
-       this.notificationController.sendMessage(player,
-               StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Uleczono</gradient> <gray>cię<dark_gray>."
-       );
+        this.notificationController.sendMessage(player,
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Uleczono</gradient> <gray>cię<dark_gray>."
+        );
     }
 
     @Execute(required = 1)
     @Permission("core.command.heal.other")
     void execute(Player player, @Arg @Name("player") Player other) {
-        other.setHealth(20.D);
-        other.setFireTicks(0);
-        other.setFoodLevel(20);
+        this.heal(other);
 
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Uleczono</gradient> <gray>gracza <light_purple>" + other.getName() + "<dark_gray>."
         );
+    }
+
+    private void heal(Player player) {
+        player.setHealth(20.D);
+        player.setFireTicks(0);
+        player.setFoodLevel(20);
     }
 }

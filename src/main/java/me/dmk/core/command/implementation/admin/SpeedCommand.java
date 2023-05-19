@@ -31,11 +31,7 @@ public class SpeedCommand {
             return;
         }
 
-        if (player.isFlying()) {
-            player.setFlySpeed(speed / 10.0f);
-        } else {
-            player.setWalkSpeed(speed / 10.0f);
-        }
+        this.changeSpeed(player, speed);
 
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>twoją prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>na <light_purple>" + speed + "<dark_gray>."
@@ -52,14 +48,18 @@ public class SpeedCommand {
             return;
         }
 
-        if (other.isFlying()) {
-            other.setFlySpeed(speed / 10.0f);
-        } else {
-            other.setWalkSpeed(speed / 10.0f);
-        }
+        this.changeSpeed(player, speed);
 
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Zmieniono</gradient> <gray>prędkość <light_purple>" + (player.isFlying() ? "latania" : "chodzenia") + " <gray>gracza <light_purple>" + other.getName() + " <gray>na <light_purple>" + speed + "<dark_gray>."
         );
+    }
+
+    private void changeSpeed(Player player, int speed) {
+        if (player.isFlying()) {
+            player.setFlySpeed(speed / 10.0f);
+        } else {
+            player.setWalkSpeed(speed / 10.0f);
+        }
     }
 }

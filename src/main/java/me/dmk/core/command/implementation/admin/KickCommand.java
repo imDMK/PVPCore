@@ -26,9 +26,9 @@ public class KickCommand {
 
     @Execute(required = 1)
     void execute(Player player, @Arg @Name("player") Player other) {
-        String reason = StringUtil.colorLegacy("&cNie podano powodu.");
-
-        other.kickPlayer(reason);
+        other.kickPlayer(
+                StringUtil.colorLegacy("&cNie podano powodu.")
+        );
 
         this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Gracz <light_purple>" + other.getName() + " <gray>został <red>wyrzucony <gray>przez <light_purple>" + player.getName() + "<dark_gray>.",
