@@ -8,7 +8,7 @@ import me.dmk.core.nametag.updater.NametagUpdater;
  */
 
 @AllArgsConstructor
-public class NametagUpdateTask implements Runnable {
+public class NameTagUpdateTask implements Runnable {
 
     private final NametagUpdater nametagUpdater;
 

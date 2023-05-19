@@ -18,13 +18,13 @@ import java.util.Collections;
  * Created by DMK on 04.04.2023
  */
 
-public class Nametag {
+public class NameTag {
 
     private final PacketContainer packetContainer;
 
     private final MiniMessage miniMessage = CorePlugin.getCorePlugin().getMiniMessage();
 
-    public Nametag(Player player) {
+    public NameTag(Player player) {
         this.packetContainer = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
         this.packetContainer.getModifier().writeDefaults();
 

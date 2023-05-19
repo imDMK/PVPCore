@@ -1,7 +1,7 @@
 package me.dmk.core.listener.player.connection;
 
 import lombok.AllArgsConstructor;
-import me.dmk.core.nametag.map.NametagMap;
+import me.dmk.core.nametag.map.NameTagMap;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.task.executor.TaskExecutor;
@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuitListener implements Listener {
 
     private final ProfileController profileController;
-    private final NametagMap nametagMap;
+    private final NameTagMap nametagMap;
     private final TaskExecutor taskExecutor;
 
     @EventHandler(priority = EventPriority.LOW)

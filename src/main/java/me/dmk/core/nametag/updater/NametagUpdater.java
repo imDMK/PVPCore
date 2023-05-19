@@ -2,8 +2,8 @@ package me.dmk.core.nametag.updater;
 
 import lombok.AllArgsConstructor;
 import me.dmk.core.luckperms.LuckPermsController;
-import me.dmk.core.nametag.Nametag;
-import me.dmk.core.nametag.map.NametagMap;
+import me.dmk.core.nametag.NameTag;
+import me.dmk.core.nametag.map.NameTagMap;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.profile.settings.ProfileSettings;
@@ -23,11 +23,11 @@ public class NametagUpdater {
 
     private final LuckPermsController luckPermsController;
     private final ProfileController profileController;
-    private final NametagMap nametagMap;
+    private final NameTagMap nametagMap;
 
     public void updateAll() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Nametag nametag = this.nametagMap.getOrElseCreate(player);
+            NameTag nametag = this.nametagMap.getOrElseCreate(player);
 
             for (Player online : Bukkit.getOnlinePlayers()) {
                 this.update(player, nametag, online);
@@ -35,7 +35,7 @@ public class NametagUpdater {
         }
     }
 
-    public void update(Player player, Nametag nametag, Player other) {
+    public void update(Player player, NameTag nametag, Player other) {
         Profile playerProfile = this.profileController.getOrElseThrow(player);
         Profile otherProfile = this.profileController.getOrElseThrow(other);
 

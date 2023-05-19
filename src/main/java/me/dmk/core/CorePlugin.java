@@ -53,8 +53,8 @@ import me.dmk.core.listener.player.connection.PlayerLoginListener;
 import me.dmk.core.listener.player.connection.PlayerQuitListener;
 import me.dmk.core.luckperms.LuckPermsController;
 import me.dmk.core.murder.MurderCache;
-import me.dmk.core.nametag.map.NametagMap;
-import me.dmk.core.nametag.task.NametagUpdateTask;
+import me.dmk.core.nametag.map.NameTagMap;
+import me.dmk.core.nametag.task.NameTagUpdateTask;
 import me.dmk.core.nametag.updater.NametagUpdater;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
@@ -115,7 +115,7 @@ public class CorePlugin extends JavaPlugin {
 
     private KitMap kitMap;
     private TeleportMap teleportMap;
-    private NametagMap nametagMap;
+    private NameTagMap nametagMap;
 
     private NametagUpdater nametagUpdater;
 
@@ -186,7 +186,7 @@ public class CorePlugin extends JavaPlugin {
         this.kitMap.loadKitsFromConfiguration();
 
         this.teleportMap = new TeleportMap();
-        this.nametagMap = new NametagMap();
+        this.nametagMap = new NameTagMap();
 
         /* Updaters */
         this.nametagUpdater = new NametagUpdater(this.luckPermsController, this.profileController, this.nametagMap);
@@ -199,7 +199,7 @@ public class CorePlugin extends JavaPlugin {
         this.taskExecutor.runTimerAsync(new SaveProfileTask(this.profileController), 20L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildExpirationTimeTask(this.mongoDataService, this.notificationController, this.guildController), 1L, TimeUnit.MINUTES);
         this.taskExecutor.runTimerAsync(new GuildSaveTask(this.guildController), 15L, TimeUnit.MINUTES);
-        this.taskExecutor.runTimerAsync(new NametagUpdateTask(this.nametagUpdater), 5L, TimeUnit.SECONDS);
+        this.taskExecutor.runTimerAsync(new NameTagUpdateTask(this.nametagUpdater), 5L, TimeUnit.SECONDS);
 
         /* Commands */
         this.liteCommands = this.registerLiteCommands();
