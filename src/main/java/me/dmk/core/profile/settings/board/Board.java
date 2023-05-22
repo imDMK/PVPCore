@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by DMK on 05.01.2023
@@ -64,7 +63,7 @@ public class Board implements Serializable {
                 Placeholder.unparsed("kdr", String.valueOf(kdr))
         );
 
-        List<Component> boardLines = new ArrayList<>();
+        ArrayList<Component> boardLines = new ArrayList<>();
 
         pluginConfiguration.getSidebarLines().forEach(string ->
                 boardLines.add(
