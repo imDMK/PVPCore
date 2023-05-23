@@ -32,7 +32,7 @@ public class SetSpawnCommand {
         world.setSpawnLocation(location);
 
         this.notificationController.sendMessage(player,
-                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Ustawiony <gray>nowy spawn na " + StringFormatter.formatLocation(location) + "<dark_gray>."
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Ustawiono <gray>nowy spawn na " + StringFormatter.formatLocation(location) + "<dark_gray>."
         );
     }
 }

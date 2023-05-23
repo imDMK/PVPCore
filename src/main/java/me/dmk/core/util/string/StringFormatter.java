@@ -44,7 +44,7 @@ public class StringFormatter {
     }
 
     public static String formatLocation(Location location) {
-        return "<light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + " z";
+        return "<light_purple>" + location.getBlockX() + "x<dark_gray>, <light_purple>" + location.getBlockY() + "y<dark_gray>, <light_purple>" + location.getBlockZ() + "z";
     }
 
     public static String formatSuccess() {
