@@ -18,7 +18,6 @@ import java.util.Optional;
 public class TimeUtil {
 
     private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy 'o' HH:mm:ss");
-    private static final SimpleDateFormat timeForamt = new SimpleDateFormat("HH:mm");
 
     public static String durationToString(Duration duration) {
         if (duration.isNegative() || duration.isZero()) {
@@ -124,9 +123,5 @@ public class TimeUtil {
 
     public static String formatDate(Instant instant) {
         return dateTimeFormat.format(Date.from(instant));
-    }
-
-    public static String formatTime(Instant instant) {
-        return timeForamt.format(Date.from(instant));
     }
 }
