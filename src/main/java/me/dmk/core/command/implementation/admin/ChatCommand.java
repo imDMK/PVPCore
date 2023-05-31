@@ -28,10 +28,10 @@ public class ChatCommand {
     @Async
     @Execute(route = "status")
     void execute(CommandSender sender) {
-        this.globalChatCache.getGlobalChatSettings().switchStatus();
+        this.globalChatCache.switchStatus();
 
         this.notificationController.sendGlobalMessage(
-                StringFormatter.formatWarning() + " <gray>Globalny czat został " + StringFormatter.formatBoolean(this.globalChatCache.getGlobalChatSettings().isEnabled()) + " <gray>przez <light_purple>" + sender.getName() + "<dark_gray>."
+                StringFormatter.formatWarning() + " <gray>Globalny czat został " + StringFormatter.formatBoolean(this.globalChatCache.isEnabled()) + " <gray>przez <light_purple>" + sender.getName() + "<dark_gray>."
         );
     }
 
@@ -39,7 +39,7 @@ public class ChatCommand {
     @Execute(route = "clear")
     void executeClear(CommandSender sender) {
         for (int i = 0; i < 100; i++) {
-            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(""));
+            Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(" "));
         }
 
         this.notificationController.sendGlobalMessage(
@@ -47,14 +47,17 @@ public class ChatCommand {
         );
     }
 
+    @Async
     @Execute(route = "delay", required = 1)
-    void executeDelay(CommandSender sender, @Arg Integer seconds) {
-        if (this.globalChatCache.getGlobalChatSettings().getDelay() == seconds) {
+    void executeDelay(CommandSender sender, @Arg int seconds) {
+        if (this.globalChatCache.getDelay() == seconds) {
             this.notificationController.sendMessage(sender, StringFormatter.formatError() + " <red>Opóźnienie nie zostało zmienione, ponieważ już jest ustawione na <gold>" + seconds + " <red>sekund(-y) <dark_gray>.");
             return;
         }
 
-        this.globalChatCache.getGlobalChatSettings().setDelay(seconds);
+        this.globalChatCache.setDelay(seconds);
+        this.globalChatCache.rebuildCache(seconds);
+
         this.notificationController.sendGlobalMessage(
                 StringFormatter.formatWarning() + " <gray>Administrator <light_purple>" + sender.getName() + " <gray>zmienił opóźnienie wysyłania globalnych wiadomości na <light_purple>" + seconds + " <gray>sekund<dark_gray>.",
                 "core.command.chat"

@@ -107,7 +107,7 @@ public class AsyncPlayerChatListener implements Listener {
         }
 
         if (!player.hasPermission("core.chat.cooldown.bypass")) {
-            if (!this.globalChatCache.getGlobalChatSettings().isEnabled()) {
+            if (!this.globalChatCache.isEnabled()) {
                 this.notificationController.sendMessage(player,
                         StringFormatter.formatError() + " <red>Globalny czat jest aktualnie " + StringFormatter.formatRedGradient() + "wyłączony</gradient><dark_gray>."
                 );

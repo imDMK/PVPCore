@@ -15,29 +15,27 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @NoArgsConstructor
-public class GlobalChatCache {
+public class GlobalChatCache extends GlobalChatSettings {
 
-    private final GlobalChatSettings globalChatSettings = new GlobalChatSettings(this);
-
-    private Cache<UUID, Instant> instantCache = Caffeine.newBuilder()
-            .expireAfterWrite(this.globalChatSettings.getDelay(), TimeUnit.SECONDS)
+    private Cache<UUID, Instant> chatCache = Caffeine.newBuilder()
+            .expireAfterWrite(this.getDelay(), TimeUnit.SECONDS)
             .build();
 
     public void rebuildCache(long delay) {
-        this.instantCache = Caffeine.newBuilder()
+        this.chatCache = Caffeine.newBuilder()
                 .expireAfterWrite(delay, TimeUnit.SECONDS)
                 .build();
     }
 
     public void put(UUID uuid) {
-        this.instantCache.put(uuid, Instant.now().plusSeconds(this.globalChatSettings.getDelay()));
+        this.chatCache.put(uuid, Instant.now().plusSeconds(this.getDelay()));
     }
 
     public Instant get(UUID uuid) {
-        return this.instantCache.asMap().get(uuid);
+        return this.chatCache.asMap().get(uuid);
     }
 
     public boolean canUseChat(UUID uuid) {
-        return Instant.now().isAfter(this.instantCache.asMap().getOrDefault(uuid, Instant.MIN));
+        return Instant.now().isAfter(this.chatCache.asMap().getOrDefault(uuid, Instant.MIN));
     }
 }

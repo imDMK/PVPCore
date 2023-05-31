@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GlobalChatSettings {
 
-    private final GlobalChatCache globalChatCache;
-
     private boolean enabled = true;
     private long delay = 3;
 
@@ -22,6 +20,5 @@ public class GlobalChatSettings {
 
     public void setDelay(long delay) {
         this.delay = delay;
-        this.globalChatCache.rebuildCache(delay);
     }
 }
