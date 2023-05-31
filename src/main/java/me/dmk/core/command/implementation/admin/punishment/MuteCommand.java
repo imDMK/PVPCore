@@ -57,6 +57,7 @@ public class MuteCommand {
         );
     }
 
+    @Async
     @Execute(min = 2)
     void execute(CommandSender sender, @Arg Profile profile, @Joiner @Name("reason") String reason) {
         if (profile.getActivePunishment(PunishmentType.MUTE).isPresent()) {
