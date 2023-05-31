@@ -12,7 +12,11 @@ import me.dmk.core.util.ComponentUtil;
 import me.dmk.core.util.string.StringFormatter;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by DMK on 11.03.2023
