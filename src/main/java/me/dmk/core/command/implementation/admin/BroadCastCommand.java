@@ -32,6 +32,14 @@ public class BroadCastCommand {
     @Async
     @Execute(min = 2)
     void execute(CommandSender sender, @Arg NotificationType notificationType, @Joiner @Name("message") String message) {
+        this.sendGlobalMessage(notificationType, message);
+
+        this.notificationController.sendMessage(sender,
+                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wysłano</gradient> <gray>globalną wiadomość <light_purple>" + notificationType.name().toUpperCase() + "<dark_gray>."
+        );
+    }
+
+    private void sendGlobalMessage(NotificationType notificationType, String message) {
         switch (notificationType) {
             case CHAT -> this.notificationController.sendGlobalMessage(message);
             case TITLE -> this.notificationController.sendGlobalTitle(message, "");
@@ -48,10 +56,6 @@ public class BroadCastCommand {
                 this.createBossBarTask(bossBar);
             }
         }
-
-        this.notificationController.sendMessage(sender,
-                StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wysłano</gradient> <gray>globalną wiadomość <light_purple>" + notificationType.name().toUpperCase() + "<dark_gray>."
-        );
     }
 
     private void createBossBarTask(BossBar bossBar) {
