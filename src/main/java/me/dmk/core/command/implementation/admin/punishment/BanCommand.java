@@ -64,8 +64,7 @@ public class BanCommand {
     @Async
     @Execute(min = 2)
     void execute(CommandSender sender, @Arg Profile profile, @Joiner @Name("reason") String reason) {
-        Optional<Punishment> activeBanPunishment = profile.getActivePunishment(PunishmentType.BAN);
-        if (activeBanPunishment.isPresent()) {
+        if (profile.getActivePunishment(PunishmentType.BAN).isPresent()) {
             this.notificationController.sendMessage(sender,
                     StringFormatter.formatError() + " <red>Podany gracz jest już zbanowany<dark_gray>."
             );

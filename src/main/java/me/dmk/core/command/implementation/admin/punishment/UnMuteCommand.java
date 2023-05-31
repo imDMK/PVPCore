@@ -33,17 +33,19 @@ public class UnMuteCommand {
     @Async
     @Execute(required = 1)
     void execute(CommandSender sender, @Arg Profile profile) {
-        Optional<Punishment> punishment = profile.getActivePunishment(PunishmentType.MUTE);
-        if (punishment.isEmpty()) {
+        Optional<Punishment> punishmentOptional = profile.getActivePunishment(PunishmentType.MUTE);
+        if (punishmentOptional.isEmpty()) {
             this.notificationController.sendMessage(sender,
                     StringFormatter.formatError() + " <red>Gracz nie jest wyciszony<dark_gray>."
             );
             return;
         }
 
-        punishment.get().setRemoved(true);
-        punishment.get().setRemovedBy(sender.getName());
-        punishment.get().setRemovedAt(new Date());
+        Punishment punishment = punishmentOptional.get();
+
+        punishment.setRemoved(true);
+        punishment.setRemovedBy(sender.getName());
+        punishment.setRemovedAt(new Date());
 
         this.profileController.save(profile);
 
