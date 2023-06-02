@@ -26,7 +26,6 @@ public class ClearCommand {
     @Execute(required = 0)
     void execute(Player player) {
         Inventory inventory = player.getInventory();
-
         if (inventory.isEmpty()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Posiadasz pusty ekwipunek<dark_gray>."
@@ -35,6 +34,7 @@ public class ClearCommand {
         }
 
         inventory.clear();
+
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wyczyszczono</gradient> <gray>twój ekwipunek<dark_gray>."
         );
@@ -44,7 +44,6 @@ public class ClearCommand {
     @Permission("core.command.clear.other")
     void execute(Player player, @Arg @Name("player") Player other) {
         Inventory inventory = other.getInventory();
-
         if (inventory.isEmpty()) {
             this.notificationController.sendMessage(player,
                     StringFormatter.formatError() + " <red>Gracz posiada pusty ekwipunekdark_gray>."
@@ -53,6 +52,7 @@ public class ClearCommand {
         }
 
         inventory.clear();
+
         this.notificationController.sendMessage(player,
                 StringFormatter.formatSuccess() + StringFormatter.formatGreenGradient() + " Wyczyszczono</gradient> <gray>ekwipunek gracza <light_purple>" + other.getName() + "<dark_gray>."
         );
