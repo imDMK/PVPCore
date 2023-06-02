@@ -2,6 +2,7 @@ package me.dmk.core.command.implementation.admin;
 
 import dev.rollczi.litecommands.argument.Arg;
 import dev.rollczi.litecommands.argument.Name;
+import dev.rollczi.litecommands.command.async.Async;
 import dev.rollczi.litecommands.command.execute.Execute;
 import dev.rollczi.litecommands.command.permission.Permission;
 import dev.rollczi.litecommands.command.route.Route;
@@ -26,6 +27,7 @@ public class GodModeCommand {
     private final NotificationController notificationController;
     private final ProfileController profileController;
 
+    @Async
     @Execute(required = 0)
     void execute(Player player, Profile profile) {
         ProfileSettings settings = profile.getProfileSettings();
@@ -37,6 +39,7 @@ public class GodModeCommand {
         );
     }
 
+    @Async
     @Execute(required = 1)
     @Permission("core.command.godmode.other")
     void executeOther(Player player, @Arg @Name("player") Player other) {
