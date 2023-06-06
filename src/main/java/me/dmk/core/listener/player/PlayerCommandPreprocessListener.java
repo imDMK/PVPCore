@@ -6,11 +6,15 @@ import me.dmk.core.configuration.PluginConfiguration;
 import me.dmk.core.profile.Profile;
 import me.dmk.core.profile.controller.ProfileController;
 import me.dmk.core.util.string.StringFormatter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.help.HelpTopic;
+
+import java.util.Optional;
 
 /**
  * Created by DMK on 06.01.2023
@@ -28,7 +32,7 @@ public class PlayerCommandPreprocessListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = this.profileController.getOrElseThrow(player);
 
-        String command = event.getMessage().toLowerCase();
+        String command = event.getMessage().toLowerCase().split(" ")[0];
 
         if (profile.getFight().hasFight()) {
             boolean anyMatch = this.pluginConfiguration.getFightBlockedCommands()
@@ -36,11 +40,22 @@ public class PlayerCommandPreprocessListener implements Listener {
                     .anyMatch(command::startsWith);
 
             if (anyMatch) {
+                event.setCancelled(true);
+
                 this.notificationController.sendMessage(player,
                         StringFormatter.formatError() + " <red>Nie możesz użyć tej komendy podczas walki<dark_gray>."
                 );
-                event.setCancelled(true);
             }
+        }
+
+        Optional<HelpTopic> helpTopicOptional = Optional.ofNullable(
+                Bukkit.getServer().getHelpMap().getHelpTopic(command)
+        );
+
+        if (helpTopicOptional.isEmpty()) {
+            event.setCancelled(true);
+
+            this.notificationController.sendMessage(player, StringFormatter.formatError() + " <red>Komenda nie istnieje<dark_gray>.");
         }
     }
 }
