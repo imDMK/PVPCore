@@ -5,9 +5,7 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.util.string.StringFormatter;
-import me.dmk.core.util.string.StringUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import panda.std.Option;
 import panda.std.Result;
 
 import java.util.List;
@@ -19,22 +17,11 @@ import java.util.List;
 @ArgumentName("integer")
 public class IntegerArgument implements OneArgument<Integer> {
 
-    private final Component isNotInteger;
-
-    public IntegerArgument(MiniMessage miniMessage) {
-        this.isNotInteger = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłową liczbę<dark_gray>.");
-    }
-
     @Override
     public Result<Integer, ?> parse(LiteInvocation liteInvocation, String argument) {
-        if (StringUtil.isInteger(argument)) {
-            if (Integer.parseInt(argument) < 0) {
-                return Result.error(this.isNotInteger);
-            }
-            return Result.ok(Integer.parseInt(argument));
-        }
-
-        return Result.error(this.isNotInteger);
+        return Option.supplyThrowing(NumberFormatException.class, () -> Integer.parseInt(argument))
+                .filter(integer -> integer > 0)
+                .toResult(() -> StringFormatter.formatError() + " <red>Podany argument nie jest liczbą");
     }
 
     @Override

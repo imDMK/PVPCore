@@ -6,13 +6,11 @@ import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.util.TimeUtil;
 import me.dmk.core.util.string.StringFormatter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import panda.std.Option;
 import panda.std.Result;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by DMK on 30.12.2022
@@ -21,19 +19,10 @@ import java.util.Optional;
 @ArgumentName("time")
 public class InstantArgument implements OneArgument<Instant> {
 
-    private final Component unknownTimeFormat;
-
-    public InstantArgument(MiniMessage miniMessage) {
-        this.unknownTimeFormat = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłowe formatowanie czasu<dark_gray>.");
-    }
-
     @Override
     public Result<Instant, ?> parse(LiteInvocation invocation, String argument) {
-        Optional<Instant> instant = TimeUtil.stringToInstant(argument);
-        if (instant.isPresent()) {
-            return Result.ok(instant.get());
-        }
-        return Result.error(this.unknownTimeFormat);
+        return Option.ofOptional(TimeUtil.stringToInstant(argument))
+                .toResult(() -> StringFormatter.formatError() + " <red>Podano nieprawidłowy czas<dark_gray>.");
     }
 
     @Override

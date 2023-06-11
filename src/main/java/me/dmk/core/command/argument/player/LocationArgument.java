@@ -5,8 +5,6 @@ import dev.rollczi.litecommands.argument.simple.MultilevelArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.util.string.StringFormatter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import panda.std.Result;
@@ -20,12 +18,6 @@ import java.util.List;
 @ArgumentName("co-ordinates")
 public class LocationArgument implements MultilevelArgument<Location> {
 
-    private final Component unknownLocation;
-
-    public LocationArgument(MiniMessage miniMessage) {
-        this.unknownLocation = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłową lokalizację<dark_gray>.");
-    }
-
     @Override
     public Result<Location, ?> parseMultilevel(LiteInvocation liteInvocation, String... arguments) {
         if (liteInvocation.sender().getHandle() instanceof Player player) {
@@ -35,7 +27,7 @@ public class LocationArgument implements MultilevelArgument<Location> {
                 double z = Double.parseDouble(arguments[2]);
 
                 return new Location(player.getWorld(), x, y, z);
-            }).mapErr(exception -> this.unknownLocation);
+            }).mapErr(exception -> StringFormatter.formatError() + " <red>Podano nieprawidłową lokalizację<dark_gray>.");
         }
 
         return Result.error("Nie możesz użyć tej komendy");

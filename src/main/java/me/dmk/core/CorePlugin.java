@@ -314,11 +314,11 @@ public class CorePlugin extends JavaPlugin {
 
                 .argument(NotificationType.class, new NotificationTypeArgument(this.miniMessage))
 
-                .argument(GameMode.class, new GameModeArgument(this.miniMessage))
-                .argument(Instant.class, new InstantArgument(this.miniMessage))
-                .argument(Integer.class, new IntegerArgument(this.miniMessage))
-                .argumentMultilevel(Location.class, new LocationArgument(this.miniMessage))
-                .argument(Player.class, new PlayerArgument(this.miniMessage))
+                .argument(GameMode.class, new GameModeArgument())
+                .argument(Instant.class, new InstantArgument())
+                .argument(Integer.class, new IntegerArgument())
+                .argumentMultilevel(Location.class, new LocationArgument())
+                .argument(Player.class, new PlayerArgument())
                 .argument(Integer.class, "speed", new SpeedArgument())
                 .argument(SpeedType.class, new SpeedTypeArgument())
 

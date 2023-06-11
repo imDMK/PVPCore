@@ -5,9 +5,8 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.suggestion.Suggestion;
 import me.dmk.core.util.string.StringFormatter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.GameMode;
+import panda.std.Option;
 import panda.std.Result;
 
 import java.util.HashMap;
@@ -21,12 +20,9 @@ import java.util.Map;
 @ArgumentName("type")
 public class GameModeArgument implements OneArgument<GameMode> {
 
-    private final Component unknownGameModeType;
     private final Map<String, GameMode> gameModes = new HashMap<>();
 
-    public GameModeArgument(MiniMessage miniMessage) {
-        this.unknownGameModeType = miniMessage.deserialize(StringFormatter.formatError() + " <red>Podano nieprawidłowy typ gry<dark_gray>.");
-
+    public GameModeArgument() {
         for (GameMode gameMode : GameMode.values()) {
             this.gameModes.put(gameMode.name().toUpperCase(), gameMode);
         }
@@ -39,13 +35,8 @@ public class GameModeArgument implements OneArgument<GameMode> {
 
     @Override
     public Result<GameMode, ?> parse(LiteInvocation invocation, String argument) {
-        GameMode gameMode = this.gameModes.get(argument.toUpperCase());
-
-        if (gameMode == null) {
-            return Result.error(this.unknownGameModeType);
-        }
-
-        return Result.ok(gameMode);
+        return Option.of(this.gameModes.get(argument.toUpperCase()))
+                .toResult(() -> StringFormatter.formatError() + " <red>Nieprawidłowy tryb gry<dark_gray>.");
     }
 
     @Override

@@ -5,6 +5,7 @@ import dev.rollczi.litecommands.argument.simple.OneArgument;
 import dev.rollczi.litecommands.command.LiteInvocation;
 import dev.rollczi.litecommands.command.amount.AmountValidator;
 import dev.rollczi.litecommands.suggestion.Suggestion;
+import me.dmk.core.util.string.StringFormatter;
 import panda.std.Option;
 import panda.std.Result;
 
@@ -20,7 +21,7 @@ public class SpeedArgument implements OneArgument<Integer> {
     public Result<Integer, ?> parse(LiteInvocation liteInvocation, String argument) {
         return Option.supplyThrowing(NumberFormatException.class, () -> Integer.parseInt(argument))
                 .filter(SpeedValidator::valid)
-                .toResult(() -> "<red>Podano nieprawidłową prędkość<dark_gray>.");
+                .toResult(() -> StringFormatter.formatError() + " <red>Podano nieprawidłową prędkość<dark_gray>.");
     }
 
     @Override
