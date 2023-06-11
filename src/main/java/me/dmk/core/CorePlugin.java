@@ -24,6 +24,8 @@ import me.dmk.core.command.argument.player.InstantArgument;
 import me.dmk.core.command.argument.player.IntegerArgument;
 import me.dmk.core.command.argument.player.LocationArgument;
 import me.dmk.core.command.argument.player.PlayerArgument;
+import me.dmk.core.command.argument.player.SpeedArgument;
+import me.dmk.core.command.argument.player.SpeedTypeArgument;
 import me.dmk.core.command.argument.profile.ProfileArgument;
 import me.dmk.core.command.contextual.GuildContextual;
 import me.dmk.core.command.contextual.ProfileContextual;
@@ -39,7 +41,6 @@ import me.dmk.core.command.implementation.admin.HealCommand;
 import me.dmk.core.command.implementation.admin.InvseeCommand;
 import me.dmk.core.command.implementation.admin.KickCommand;
 import me.dmk.core.command.implementation.admin.SetSpawnCommand;
-import me.dmk.core.command.implementation.admin.SpeedCommand;
 import me.dmk.core.command.implementation.admin.TeleportCommand;
 import me.dmk.core.command.implementation.admin.VanishCommand;
 import me.dmk.core.command.implementation.admin.punishment.BanCommand;
@@ -48,6 +49,8 @@ import me.dmk.core.command.implementation.admin.punishment.TempBanCommand;
 import me.dmk.core.command.implementation.admin.punishment.TempMuteCommand;
 import me.dmk.core.command.implementation.admin.punishment.UnBanCommand;
 import me.dmk.core.command.implementation.admin.punishment.UnMuteCommand;
+import me.dmk.core.command.implementation.admin.speed.SpeedCommand;
+import me.dmk.core.command.implementation.admin.speed.SpeedType;
 import me.dmk.core.command.implementation.guild.GuildCreateCommand;
 import me.dmk.core.command.implementation.guild.GuildCreateRankCommand;
 import me.dmk.core.command.implementation.guild.GuildDeleteCommand;
@@ -316,6 +319,8 @@ public class CorePlugin extends JavaPlugin {
                 .argument(Integer.class, new IntegerArgument(this.miniMessage))
                 .argumentMultilevel(Location.class, new LocationArgument(this.miniMessage))
                 .argument(Player.class, new PlayerArgument(this.miniMessage))
+                .argument(Integer.class, "speed", new SpeedArgument())
+                .argument(SpeedType.class, new SpeedTypeArgument())
 
                 .argument(Profile.class, new ProfileArgument(this.profileController, this.miniMessage))
 
