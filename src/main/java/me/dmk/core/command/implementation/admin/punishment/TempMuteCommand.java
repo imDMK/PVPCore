@@ -44,7 +44,7 @@ public class TempMuteCommand {
         String reason = "Nie podano powodu.";
         Punishment punishment = new Punishment(PunishmentType.MUTE, sender.getName(), reason, instant);
 
-        profile.getPunishments().add(punishment);
+        profile.addPunishment(punishment);
         this.profileController.save(profile);
 
         profile.getPlayer().ifPresent(p ->
@@ -69,7 +69,7 @@ public class TempMuteCommand {
 
         Punishment punishment = new Punishment(PunishmentType.MUTE, sender.getName(), reason, instant);
 
-        profile.getPunishments().add(punishment);
+        profile.addPunishment(punishment);
         this.profileController.save(profile);
 
         profile.getPlayer().ifPresent(p ->

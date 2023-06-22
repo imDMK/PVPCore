@@ -113,6 +113,10 @@ public class Profile implements Serializable {
                 .isEmpty();
     }
 
+    public void addPunishment(Punishment punishment) {
+        this.punishments.add(punishment);
+    }
+
     public void clearAllPunishments() {
         this.punishments = Lists.newCopyOnWriteArrayList();
     }

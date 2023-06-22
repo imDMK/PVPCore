@@ -48,7 +48,7 @@ public class BanCommand {
         String reason = "Nie podano powodu.";
         Punishment punishment = new Punishment(PunishmentType.BAN, sender.getName(), reason);
 
-        profile.getPunishments().add(punishment);
+        profile.addPunishment(punishment);
         this.profileController.save(profile);
         
         profile.getPlayer().ifPresent(p ->
@@ -73,7 +73,7 @@ public class BanCommand {
 
         Punishment punishment = new Punishment(PunishmentType.BAN, sender.getName(), reason);
 
-        profile.getPunishments().add(punishment);
+        profile.addPunishment(punishment);
         this.profileController.save(profile);
 
         profile.getPlayer().ifPresent(p ->
